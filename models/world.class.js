@@ -6,7 +6,7 @@ class World {
         new Chicken(), 
         new Chicken()
     ]
-    clousds = [
+    clouds = [
         new Clouds('img/5_background/layers/4_clouds/1.png'),
         new Clouds('img/5_background/layers/4_clouds/2.png')
     ];
@@ -36,7 +36,7 @@ class World {
         this.addObjectsToMap(this.backgroundObjects);
         this.addToMap(this.character);
         this.addObjectsToMap(this.enemies);
-        this.addObjectsToMap(this.clousds);
+        this.addObjectsToMap(this.clouds);
 
 
         // drow() wird immer wieder aufgerufen
