@@ -5,6 +5,10 @@ class World {
         new Chicken(),
         new Chicken(), 
         new Chicken()
+    ]
+    clousds = [
+        new Clouds('img/5_background/layers/4_clouds/1.png'),
+        new Clouds('img/5_background/layers/4_clouds/2.png')
     ];
 
     canvas;
@@ -25,6 +29,10 @@ class World {
         this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
         this.enemies.forEach((enemy) => {
             this.ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height);
+        });
+
+        this.clousds.forEach((cloud) => {
+            this.ctx.drawImage(cloud.img, cloud.x, cloud.y, cloud.width, cloud.height);
         });
 
         // drow() wird immer wieder aufgerufen
