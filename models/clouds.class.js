@@ -3,7 +3,7 @@ class Clouds extends MovableObject {
     width = 350;
     y = 50;
     x = 100 + Math.random() * 500; // Zufallisge Startposition
-    speed = 0.3 + Math.random() * 0.1; // Zufallisge Geschwindigkeit  
+    speed = 0.2; // Zufallisge Geschwindigkeit  
     
     constructor(imagePath) {
         super();
@@ -12,14 +12,13 @@ class Clouds extends MovableObject {
     }
 
     animate() {
+         this.moveLeft();
         // Ein Intervall lässt den Code immer wieder ausführen
         setInterval(() => {
-            this.x -= this.speed; // Die Wolke wandert nach links
-
             // Hier kommt die if Bedinung damit die Wollken immer wieder Rechts neu anfangeg
             if (this.x < -this.width) {
                 this.x = 720;
             } 
-        }, 1000 / 60); // 60 Mal pro Sekunde für eine flüssige Bewegung
+        }, 1000);
     }
 }

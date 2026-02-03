@@ -3,6 +3,7 @@ class Chicken extends MovableObject {
     width = 60;
     x = 200 + Math.random() * 500; // Zufällige Startposition
     y = 352; // Bodenposition
+    speed = 0.15 + Math.random() * 1.5; // Zufallisge Geschwindigkeit
     IMAGES_WALKING = [
         'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
         'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
@@ -17,11 +18,15 @@ class Chicken extends MovableObject {
     }
 
     animate() {
+        this.moveLeft();
         setInterval(() => {
             let path = this.IMAGES_WALKING[this.currentImage];
             this.img = this.imageCache[path];
-            this.currentImage = (this.currentImage + 1) % this.IMAGES_WALKING.length;
-        }, 400);
+            this.currentImage = (this.currentImage + 1) % this.IMAGES_WALKING.length; 
+            if (this.x < -this.width) {
+                this.x = 720;
+            }    
+        }, 500);
     }
 
 
