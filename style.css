@@ -7,7 +7,12 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: blue;
+    background-image: url('img/bg_images/bg-image1.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    margin: 0;
 }
 
 canvas {
