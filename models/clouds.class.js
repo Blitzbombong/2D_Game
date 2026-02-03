@@ -8,5 +8,18 @@ class Clouds extends MovableObject {
     constructor(imagePath) {
         super();
         this.loadImage(imagePath); // Nutzt den Pfad, den du im Array übergeben hast
+        this.animate();
+    }
+
+    animate() {
+        // Ein Intervall lässt den Code immer wieder ausführen
+        setInterval(() => {
+            this.x -= this.speed; // Die Wolke wandert nach links
+
+            // Hier kommt die if Bedinung damit die Wollken immer wieder Rechts neu anfangeg
+            if (this.x < -this.width) {
+                this.x = 720;
+            } 
+        }, 1000 / 60); // 60 Mal pro Sekunde für eine flüssige Bewegung
     }
 }
