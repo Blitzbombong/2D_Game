@@ -6,6 +6,7 @@ class MovableObject {
     width = 100;
     imageCache = {};
     otherDirection = false;
+    currentImage = 0;
 
 
     loadImage(path) {
@@ -26,6 +27,27 @@ class MovableObject {
             this.imageCache[path] = img;
         });
     }
+
+
+    playAnimation(images) {
+        // 1. Sicherheits-Check: Existiert das Array überhaupt und ist es nicht leer?
+        if (!images || images.length === 0) {
+            console.warn('Animation konnte nicht abgespielt werden: Array ist leer oder fehlt.');
+            return; // Funktion hier abbrechen
+        }
+
+        let i = this.currentImage % images.length;
+        let path = images[i];
+        
+        // 2. Sicherheits-Check: Ist das Bild wirklich im Cache geladen?
+        if (this.imageCache[path]) {
+            this.img = this.imageCache[path];
+        } else {
+            console.error('Bild im Cache nicht gefunden:', path);
+        }
+
+        this.currentImage++;
+}
 
     moveLeft() {
         setInterval(() => {

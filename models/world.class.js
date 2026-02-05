@@ -12,8 +12,8 @@ class World {
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
         this.keyboard = keyboard;
-        this.draw();
         this.setWorld();
+        this.draw();
     }
 
 
@@ -45,17 +45,30 @@ class World {
         });
     }
 
-    addToMap(movableObject) {
-        if (movableObject.otherDirection) {
-            this.ctx.save();
-            this.ctx.translate(movableObject.width, 0);
-            this.ctx.scale(-1, 1);
-            movableObject.x = movableObject.x * -1;
-        }
-        this.ctx.drawImage(movableObject.img, movableObject.x, movableObject.y, movableObject.width, movableObject.height);
-        if (movableObject.otherDirection) {
-            movableObject.x = movableObject.x * -1;
-            this.ctx.restore();
-        }
+    addToMap(mo) {
+    if (mo.otherDirection) {
+        this.flipImage(mo);
     }
+    
+    // Nur zeichnen, wenn das Bild wirklich da ist
+    if (mo.img) {
+        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+    }
+
+    if (mo.otherDirection) {
+        this.flipImageBack(mo);
+    }
+}
+
+flipImage(mo) {
+    this.ctx.save();
+    this.ctx.translate(mo.width, 0);
+    this.ctx.scale(-1, 1);
+    mo.x = mo.x * -1;
+}
+
+flipImageBack(mo) {
+    mo.x = mo.x * -1;
+    this.ctx.restore();
+}
 }
