@@ -14,6 +14,7 @@ class World {
         this.keyboard = keyboard;
         this.setWorld();
         this.draw();
+        this.run();
     }
 
 
@@ -62,15 +63,30 @@ class World {
     }
 }
 
-flipImage(mo) {
-    this.ctx.save();
-    this.ctx.translate(mo.width, 0);
-    this.ctx.scale(-1, 1);
-    mo.x = mo.x * -1;
-}
+    flipImage(mo) {
+        this.ctx.save();
+        this.ctx.translate(mo.width, 0);
+        this.ctx.scale(-1, 1);
+        mo.x = mo.x * -1;
+    }
 
-flipImageBack(mo) {
-    mo.x = mo.x * -1;
-    this.ctx.restore();
-}
+    flipImageBack(mo) {
+        mo.x = mo.x * -1;
+        this.ctx.restore();
+    }
+
+
+    run() {
+        setInterval(() => {
+            this.checkCollisions();
+        }, 200); // Wir prüfen 5 Mal pro Sekunde (reicht völlig aus)
+    }
+
+
+    checkCollisions() {
+        this.checkEnemyCollisions(); // Pepe vs Hühner
+        this.checkItemCollisions();  // Pepe vs Salsa-Flaschen
+        this.checkThrowingCollisions(); // Flasche vs Endboss
+        this.checkEndbossCollisions(); // Pepe vs Endboss
+    }
 }
