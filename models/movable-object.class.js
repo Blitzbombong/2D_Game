@@ -9,6 +9,7 @@ class MovableObject {
     currentImage = 0;
     speedY = 0;
     acceleration = 2.5;
+    speed = 0.15;
 
 
     applyGravity() {
@@ -67,14 +68,18 @@ class MovableObject {
 }
 
     moveLeft() {
-        setInterval(() => {
-            this.x -= this.speed;
-        }, 1000 / 60);
+        this.x -= this.speed;
     }
 
 
     moveRight() {
-        
+        this.x += this.speed;   
     }
+
+
+   
+     jump() {
+        this.speedY = 30;
+    } 
     
 }

@@ -44,10 +44,10 @@ class Character extends MovableObject {
                 this.jump();
             }
             if (this.world.keyboard.RIGHT  && this.x < this.world.level.Level_end_x - this.width) {
-                this.x += this.speed;
+                this.moveRight();
                 this.otherDirection = false;
             } else if (this.world.keyboard.LEFT && this.x > 0) {
-                this.x -= this.speed;
+                this.moveLeft();
                 this.otherDirection = true;
             }
             this.world.cameraX = -this.x + 100;
@@ -68,7 +68,5 @@ class Character extends MovableObject {
 
     
 
-    jump() {
-        this.speedY = 30;
-    } 
+   
 }
