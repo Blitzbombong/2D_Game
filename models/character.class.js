@@ -42,7 +42,7 @@ class Character extends MovableObject {
         'img/2_character_pepe/1_idle/idle/I-7.png',
         'img/2_character_pepe/1_idle/idle/I-8.png',
         'img/2_character_pepe/1_idle/idle/I-9.png',
-        'img/2_character_pepe/1_idleidle/I-10.png'
+        'img/2_character_pepe/1_idle/idle/I-10.png'
     ];
 
     IMAGES_LONG_IDLE = [
@@ -92,7 +92,17 @@ class Character extends MovableObject {
     animate() {
 
         setInterval(() => {
-            if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+            this.moveCharacter();
+        }, 1000 / 60);
+
+        setInterval(() => {
+            this.playCharacterAnimations();
+        }, 50);
+    }
+
+
+    moveCharacter() {
+        if (this.world.keyboard.SPACE && !this.isAboveGround()) {
                 this.jump();
             }
             if (this.world.keyboard.RIGHT  && this.x < this.world.level.Level_end_x - this.width) {
@@ -103,10 +113,17 @@ class Character extends MovableObject {
                 this.otherDirection = true;
             }
             this.world.cameraX = -this.x + 100;
-        }, 1000 / 60);
+    }
 
-        setInterval(() => {
-            if (this.isAboveGround()) {
+
+    playCharacterAnimations() {
+        if (this.isDead()) {
+            // Dead Animation
+            this.playAnimation(this.IMAGES_DEAD);            
+            } else if (this.isHit()) {
+            // Hurt Animation
+                this.playAnimation(this.IMAGES_HURT);
+            } else if (this.isAboveGround()) {
             // Jump Animation
             this.playAnimation(this.IMAGES_JAMPING);
             }
@@ -114,10 +131,7 @@ class Character extends MovableObject {
             // Walk Animation
             this.playAnimation(this.IMAGES_WALKING);
             }
-        }, 50);
     }
-
-
     
 
    
