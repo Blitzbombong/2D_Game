@@ -78,15 +78,35 @@ class World {
 
     run() {
         setInterval(() => {
-            this.checkCollisions();
-        }, 200); // Wir prüfen 5 Mal pro Sekunde (reicht völlig aus)
+            this.checkEnemyCollisions();
+            this.checkItemCollisions();
+            // this.checkThrowingCollisions(); // Erst aktivieren, wenn du Flaschen werfen kannst!
+        }, 50);
+}
+
+    checkEnemyCollisions() {
+        this.level.enemies.forEach((enemy) => {
+            if (this.character.isColliding(enemy)) {
+                // Logik für Pepe vs. Hühner / Endboss
+                console.log('Pepe wurde getroffen!');
+                this.character.hit(); // Diese Funktion bauen wir gleich in MovableObject
+            }
+        });
     }
+
+    checkItemCollisions() {
+        // Hier prüfen wir später Coins und Bottles
+        // Wir lassen sie erst einmal leer, damit kein Fehler kommt
+    }
+
+
+    
 
 
     checkCollisions() {
         this.checkEnemyCollisions(); // Pepe vs Hühner
         this.checkItemCollisions();  // Pepe vs Salsa-Flaschen
-        this.checkThrowingCollisions(); // Flasche vs Endboss
-        this.checkEndbossCollisions(); // Pepe vs Endboss
+        //this.checkThrowingCollisions(); // Flasche vs Endboss
+        //this.checkEndbossCollisions(); // Pepe vs Endboss
     }
 }
