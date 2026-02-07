@@ -10,6 +10,8 @@ class MovableObject {
     speedY = 0;
     acceleration = 2.5;
     speed = 0.15;
+    energy = 100;
+    lastHit = 0;
     
     offset = {
     top: 0,
@@ -111,9 +113,26 @@ class MovableObject {
 
 
     hit() {
-        
+        this.energy -= 5;
+        if (this.energy < 0) {
+            this.energy = 0;
+        } else {
+            this.lastHit = new Date().getTime();
+        }
     }
-    
+
+
+    isDead() {
+        return this.energy == 0;
+    }
+
+
+    isHit() {
+        let timePassed = new Date().getTime() - this.lastHit    // Zeitdifferenz in Millisekunden
+        timePassed = timePassed / 1000;                         // Differenz in Sekunden
+        return timePassed < 1;                                  // Pepe gilt für 1 Sekunde als "verletzt"
+    }
+
 
     isColliding(mo) {
     return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&

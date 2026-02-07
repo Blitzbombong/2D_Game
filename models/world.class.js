@@ -87,9 +87,9 @@ class World {
     checkEnemyCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
-                // Logik für Pepe vs. Hühner / Endboss
-                console.log('Pepe wurde getroffen!');
-                this.character.hit(); // Diese Funktion bauen wir gleich in MovableObject
+                this.character.hit();
+                 // Logik für Pepe vs. Hühner / Endboss
+                console.log('Pepe wurde getroffen!' + this.character.energy);
             }
         });
     }
