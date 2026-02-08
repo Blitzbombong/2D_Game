@@ -12,13 +12,23 @@ function createEnemies() {
 }
 
 
+function createClouds() {
+    let clouds = [];
+    for (let i = 0; i < 4; i++) {
+        clouds.push(new Clouds('img/5_background/layers/4_clouds/1.png'));
+    }
+    for (let i = 0; i < 4; i++) {
+        clouds.push(new Clouds('img/5_background/layers/4_clouds/2.png'));
+    }
+    return clouds;
+}   
+
+
 const level1 = new Level(
     createEnemies(),
 
-    [
-        new Clouds('img/5_background/layers/4_clouds/1.png'),
-        new Clouds('img/5_background/layers/4_clouds/2.png')
-    ],
+    createClouds(),
+
     [
         new BackgroundObject('img/5_background/layers/air.png', -720,0),
         new BackgroundObject('img/5_background/layers/3_third_layer/2.png', -720,0),
