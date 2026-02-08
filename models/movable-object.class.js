@@ -47,7 +47,7 @@ class MovableObject {
 
 
     drawFrame(ctx) {  
-        if (this instanceof Character || this instanceof Chicken || this instanceof Endboss || this instanceof Endboss) {
+        if (this instanceof Character || this instanceof Chicken || this instanceof Endboss || this instanceof Endboss || this instanceof Bottle) {
             ctx.beginPath();
             ctx.rect(
                 this.x + this.offset.left, 

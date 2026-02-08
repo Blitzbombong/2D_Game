@@ -1,10 +1,10 @@
 
 function createEnemies() {
     let enemies = [];
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 6; i++) {
         enemies.push(new Chicken());
     }
-    for (let i = 0; i < 8;  i++) {
+    for (let i = 0; i < 6;  i++) {
         enemies.push(new SmallChicken());
     }
     enemies.push(new Endboss());
@@ -21,7 +21,20 @@ function createClouds() {
         clouds.push(new Clouds('img/5_background/layers/4_clouds/2.png'));
     }
     return clouds;
-}   
+}  
+
+
+function createBottles() {
+    let bottles = [];
+    let startX = 200;
+    let distance = 200;
+
+    for (let i = 0; i < 10; i++) {
+        let x = startX + (i * distance) + (Math.random() * 100);
+        bottles.push(new Bottle(x));
+    }
+    return bottles;
+}
 
 
 const level1 = new Level(
@@ -54,5 +67,7 @@ const level1 = new Level(
         new BackgroundObject('img/5_background/layers/3_third_layer/2.png', 2160,0),
         new BackgroundObject('img/5_background/layers/2_second_layer/2.png', 2160,0),
         new BackgroundObject('img/5_background/layers/1_first_layer/2.png',  2160,0),
-    ]
+    ],
+
+    createBottles(),
 );
