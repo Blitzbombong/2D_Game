@@ -3,7 +3,7 @@ class Character extends MovableObject {
     width = 120
     y = 195; // Bodenposition
     world;
-    speed = 8;
+    speed = 8; 
 
     offset = {
         top: 85,

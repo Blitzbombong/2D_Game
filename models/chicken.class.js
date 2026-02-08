@@ -1,9 +1,10 @@
 class Chicken extends MovableObject {
     height = 70;
     width = 60;
-    x = 200 + Math.random() * 500; // Zufällige Startposition
+    x = 700 + Math.random() * 1500; // Zufällige Startposition
     y = 352; // Bodenposition
     currentImage = 0;
+    speed = 0.15 + Math.random() * 0.5;
 
     offset = {
         top: 0,
