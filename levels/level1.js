@@ -37,6 +37,19 @@ function createBottles() {
 }
 
 
+function createCoins() {
+    let coins = [];
+    let startX = 200;
+    let distance = 200;
+
+    for (let i = 0; i < 10; i++) {
+        let x = startX + (i * distance) + (Math.random() * 100);
+        coins.push(new Coins(x));
+    }
+    return coins;
+}
+
+
 const level1 = new Level(
     createEnemies(),
 
@@ -70,4 +83,6 @@ const level1 = new Level(
     ],
 
     createBottles(),
+
+    createCoins()
 );
