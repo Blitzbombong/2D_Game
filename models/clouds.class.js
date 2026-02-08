@@ -2,7 +2,7 @@ class Clouds extends MovableObject {
     height = 250;
     width = 350;
     y = 50;
-    x = 100 + Math.random() * 500; // Zufallisge Startposition
+    x = 100 + Math.random() * 2200; // Zufallisge Startposition
     speed = 0.2; // Zufallisge Geschwindigkeit  
     
     constructor(imagePath) {

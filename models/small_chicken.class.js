@@ -2,7 +2,7 @@ class SmallChicken extends Chicken {
 
     height = 50;
     width = 40;
-    y = 370;
+    y = 372;
     offset = {
         top: 5,
         left: 0,

@@ -1,14 +1,20 @@
+
+function createEnemies() {
+    let enemies = [];
+    for (let i = 0; i < 8; i++) {
+        enemies.push(new Chicken());
+    }
+    for (let i = 0; i < 8;  i++) {
+        enemies.push(new SmallChicken());
+    }
+    enemies.push(new Endboss());
+    return enemies;
+}
+
+
 const level1 = new Level(
-    [ 
-        new Chicken(),
-        new Chicken(), 
-        new Chicken(),
-        new SmallChicken(),
-        new SmallChicken(),
-        new SmallChicken(),
-        new SmallChicken(),
-        new Endboss()
-    ],
+    createEnemies(),
+
     [
         new Clouds('img/5_background/layers/4_clouds/1.png'),
         new Clouds('img/5_background/layers/4_clouds/2.png')
