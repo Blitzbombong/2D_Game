@@ -1,18 +1,12 @@
 class MovableObject extends DrawableObject {
-    x = 120;
-    y = 250;
-    img;
-    height = 150;
-    width = 100;
-    imageCache = {};
+    
     otherDirection = false;
-    currentImage = 0;
     speedY = 0;
     acceleration = 2.5;
     speed = 0.15;
     energy = 100;
-    lastHit = 0;
     
+    lastHit = 0;
     offset = {
     top: 0,
     left: 0,
