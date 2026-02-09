@@ -1,6 +1,12 @@
 class World {
     
     character = new Character();
+    healthBar = new HealthBar();
+    coinBar = new CoinBar();
+    bottleBar = new BottleBar();
+    endbossBar = new EndbossBar();
+
+    showEndbossBar = false;
     level = level1;
 
     canvas;
@@ -31,6 +37,14 @@ class World {
 
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
+        this.addToMap(this.healthBar);
+        this.addToMap(this.coinBar);
+        this.addToMap(this.bottleBar);
+
+        if (this.showEndbossBar) {
+            this.addToMap(this.endbossBar);
+        }
+        
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.bottles);
