@@ -1,4 +1,4 @@
-class MovableObject {
+class MovableObject extends DrawableObject {
     x = 120;
     y = 250;
     img;
@@ -35,17 +35,7 @@ class MovableObject {
         return this.y < 195;
     }
 
-
-    loadImage(path) {
-        this.img = new Image();
-        this.img.src = path;
-    }
-
-    draw(ctx) {
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    }
-
-
+    
     drawFrame(ctx) {  
         if (this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss || this instanceof Bottle || this instanceof Coins) {
             ctx.beginPath();
@@ -59,20 +49,6 @@ class MovableObject {
             ctx.lineWidth = 3;
             ctx.stroke();
         }
-    }
-
-
-    /**
-     * Loads an array of images into the imageCache object.
-     * Each image is stored with its path as the key.
-     * @param {Array<string>} arr - An array of image paths.
-     */
-    loadImages(arr) {
-        arr.forEach(path => {
-            let img = new Image();
-            img.src = path;
-            this.imageCache[path] = img;
-        });
     }
 
 
