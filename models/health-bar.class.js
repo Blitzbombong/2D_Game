@@ -7,4 +7,14 @@ class HealthBar extends StatusBar {
         'img/7_statusbars/1_statusbar/2_statusbar_health/green/80.png',
         'img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png'
     ];
+
+    constructor() {
+        super();
+        this.loadImages(this.IMAGES);
+        this.x = 50;
+        this.y = 10;
+        this.width = 200;
+        this.height = 50;
+        this.setPercentage(100);
+    }
 }

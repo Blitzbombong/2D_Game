@@ -37,6 +37,13 @@ class World {
 
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
+        this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.coins);
+         this.addObjectsToMap(this.level.bottles);
+
+        this.ctx.translate(-this.cameraX, 0);
+
         this.addToMap(this.healthBar);
         this.addToMap(this.coinBar);
         this.addToMap(this.bottleBar);
@@ -44,13 +51,6 @@ class World {
         if (this.showEndbossBar) {
             this.addToMap(this.endbossBar);
         }
-        
-        this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.level.clouds);
-        this.addObjectsToMap(this.level.bottles);
-        this.addObjectsToMap(this.level.coins);
-
-        this.ctx.translate(-this.cameraX, 0);
 
         // drow() wird immer wieder aufgerufen
         requestAnimationFrame(() => this.draw());
@@ -70,9 +70,10 @@ class World {
     // Nur zeichnen, wenn das Bild wirklich da ist
     if (mo.img) {
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
     }
-
+        if (typeof mo.drawFrame === 'function') {
+            mo.drawFrame(this.ctx);
+        }
 
     if (mo.otherDirection) {
         this.flipImageBack(mo);

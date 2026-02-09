@@ -7,4 +7,14 @@ class BottleBar extends StatusBar {
         'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/80.png',
         'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png'
     ];  
+
+    constructor() {
+        super();
+        this.loadImages(this.IMAGES);
+        this.x = 50;
+        this.y = 100;
+        this.width = 200;
+        this.height = 50;
+        this.setPercentage(0);
+    }
 }

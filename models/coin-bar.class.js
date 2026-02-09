@@ -7,4 +7,14 @@ class CoinBar extends StatusBar {
         'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/80.png',
         'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/100.png'
     ];  
+
+    constructor() {
+        super();
+        this.loadImages(this.IMAGES);
+        this.x = 50;
+        this.y = 55;
+        this.width = 200;
+        this.height = 50;
+        this.setPercentage(0);
+    }
 }
