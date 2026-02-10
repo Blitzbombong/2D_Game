@@ -112,8 +112,23 @@ class World {
     }
 
     checkItemCollisions() {
-        // Hier prüfen wir später Coins und Bottles
-        // Wir lassen sie erst einmal leer, damit kein Fehler kommt
+        // Logik fuer Pepe vs Coins
+        this.level.coins.forEach((coin, index) => {
+            if (this.character.isColliding(coin)) {
+                this.character.collectCoin(coin);
+                this.level.coins.splice(index, 1); // Entferne die Coins aus dem Level
+                this.coinBar.setPercentage(this.character.coins); // Aktualisiere die CoinBar (5 Coins = 100%)
+            }
+        });
+
+        // Logik fuer Pepe vs Salsa-Flaschen
+        this.level.bottles.forEach((bottle, index) => {
+            if (this.character.isColliding(bottle)) {
+                this.character.collectBottle(bottle);
+                this.level.bottles.splice(index, 1); // Entferne die Flaschen aus dem Level
+                this.bottleBar.setPercentage(this.character.bottles); // Aktualisiere die BottleBar (5 Flaschen = 100%)
+            }
+        });
     }
 
 
@@ -122,7 +137,7 @@ class World {
 
     checkCollisions() {
         this.checkEnemyCollisions(); // Pepe vs Hühner
-        this.checkItemCollisions();  // Pepe vs Salsa-Flaschen
+        this.checkItemCollisions();  // Pepe vs Salsa-Flaschen und Coins
         //this.checkThrowingCollisions(); // Flasche vs Endboss
         //this.checkEndbossCollisions(); // Pepe vs Endboss
     }
