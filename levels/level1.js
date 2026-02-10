@@ -26,10 +26,10 @@ function createClouds() {
 
 function createBottles() {
     let bottles = [];
-    let startX = 200;
-    let distance = 200;
+    let startX = 400;
+    let distance = 400;
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5 ; i++) {
         let x = startX + (i * distance) + (Math.random() * 100);
         bottles.push(new Bottle(x));
     }
@@ -39,10 +39,10 @@ function createBottles() {
 
 function createCoins() {
     let coins = [];
-    let startX = 200;
+    let startX = 400;
     let distance = 200;
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
         let x = startX + (i * distance) + (Math.random() * 100);
         coins.push(new Coins(x));
     }
