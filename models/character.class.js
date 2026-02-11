@@ -127,7 +127,7 @@ class Character extends MovableObject {
         if (this.isDead()) {
             // Dead Animation
             this.playAnimation(this.IMAGES_DEAD);            
-            } else if (this.isHit()) {
+            } else if (this.isHurt()) {
             // Hurt Animation
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isAboveGround()) {
@@ -138,21 +138,26 @@ class Character extends MovableObject {
             // Walk Animation
             this.playAnimation(this.IMAGES_WALKING);
             }
-    }
+        }
     
 
-    collectCoin() {
-        this.coins += 20;
-        if (this.coins > 100) {
-            this.coins = 100;
-        }
-    }
+            collectCoin() {
+                this.coins += 20;
+                if (this.coins > 100) {
+                    this.coins = 100;
+                }
+            }
 
-    collectBottle() {
-        this.bottles += 20;
-        if (this.bottles > 100) {
-            this.bottles = 100;
-        }
-    }
+            collectBottle() {
+                this.bottles += 20;
+                if (this.bottles > 100) {
+                    this.bottles = 100;
+                }
+            }
+
+
+            bounce() {
+                this.speedY = 10;
+            }
    
 }

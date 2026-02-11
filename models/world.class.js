@@ -6,7 +6,7 @@ class World {
     bottleBar = new BottleBar();
     endbossBar = new EndbossBar();
 
-    showEndbossBar = false;
+    showEndbossBar = false; // Flag, um die Endboss-Bar anzuzeigen, wenn der Endboss getroffen wird
     level;
 
     throwableObjects = []; // Liste der fliegenden Flaschen
@@ -44,7 +44,9 @@ class World {
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.coins);
-         this.addObjectsToMap(this.level.bottles);
+        this.addObjectsToMap(this.level.bottles);
+
+        this.addObjectsToMap(this.throwableObjects);
 
         this.ctx.translate(-this.cameraX, 0);
 
@@ -103,15 +105,29 @@ class World {
             this.checkItemCollisions();
             this.checkThrowingCollisions();
             this.checkBottleGroundCollision();
+            this.checkThrowObjects();
         }, 50);
 }
 
     checkEnemyCollisions() {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy)) {
-                this.character.hit();
-                 // Logik für Pepe vs. Hühner / Endboss
-                console.log('Pepe wurde getroffen!' + this.character.energy);
+                // Prüfung: Ist Pepe in der Luft UND fällt er gerade nach unten?
+                if (this.character.isAboveGround() && this.character.speedY < 0) {
+                    enemy.die(); // Das Huhn stirbt (Animation/isDead)
+                    this.character.bounce(); // Pepe bekommt einen kleinen "Bounce"-Sprung nach oben
+                    
+                    // Huhn nach 500ms entfernen
+                    setTimeout(() => {
+                        let index = this.level.enemies.indexOf(enemy);
+                        if (index > -1) this.level.enemies.splice(index, 1);
+                    }, 500);
+                } 
+                // Nur wenn er NICHT draufspringt und NICHT bereits verletzt ist, kriegt er Schaden
+                else if (!this.character.isHurt()) {
+                    this.character.hit();
+                    this.healthBar.setPercentage(this.character.energy);
+                }
             }
         });
     }
@@ -141,7 +157,8 @@ class World {
         this.checkEnemyCollisions(); // Pepe vs Hühner
         this.checkItemCollisions();  // Pepe vs Salsa-Flaschen und Coins
         this.checkThrowingCollisions(); // Flasche vs Endboss
-        //this.checkEndbossCollisions(); // Pepe vs Endboss
+        this.checkThrowObjects(); // Überprüfen, ob die Wurf-Logik ausgelöst werden soll
+        this.checkBottleGroundCollision(); // Überprüfen, ob Flaschen den Boden berühren
     }
 
 
@@ -185,6 +202,33 @@ class World {
         isHit(bottle, enemy) {
             return bottle.isColliding(enemy) && !bottle.isBroken; // Nur Treffer, wenn die Flasche noch nicht kaputt ist
      }
+
+
+        checkThrowObjects() {
+            // 1. Zuerst prüfen: Wird die Taste gedrückt UND sind Flaschen da?
+            if (this.keyboard.S && this.character.bottles > 0) {
+                let currentTime = new Date().getTime();
+                
+                // 2. Dann prüfen: Ist die Sekunde Wartezeit (Cooldown) vorbei?
+                if (currentTime - this.lastThrow > 1000) {
+                    
+                    // 3. ERST JETZT erstellen wir die Flasche wirklich!
+                    let bottle = new ThrowableObject(
+                        this.character.x + 40, 
+                        this.character.y + 100, 
+                        this.character.otherDirection
+                    );
+                    
+                    // 4. In die Liste schieben, damit sie gezeichnet wird
+                    this.throwableObjects.push(bottle);
+
+                    // 5. Inventar abziehen und Zeit speichern
+                    this.character.bottles -= 20;
+                    this.bottleBar.setPercentage(this.character.bottles);
+                    this.lastThrow = currentTime;
+                }
+            }
+        }
 
 
         checkBottleGroundCollision() {

@@ -1,5 +1,5 @@
 class ThrowableObject extends MovableObject {
-    isBrocken = false;
+    isBroken = false;
 
     IMAGES_BOTTLE_ROTATED = [
         'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
@@ -17,7 +17,7 @@ class ThrowableObject extends MovableObject {
         'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
     ];
 
-    constructor(x, y) {
+    constructor(x, y, direction) {
         super()
         this.loadImage(this.IMAGES_BOTTLE_ROTATED[0]);
         this.loadImages(this.IMAGES_BOTTLE_ROTATED);
@@ -26,18 +26,27 @@ class ThrowableObject extends MovableObject {
         this.y = y;
         this.width = 60;
         this.height = 50;
-        this.throw();
+        this.throw(direction);
         this.animate();
     }
 
 
-    throw() {
+    isAboveGround() {
+        return true;
+    }
+
+
+    throw(direction) {
         this.speedY = 30;
         this.applyGravity();
-
+        
         let throwInterval = setInterval(() => {
-            if (!this.isBrocken) {
-                this.x += 10;
+            if (!this.isBroken) {
+                if (direction) {
+                    this.x -= 10;
+                } else {
+                    this.x += 10;
+                }
             } else {
                 clearInterval(throwInterval);
             }
@@ -47,7 +56,7 @@ class ThrowableObject extends MovableObject {
 
     animate() {
         setInterval(() => {
-            if (this.isBrocken) {
+            if (this.isBroken) {
                 this.playAnimation(this.IMAGES_BOTTLE_SPLASH);
             } else {
                 this.playAnimation(this.IMAGES_BOTTLE_ROTATED);
@@ -57,8 +66,7 @@ class ThrowableObject extends MovableObject {
 
 
     break() {
-        this.isBrocken = true;
+        this.isBroken = true;
         this.speedY = 0;
-        this.speed = 0;
     }
 }

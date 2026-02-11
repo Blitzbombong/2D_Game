@@ -5,6 +5,7 @@ class Chicken extends MovableObject {
     y = 352; // Bodenposition
     currentImage = 0;
     speed = 0.15 + Math.random() * 0.5;
+    isDead = false;
 
     offset = {
         top: 0,
@@ -32,26 +33,33 @@ class Chicken extends MovableObject {
         this.animate();
     }
 
-    animate() {
-        setInterval(() => {
+   animate() {
+    // 1. Intervall: Alles was mit POSITION zu tun hat (Bewegung)
+    setInterval(() => {
+        if (!this.isDead) {
             this.moveLeft();
-        } , 1000 / 60);
+        }
+        
+        // Deine Logik: Wenn das Huhn links rausläuft, kommt es rechts wieder rein
+        if (this.x < -this.width) {
+            this.x = 1700 + Math.random() * 500; // Ein bisschen Zufall macht es natürlicher
+        }
+    }, 1000 / 60);
 
-        setInterval(() => {
-            let path = this.IMAGES_WALKING[this.currentImage];
-            this.img = this.imageCache[path];
-            this.currentImage = (this.currentImage + 1) % this.IMAGES_WALKING.length; 
-            if (this.x < -this.width) {
-                this.x = 720;
-            }    
-        }, 500);
-    }
+    // 2. Intervall: Alles was mit AUSSEHEN zu tun hat (Animation)
+    setInterval(() => {
+        if (this.isDead) {
+            this.loadImage(this.IMAGES_DEAD[0]); // Sofort das flache Bild zeigen
+        } else {
+            this.playAnimation(this.IMAGES_WALKING); // Nutzt die Logik aus MovableObject
+        }
+    }, 150); // 150ms sieht deutlich flüssiger aus!
+}
 
 
     die() {
+        this.isDead = true;
         this.speed = 0;
-        let path = this.IMAGES_DEAD[0];
-        this.img = this.imageCache[path];
     }
 
 

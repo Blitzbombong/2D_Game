@@ -97,7 +97,7 @@ class MovableObject extends DrawableObject {
     }
 
 
-    isHit() {
+    isHurt() {
         let timePassed = new Date().getTime() - this.lastHit    // Zeitdifferenz in Millisekunden
         timePassed = timePassed / 1000;                         // Differenz in Sekunden
         return timePassed < 1;                                  // Pepe gilt für 1 Sekunde als "verletzt"
