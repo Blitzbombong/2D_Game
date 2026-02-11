@@ -7,7 +7,7 @@ class World {
     endbossBar = new EndbossBar();
 
     showEndbossBar = false;
-    level = level1;
+    level;
 
     throwableObjects = []; // Liste der fliegenden Flaschen
     lastThrow = 0;         // Zeitstempel des letzten Wurfs
@@ -21,6 +21,7 @@ class World {
         this.canvas = canvas;
         this.ctx = canvas.getContext("2d");
         this.keyboard = keyboard;
+        this.level = level1;
         this.setWorld();
         this.draw();
         this.run();
@@ -101,6 +102,7 @@ class World {
             this.checkEnemyCollisions();
             this.checkItemCollisions();
             this.checkThrowingCollisions();
+            this.checkBottleGroundCollision();
         }, 50);
 }
 
@@ -181,8 +183,18 @@ class World {
 
 
         isHit(bottle, enemy) {
-        return bottle.isColliding(enemy) && !bottle.isBrocken; // Nur Treffer, wenn die Flasche noch nicht kaputt ist
+            return bottle.isColliding(enemy) && !bottle.isBroken; // Nur Treffer, wenn die Flasche noch nicht kaputt ist
      }
+
+
+        checkBottleGroundCollision() {
+            this.throwableObjects.forEach((bottle) => {
+                // Wenn die Flasche den Boden (y > 350) erreicht und noch nicht kaputt ist
+                if (bottle.y > 350 && !bottle.isBroken) {
+                    bottle.break(); // Gleiche Funktion wie beim Treffer am Huhn!
+                }
+            });
+    }
 
 
 }

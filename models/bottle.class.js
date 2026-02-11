@@ -21,8 +21,6 @@ class Bottle extends MovableObject {
         super();
         this.loadImage(this.IMAGES_BOTTLE[0]);
         this.loadImages(this.IMAGES_BOTTLE);
-        this.loadImages(this.IMAGES_BOTTLE_ROTATED);
-        this.loadImages(this.IMAGES_BOTTLE_SPLASH);
         this.x = x;
         this.animate();
         

@@ -48,4 +48,11 @@ class Chicken extends MovableObject {
     }
 
 
+    die() {
+        this.speed = 0;
+        let path = this.IMAGES_DEAD[0];
+        this.img = this.imageCache[path];
+    }
+
+
 }
