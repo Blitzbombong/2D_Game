@@ -9,6 +9,9 @@ class World {
     showEndbossBar = false;
     level = level1;
 
+    throwableObjects = []; // Liste der fliegenden Flaschen
+    lastThrow = 0;         // Zeitstempel des letzten Wurfs
+
     canvas;
     ctx;
     keyboard;
@@ -97,7 +100,7 @@ class World {
         setInterval(() => {
             this.checkEnemyCollisions();
             this.checkItemCollisions();
-            // this.checkThrowingCollisions(); // Erst aktivieren, wenn du Flaschen werfen kannst!
+            this.checkThrowingCollisions();
         }, 50);
 }
 
@@ -132,13 +135,54 @@ class World {
     }
 
 
-    
-
-
     checkCollisions() {
         this.checkEnemyCollisions(); // Pepe vs Hühner
         this.checkItemCollisions();  // Pepe vs Salsa-Flaschen und Coins
-        //this.checkThrowingCollisions(); // Flasche vs Endboss
+        this.checkThrowingCollisions(); // Flasche vs Endboss
         //this.checkEndbossCollisions(); // Pepe vs Endboss
     }
+
+
+       checkThrowingCollisions() {
+        this.throwableObjects.forEach((bottle) => {
+            this.level.enemies.forEach((enemy) => {
+                if (this.isHit(bottle, enemy)) {
+                    // 1. Die Flasche zerbricht immer
+                    bottle.break(); 
+
+                    // 2. Logik für normale Hühner
+                    if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
+                        enemy.die(); 
+                    }
+
+                    // 3. Logik für den Endboss (dein neuer Teil!)
+                    if (enemy instanceof Endboss) {
+                        enemy.hit();
+                        this.showEndbossBar = true; // Bar einblenden
+                        this.endbossBar.setPercentage(enemy.energy);
+                    }
+                }
+            });
+        });
+
+            // 4. AUFRÄUMEN (Das gehört ans Ende der Funktion, außerhalb der Schleifen!)
+            this.cleanUpBottles();
+    }
+
+
+
+// Hilfsfunktion zum Aufräumen der Flaschen, damit kaputte Flaschen nicht ewig in der Welt bleiben
+        cleanUpBottles() {
+            this.throwableObjects = this.throwableObjects.filter(b => {
+                return !b.isBroken || b.currentImage < b.IMAGES_BOTTLE_SPLASH.length;
+            });
+    }
+    
+
+
+        isHit(bottle, enemy) {
+        return bottle.isColliding(enemy) && !bottle.isBrocken; // Nur Treffer, wenn die Flasche noch nicht kaputt ist
+     }
+
+
 }
