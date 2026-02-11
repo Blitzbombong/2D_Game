@@ -11,6 +11,7 @@ class World {
 
     throwableObjects = []; // Liste der fliegenden Flaschen
     lastThrow = 0;         // Zeitstempel des letzten Wurfs
+    bossFightStarted = false; // Flag, um den Start des Bosskampfs zu verfolgen
 
     canvas;
     ctx;
@@ -37,19 +38,36 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+        // --- START Welt-Raum (Alles, was sich mit der Kamera bewegt) ---
         this.ctx.translate(this.cameraX, 0);
 
+        // 1. Hintergrund (Ganz hinten)
         this.addObjectsToMap(this.level.backgroundObjects);
-        this.addToMap(this.character);
-        this.addObjectsToMap(this.level.enemies);
+        
+        // 2. Wolken (Hinter den Gegnern)
         this.addObjectsToMap(this.level.clouds);
+
+        // 3. Sammelobjekte (Coins & Bottles)
         this.addObjectsToMap(this.level.coins);
         this.addObjectsToMap(this.level.bottles);
 
+        // 4. Gegner (Hühner ODER Boss)
+        if (!this.bossFightStarted) {
+            this.addObjectsToMap(this.level.enemies.filter(e => !(e instanceof Endboss)));
+        } else {
+            this.addObjectsToMap(this.level.enemies.filter(e => e instanceof Endboss));
+        }
+
+        // 5. Pepe (Sollte meistens vor den Gegnern zu sehen sein)
+        this.addToMap(this.character);
+
+        // 6. Fliegende Flaschen (Ganz vorne im Raum)
         this.addObjectsToMap(this.throwableObjects);
 
         this.ctx.translate(-this.cameraX, 0);
+        // --- ENDE Welt-Raum ---
 
+        // 7. HUD / Statusbars (Fixiert am Bildschirm, bewegen sich NICHT mit)
         this.addToMap(this.healthBar);
         this.addToMap(this.coinBar);
         this.addToMap(this.bottleBar);
@@ -58,9 +76,9 @@ class World {
             this.addToMap(this.endbossBar);
         }
 
-        // drow() wird immer wieder aufgerufen
         requestAnimationFrame(() => this.draw());
     }
+
 
     addObjectsToMap(objects) {
         objects.forEach((object) => {
@@ -101,6 +119,7 @@ class World {
 
     run() {
         setInterval(() => {
+            this.checkLevelProgress();
             this.checkEnemyCollisions();
             this.checkItemCollisions();
             this.checkThrowingCollisions();
@@ -240,5 +259,26 @@ class World {
             });
     }
 
+
+    checkLevelProgress() {
+    // Wenn Pepe z.B. die 2500 Pixel Marke knackt
+        if (this.character.x > 1900 && !this.bossFightStarted) {
+            this.bossFightStarted = true;
+            this.startBossFight();
+        }
+    }
+
+
+    startBossFight() {
+        // 1. Wir löschen alle normalen Hühner aus dem Level
+        this.level.enemies = this.level.enemies.filter(e => e instanceof Endboss);
+
+        // 2. Jetzt den Boss aktivieren
+        let boss = this.level.enemies.find(e => e instanceof Endboss);
+        if (boss) {
+            boss.hadFirstContact = true;
+            this.showEndbossBar = true;
+        }
+    }
 
 }

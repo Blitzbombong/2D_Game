@@ -4,6 +4,7 @@ class Endboss extends MovableObject {
     y = 95
     x = 2200
     speed = 0.15;
+    hadFirstContact = false; // Flag, um den ersten Kontakt zu verfolgen
 
     offset = {
         top: 60,
@@ -65,9 +66,13 @@ class Endboss extends MovableObject {
     }
 
     animate() {
-        this.moveLeft();
         setInterval(() => {
-           this.playAnimation(this.IMAGES_WALKING);
-    }, 500);
+            if (this.hadFirstContact) {
+                this.moveLeft();
+                this.playAnimation(this.IMAGES_ATTACK);
+            } else {
+                this.playAnimation(this.IMAGES_ALERT);
+            }   
+        }, 200);
     }
 }
