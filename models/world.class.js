@@ -164,12 +164,19 @@ class World {
 
         // Logik fuer Pepe vs Salsa-Flaschen
         this.level.bottles.forEach((bottle, index) => {
-            if (this.character.isColliding(bottle)) {
+        if (this.character.isColliding(bottle)) {
+            
+            // NEU: Nur sammeln, wenn noch Platz im Rucksack ist (weniger als 100%)
+            if (this.character.bottles < 100) {
                 this.character.collectBottle(bottle);
-                this.level.bottles.splice(index, 1); // Entferne die Flaschen aus dem Level
-                this.bottleBar.setPercentage(this.character.bottles); // Aktualisiere die BottleBar (5 Flaschen = 100%)
+                this.level.bottles.splice(index, 1); // Flasche aus der Welt entfernen
+                this.bottleBar.setPercentage(this.character.bottles);
+            } else {
+                // Optional: Hier könntest du ein Geräusch abspielen, 
+                // das signalisiert: "Ich bin voll!"
             }
-        });
+        }
+    });
     }
 
 

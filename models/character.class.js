@@ -4,6 +4,7 @@ class Character extends MovableObject {
     y = 195; // Bodenposition
     world;
     speed = 8; 
+    hadFirstContact = false;
 
     offset = {
         top: 85,

@@ -3,7 +3,7 @@ class Endboss extends MovableObject {
     width = 400
     y = 95
     x = 2200
-    speed = 0.3;
+    speed = 0.15;
     hadFirstContact = false; // Flag, um den ersten Kontakt zu verfolgen
 
     offset = {
@@ -63,16 +63,36 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
         this.animate();
+        this.playAttackOrWalk();
     }
 
     animate() {
-        setInterval(() => {
-            if (this.hadFirstContact) {
-                this.moveLeft();
-                this.playAnimation(this.IMAGES_ATTACK);
+            setInterval(() => {
+            if (this.isDead()) {
+                // 1. Höchste Priorität: Tot
+                this.playAnimation(this.IMAGES_DEAD);
+            } else if (this.isHurt()) {
+                // 2. Priorität: Verletzt (wenn die Flasche trifft)
+                this.playAnimation(this.IMAGES_HURT);
+            } else if (this.hadFirstContact) {
+                // 3. Priorität: Kampf läuft
+                this.playAttackOrWalk();
             } else {
+                // 4. Standard: Warten/Aufmerksam
                 this.playAnimation(this.IMAGES_ALERT);
-            }   
+            }
         }, 200);
+
+        setInterval(() => {
+            if (this.hadFirstContact && !this.isDead() && !this.isHurt()) {
+                this.moveLeft();
+            }
+        }, 1000 / 60);
+    }
+
+    playAttackOrWalk() {
+        // Hier könnte man eine Logik einbauen, um zwischen Angriff und Gehen zu wechseln, z.B. basierend auf der Entfernung zum Spieler
+        // Für den Anfang spielen wir einfach die Angriffsanimation
+        this.playAnimation(this.IMAGES_ATTACK);
     }
 }

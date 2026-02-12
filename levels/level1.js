@@ -1,10 +1,10 @@
 
 function createEnemies() {
     let enemies = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 5; i++) {
         enemies.push(new Chicken());
     }
-    for (let i = 0; i < 6;  i++) {
+    for (let i = 0; i < 5;  i++) {
         enemies.push(new SmallChicken());
     }
     enemies.push(new Endboss());
@@ -27,9 +27,9 @@ function createClouds() {
 function createBottles() {
     let bottles = [];
     let startX = 400;
-    let distance = 400;
+    let distance = 200;
 
-    for (let i = 0; i < 5 ; i++) {
+    for (let i = 0; i < 8 ; i++) {
         let x = startX + (i * distance) + (Math.random() * 100);
         bottles.push(new Bottle(x));
     }
