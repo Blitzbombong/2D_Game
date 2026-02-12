@@ -3,12 +3,12 @@ class Endboss extends MovableObject {
     width = 400
     y = 95
     x = 2200
-    speed = 0.15;
+    speed = 0.3;
     hadFirstContact = false; // Flag, um den ersten Kontakt zu verfolgen
 
     offset = {
         top: 60,
-        left: 25,
+        left: 70, 
         right: 15,
         bottom: 20
     }

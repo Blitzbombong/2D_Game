@@ -130,19 +130,20 @@ class World {
 
     checkEnemyCollisions() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy)) {
-                // Prüfung: Ist Pepe in der Luft UND fällt er gerade nach unten?
+            // Wir prüfen zuerst: Ist das Huhn überhaupt noch lebendig?
+            if (!enemy.isDead && this.character.isColliding(enemy)) {
+                
+                // Pepe springt drauf
                 if (this.character.isAboveGround() && this.character.speedY < 0) {
-                    enemy.die(); // Das Huhn stirbt (Animation/isDead)
-                    this.character.bounce(); // Pepe bekommt einen kleinen "Bounce"-Sprung nach oben
+                    enemy.die(); // Setzt enemy.isDead = true
+                    this.character.bounce();
                     
-                    // Huhn nach 500ms entfernen
                     setTimeout(() => {
                         let index = this.level.enemies.indexOf(enemy);
                         if (index > -1) this.level.enemies.splice(index, 1);
                     }, 500);
                 } 
-                // Nur wenn er NICHT draufspringt und NICHT bereits verletzt ist, kriegt er Schaden
+                // Pepe wird seitlich getroffen
                 else if (!this.character.isHurt()) {
                     this.character.hit();
                     this.healthBar.setPercentage(this.character.energy);
