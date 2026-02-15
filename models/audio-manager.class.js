@@ -18,7 +18,7 @@ class AudioManager {
     isMuted = false;
 
     constructor() {
-        this.game_sound.volume = 0.2;
+        this.game_sound.volume = 0.05;
         this.game_sound.loop = true;
     }
 
