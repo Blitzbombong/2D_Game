@@ -8,6 +8,7 @@ class World {
 
     showEndbossBar = false; // Flag, um die Endboss-Bar anzuzeigen, wenn der Endboss getroffen wird
     level;
+    audioManager;
 
     throwableObjects = []; // Liste der fliegenden Flaschen
     lastThrow = 0;         // Zeitstempel des letzten Wurfs
@@ -23,6 +24,7 @@ class World {
         this.ctx = canvas.getContext("2d");
         this.keyboard = keyboard;
         this.level = level1;
+        this.audioManager = audioManager;
         this.setWorld();
         this.draw();
         this.run();
