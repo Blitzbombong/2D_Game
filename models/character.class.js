@@ -93,14 +93,14 @@ class Character extends MovableObject {
 
 
     animate() {
-        setInterval(() => {
+        setStoppableInterval(() => {
             // Wir führen moveCharacter nur aus, wenn 'this.world' existiert
             if (this.world && this.world.keyboard) {
                 this.moveCharacter();
             }
         }, 1000 / 60);
 
-        setInterval(() => {
+        setStoppableInterval(() => {
             // Wir führen die Animationen nur aus, wenn 'this.world' existiert
             if (this.world) {
                 this.playCharacterAnimations();

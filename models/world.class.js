@@ -123,7 +123,7 @@ class World {
 
 
     run() {
-        setInterval(() => {
+        setStoppableInterval(() => {
             this.checkLevelProgress();
             this.checkEnemyCollisions();
             this.checkItemCollisions();

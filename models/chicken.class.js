@@ -35,7 +35,7 @@ class Chicken extends MovableObject {
 
    animate() {
     // 1. Intervall: Alles was mit POSITION zu tun hat (Bewegung)
-    setInterval(() => {
+    setStoppableInterval(() => {
         if (!this.isDead) {
             this.moveLeft();
             this.playRandomChickenSound();
@@ -48,7 +48,7 @@ class Chicken extends MovableObject {
     }, 1000 / 60);
 
     // 2. Intervall: Alles was mit AUSSEHEN zu tun hat (Animation)
-    setInterval(() => {
+    setStoppableInterval(() => {
         if (this.isDead) {
             this.loadImage(this.IMAGES_DEAD[0]); // Sofort das flache Bild zeigen
         } else {

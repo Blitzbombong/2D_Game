@@ -67,7 +67,7 @@ class Endboss extends MovableObject {
     }
 
     animate() {
-            setInterval(() => {
+            setStoppableInterval(() => {
             if (this.isDead()) {
                 // 1. Höchste Priorität: Tot
                 this.playAnimation(this.IMAGES_DEAD);
@@ -83,7 +83,7 @@ class Endboss extends MovableObject {
             }
         }, 200);
 
-        setInterval(() => {
+        setStoppableInterval(() => {
             if (this.hadFirstContact && !this.isDead() && !this.isHurt()) {
                 this.moveLeft();
             }

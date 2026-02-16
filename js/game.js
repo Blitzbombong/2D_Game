@@ -2,6 +2,7 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let audioManager = new AudioManager();
+let intervalIds = []; // Array, um alle Interval-IDs zu speichern
 
 function init() {
     canvas = document.getElementById("myCanvas");
@@ -35,4 +36,18 @@ function toggleMute() {
     audioManager.toggleMute();
     let btn = document.getElementById('mute-button');
     btn.innerHTML = audioManager.isMuted ? '🔇' : '🔊';
+}
+
+
+function setStoppableInterval(fn, time) {
+    let id = setInterval(fn, time);
+    intervalIds.push(id);
+    return id;
+}
+
+
+function stopGame() {
+    // Alle Intervalle stoppen
+    intervalIds.forEach(id => clearInterval(id));
+    intervalIds = []; // Array leeren
 }

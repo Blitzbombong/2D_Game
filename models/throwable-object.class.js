@@ -47,7 +47,7 @@ class ThrowableObject extends MovableObject {
         this.speedY = 30;
         this.applyGravity();
         
-        let throwInterval = setInterval(() => {
+        let throwInterval = setStoppableInterval(() => {
             if (!this.isBroken) {
                 if (direction) {
                     this.x -= 10;
@@ -62,7 +62,7 @@ class ThrowableObject extends MovableObject {
 
 
     animate() {
-        setInterval(() => {
+        setStoppableInterval(() => {
             if (this.isBroken) {
                 this.playAnimation(this.IMAGES_BOTTLE_SPLASH);
             } else {
