@@ -18,8 +18,29 @@ class AudioManager {
     isMuted = false;
 
     constructor() {
-        this.game_sound.volume = 0.05;
+        // Hintergrundmusik leiser stellen und in Endlosschleife abspielen
+        this.game_sound.volume = 0.1;
         this.game_sound.loop = true;
+        this.endboss_fight.volume = 0.5;
+        this.endboss_fight.loop = true;
+
+        // Cahractrer-Sounds etwas lauter
+        this.character_walk.volume = 0.5;
+        this.character_jump.volume = 0.1;
+        this.character_hurt.volume = 0.1;
+        this.character_death.volume = 0.1;
+
+        // Chicken-Sounds etwas lauter
+        this.chicken_sound.volume = 0.1;
+        this.chicken_plop.volume = 0.3;
+        this.endboss_chicken.volume = 0.3;
+        this.endboss_death.volume = 0.3;
+
+        // Item-Sounds etwas lauter
+        this.collect_coin.volume = 0.1;
+        this.collect_bottle.volume = 0.1;
+        this.bottle_flies.volume = 0.1;
+        this.glass_splash.volume = 0.1;
     }
 
 
@@ -28,6 +49,20 @@ class AudioManager {
             this[soundKey].cloneNode(true).play(); 
             // cloneNode(true) sorgt dafür, dass ein Sound mehrfach 
             // gleichzeitig abspielen kann
+        }
+    }
+
+
+    playSingle(soundKey) {
+        if (!this.isMuted && this[soundKey]) {
+            this[soundKey].play();
+        }
+    }
+
+
+    pause(soundKey) {
+        if (this[soundKey]) {
+            this[soundKey].pause();
         }
     }
 

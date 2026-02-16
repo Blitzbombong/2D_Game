@@ -110,15 +110,20 @@ class Character extends MovableObject {
 
 
     moveCharacter() {
+        this.world.audioManager.pause('character_walk');
+
         if (this.world.keyboard.SPACE && !this.isAboveGround()) {
                 this.jump();
+                this.world.audioManager.play('character_jump');
             }
             if (this.world.keyboard.RIGHT  && this.x < this.world.level.Level_end_x - this.width) {
                 this.moveRight();
                 this.otherDirection = false;
+                this.world.audioManager.playSingle('character_walk');
             } else if (this.world.keyboard.LEFT && this.x > 0) {
                 this.moveLeft();
                 this.otherDirection = true;
+                this.world.audioManager.playSingle('character_walk');
             }
             this.world.cameraX = -this.x + 100;
     }

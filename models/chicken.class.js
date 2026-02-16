@@ -38,6 +38,7 @@ class Chicken extends MovableObject {
     setInterval(() => {
         if (!this.isDead) {
             this.moveLeft();
+            this.playRandomChickenSound();
         }
         
         // Deine Logik: Wenn das Huhn links rausläuft, kommt es rechts wieder rein
@@ -60,6 +61,14 @@ class Chicken extends MovableObject {
     die() {
         this.isDead = true;
         this.speed = 0;
+    }
+
+
+    playRandomChickenSound() {
+        let logicWuerfel = Math.random() * 500;
+        if (logicWuerfel < 1 && this.world && !this.world.bossFightStarted) { // Sehr selten, damit es nicht nervt
+            this.world.audioManager.play('chicken_sound');
+        }
     }
 
 

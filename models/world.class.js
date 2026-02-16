@@ -33,6 +33,9 @@ class World {
 
     setWorld() {
         this.character.world = this;
+        this.level.enemies.forEach((enemy) => {
+            enemy.world = this;
+        });
     }
 
 
@@ -138,6 +141,7 @@ class World {
                 // Pepe springt drauf
                 if (this.character.isAboveGround() && this.character.speedY < 0) {
                     enemy.die(); // Setzt enemy.isDead = true
+                    this.audioManager.play('chicken_plop');
                     this.character.bounce();
                     
                     setTimeout(() => {
@@ -148,6 +152,7 @@ class World {
                 // Pepe wird seitlich getroffen
                 else if (!this.character.isHurt()) {
                     this.character.hit();
+                    this.audioManager.play('character_hurt');
                     this.healthBar.setPercentage(this.character.energy);
                 }
             }
@@ -158,6 +163,7 @@ class World {
         // Logik fuer Pepe vs Coins
         this.level.coins.forEach((coin, index) => {
             if (this.character.isColliding(coin)) {
+                this.audioManager.play('collect_coin');
                 this.character.collectCoin(coin);
                 this.level.coins.splice(index, 1); // Entferne die Coins aus dem Level
                 this.coinBar.setPercentage(this.character.coins); // Aktualisiere die CoinBar (5 Coins = 100%)
@@ -168,9 +174,11 @@ class World {
         this.level.bottles.forEach((bottle, index) => {
         if (this.character.isColliding(bottle)) {
             
+            
             // NEU: Nur sammeln, wenn noch Platz im Rucksack ist (weniger als 100%)
             if (this.character.bottles < 100) {
                 this.character.collectBottle(bottle);
+                this.audioManager.play('collect_bottle');
                 this.level.bottles.splice(index, 1); // Flasche aus der Welt entfernen
                 this.bottleBar.setPercentage(this.character.bottles);
             } else {
@@ -201,11 +209,13 @@ class World {
                     // 2. Logik für normale Hühner
                     if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
                         enemy.die(); 
+                        this.audioManager.play('glass_splash');
                     }
 
                     // 3. Logik für den Endboss (dein neuer Teil!)
                     if (enemy instanceof Endboss) {
                         enemy.hit();
+                        this.audioManager.play('glass_splash');
                         this.showEndbossBar = true; // Bar einblenden
                         this.endbossBar.setPercentage(enemy.energy);
                     }
@@ -265,6 +275,7 @@ class World {
                 // Wenn die Flasche den Boden (y > 350) erreicht und noch nicht kaputt ist
                 if (bottle.y > 350 && !bottle.isBroken) {
                     bottle.break(); // Gleiche Funktion wie beim Treffer am Huhn!
+                    this.audioManager.play('glass_splash');
                 }
             });
     }
@@ -280,6 +291,12 @@ class World {
 
 
     startBossFight() {
+        this.audioManager.pause('game_sound'); // Hintergrundmusik stoppen 
+
+        setTimeout(() => {
+            this.audioManager.play('endboss_fight'); // Bossmusik starten
+        }, 1000); // Kleiner Delay für dramatischen Effekt
+
         // 1. Wir löschen alle normalen Hühner aus dem Level
         this.level.enemies = this.level.enemies.filter(e => e instanceof Endboss);
 
