@@ -287,7 +287,7 @@ class World {
 
     checkLevelProgress() {
     // Wenn Pepe z.B. die 2500 Pixel Marke knackt
-        if (this.character.x > 1900 && !this.bossFightStarted) {
+        if (!this.gameEnded && this.character.x > 1900 && !this.bossFightStarted) {
             this.bossFightStarted = true;
             this.startBossFight();
         }
@@ -298,8 +298,10 @@ class World {
         this.audioManager.pause('game_sound'); // Hintergrundmusik stoppen 
 
         setTimeout(() => {
-            this.audioManager.play('endboss_fight'); // Bossmusik starten
-        }, 1000); // Kleiner Delay für dramatischen Effekt
+            if (!this.gameEnded) {
+            this.audioManager.playSingle('endboss_fight'); 
+            }
+        }, 1000);
 
         // 1. Wir löschen alle normalen Hühner aus dem Level
         this.level.enemies = this.level.enemies.filter(e => e instanceof Endboss);

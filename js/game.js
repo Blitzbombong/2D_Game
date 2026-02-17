@@ -43,8 +43,7 @@ function toggleMute() {
 function showGameOver() {
     stopGame();
 
-    audioManager.pause('game_sound'); // Hintergrundmusik stoppen, damit der You-Win-Sound besser zur Geltung kommt
-    audioManager.pause('endboss_fight'); 
+    audioManager.stopAllSounds();
     document.getElementById('game-over-screen').classList.remove('d-none');
     audioManager.play('game_over');
 }
@@ -53,8 +52,7 @@ function showGameOver() {
 function showYouWin() {
     stopGame();
 
-    audioManager.pause('game_sound'); // Hintergrundmusik stoppen, damit der You-Win-Sound besser zur Geltung kommt
-    audioManager.pause('endboss_fight'); 
+    audioManager.stopAllSounds();
     document.getElementById('you-win-screen').classList.remove('d-none');
     audioManager.play('you_win');
 }

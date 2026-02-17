@@ -5,7 +5,6 @@ class AudioManager {
     character_jump = new Audio('audio/character-jump.mp3');
     character_hurt = new Audio('audio/character-hurt.mp3');
     character_death = new Audio('audio/character-death.mp3');
-    chicken_sound = new Audio('audio/chicken-sound.mp3');
     chicken_plop = new Audio('audio/chicken-plop.mp3');
     endboss_chicken = new Audio('audio/endboss-chicken.mp3');
     endboss_death = new Audio('audio/endboss-death.mp3');
@@ -18,10 +17,11 @@ class AudioManager {
     you_win = new Audio('audio/you-win.mp3');
 
     isMuted = false;
+    allSoundsDisabled = false;
 
     constructor() {
         // Hintergrundmusik leiser stellen und in Endlosschleife abspielen
-        this.game_sound.volume = 0.1;
+        this.game_sound.volume = 0.3;
         this.game_sound.loop = true;
         this.endboss_fight.volume = 0.5;
         this.endboss_fight.loop = true;
@@ -33,7 +33,6 @@ class AudioManager {
         this.character_death.volume = 0.1;
 
         // Chicken-Sounds etwas lauter
-        this.chicken_sound.volume = 0.1;
         this.chicken_plop.volume = 0.3;
         this.endboss_chicken.volume = 0.3;
         this.endboss_death.volume = 0.3;
@@ -51,22 +50,19 @@ class AudioManager {
 
 
     play(soundKey) {
-    let sound = this[soundKey]; // Wir holen uns das Audio-Objekt
+    let sound = this[soundKey];
+    if (!sound) return;
 
-        if (!sound) {
-            // Falls der Name falsch geschrieben wurde, warnen wir uns selbst
-            console.warn(`Sound "${soundKey}" wurde im AudioManager nicht gefunden! Prüf mal die Schreibweise.`);
-            return; // Funktion hier abbrechen, damit es keinen Crash gibt
-        }
-
-        if (!this.isMuted) {
-            sound.cloneNode(true).play();
-        }
+    // HIER fehlte die Prüfung: !this.allSoundsDisabled
+    if (!this.isMuted && !this.allSoundsDisabled) {
+        sound.cloneNode(true).play();
     }
+}
 
 
     playSingle(soundKey) {
-        if (!this.isMuted && this[soundKey]) {
+        // Nur abspielen, wenn nicht stumm UND Sounds nicht generell deaktiviert sind
+        if (!this.isMuted && !this.allSoundsDisabled && this[soundKey]) {
             this[soundKey].play();
         }
     }
@@ -81,10 +77,11 @@ class AudioManager {
 
 
     playMusic() {
-        if (!this.isMuted) {
-            this.game_sound.play();
-        }
+    // HIER fehlte sie auch!
+    if (!this.isMuted && !this.allSoundsDisabled) {
+        this.game_sound.play();
     }
+}
 
 
     stopMusic() {
@@ -100,4 +97,18 @@ class AudioManager {
             this.playMusic();
         }
     }
+
+
+    stopAllSounds() {
+        this.allSoundsDisabled = true;
+    // Wir gehen alle Schlüssel (Eigenschaften) der Klasse durch
+    Object.keys(this).forEach(key => {
+        let sound = this[key];
+        // Wir prüfen: Ist diese Eigenschaft ein Audio-Objekt?
+        if (sound instanceof Audio) {
+            sound.pause();
+            sound.currentTime = 0;
+        }
+    });
+}
 }
