@@ -13,6 +13,7 @@ function init() {
 function startGame() {
     document.getElementById('start-screen').classList.add('d-none');
 
+    initLevel1();
     canvas = document.getElementById("myCanvas");
     world = new World(canvas, keyboard, audioManager);
 
@@ -36,4 +37,31 @@ function toggleMute() {
     audioManager.toggleMute();
     let btn = document.getElementById('mute-button');
     btn.innerHTML = audioManager.isMuted ? '🔇' : '🔊';
+}
+
+
+function showGameOver() {
+    stopGame();
+
+    audioManager.pause('game_sound'); // Hintergrundmusik stoppen, damit der You-Win-Sound besser zur Geltung kommt
+    audioManager.pause('endboss_fight'); 
+    document.getElementById('game-over-screen').classList.remove('d-none');
+    audioManager.play('game_over');
+}
+
+
+function showYouWin() {
+    stopGame();
+
+    audioManager.pause('game_sound'); // Hintergrundmusik stoppen, damit der You-Win-Sound besser zur Geltung kommt
+    audioManager.pause('endboss_fight'); 
+    document.getElementById('you-win-screen').classList.remove('d-none');
+    audioManager.play('you_win');
+}
+
+
+function restartGame() {
+    document.getElementById('game-over-screen').classList.add('d-none');
+    document.getElementById('you-win-screen').classList.add('d-none');
+    startGame();
 }

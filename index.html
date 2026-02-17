@@ -44,6 +44,17 @@
                     <button onclick="toggleFullscreen()" id="fullscreen-button">⛶</button>
                 </div>
             </div>
+            <div id="game-container">
+                <div id="game-over-screen" class="overlay d-none">
+                    <img src="img/You won, you lost/Game over A.png" alt="Game Over">
+                    <button onclick="restartGame()" class="restart-button">TRY AGAIN</button>
+                </div>
+
+                <div id="you-win-screen" class="overlay d-none">
+                    <img src="img/You won, you lost/You Win A.png" alt="You Win">
+                    <button onclick="restartGame()" class="restart-button">PLAY AGAIN</button>
+                </div>
+            </div>
 
             <canvas id="myCanvas" width="720" height="480"></canvas>
         </div>

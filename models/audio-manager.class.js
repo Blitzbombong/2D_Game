@@ -14,6 +14,8 @@ class AudioManager {
     collect_bottle = new Audio('audio/collect-bottle.mp3');
     bottle_flies = new Audio('audio/bottle-flies.mp3');
     glass_splash = new Audio('audio/glass-splash.mp3');
+    game_over = new Audio('audio/game-over.mp3');
+    you_win = new Audio('audio/you-win.mp3');
 
     isMuted = false;
 
@@ -41,14 +43,24 @@ class AudioManager {
         this.collect_bottle.volume = 0.1;
         this.bottle_flies.volume = 0.1;
         this.glass_splash.volume = 0.1;
+
+        // win/lose-Sounds etwas lauter
+        this.game_over.volume = 0.3;
+        this.you_win.volume = 0.3;
     }
 
 
     play(soundKey) {
+    let sound = this[soundKey]; // Wir holen uns das Audio-Objekt
+
+        if (!sound) {
+            // Falls der Name falsch geschrieben wurde, warnen wir uns selbst
+            console.warn(`Sound "${soundKey}" wurde im AudioManager nicht gefunden! Prüf mal die Schreibweise.`);
+            return; // Funktion hier abbrechen, damit es keinen Crash gibt
+        }
+
         if (!this.isMuted) {
-            this[soundKey].cloneNode(true).play(); 
-            // cloneNode(true) sorgt dafür, dass ein Sound mehrfach 
-            // gleichzeitig abspielen kann
+            sound.cloneNode(true).play();
         }
     }
 
@@ -61,10 +73,11 @@ class AudioManager {
 
 
     pause(soundKey) {
-        if (this[soundKey]) {
-            this[soundKey].pause();
-        }
+    if (this[soundKey]) {
+        this[soundKey].pause();
+        this[soundKey].currentTime = 0; // Setzt den Sound zurück auf den Anfang (0 Sekunden)
     }
+}
 
 
     playMusic() {

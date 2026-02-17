@@ -13,6 +13,7 @@ class World {
     throwableObjects = []; // Liste der fliegenden Flaschen
     lastThrow = 0;         // Zeitstempel des letzten Wurfs
     bossFightStarted = false; // Flag, um den Start des Bosskampfs zu verfolgen
+    gameEnded = false; // Flag, um zu verhindern, dass das Spiel mehrfach endet
 
     canvas;
     ctx;
@@ -25,6 +26,7 @@ class World {
         this.keyboard = keyboard;
         this.level = level1;
         this.audioManager = audioManager;
+        this.endboss = this.level.enemies.find(e => e instanceof Endboss);
         this.setWorld();
         this.draw();
         this.run();
@@ -130,6 +132,7 @@ class World {
             this.checkThrowingCollisions();
             this.checkBottleGroundCollision();
             this.checkThrowObjects();
+            this.checkGameState();
         }, 50);
 }
 
@@ -247,6 +250,7 @@ class World {
             // 1. Zuerst prüfen: Wird die Taste gedrückt UND sind Flaschen da?
             if (this.keyboard.S && this.character.bottles > 0) {
                 let currentTime = new Date().getTime();
+                this.audioManager.play('bottle_flies'); // Flaschen-Wurf-Sound abspielen
                 
                 // 2. Dann prüfen: Ist die Sekunde Wartezeit (Cooldown) vorbei?
                 if (currentTime - this.lastThrow > 1000) {
@@ -305,6 +309,21 @@ class World {
         if (boss) {
             boss.hadFirstContact = true;
             this.showEndbossBar = true;
+        }
+    }
+
+
+    checkGameState() {
+        if (this.gameEnded) return; // Verhindert mehrfaches Auslösen von Game Over oder You Win
+
+        if (this.character.energy <= 0) {
+            this.gameEnded = true;
+            showGameOver();
+        } else if (this.endboss && this.endboss.energy <= 0) {
+            this.gameEnded = true;
+            setTimeout(() => {
+                showYouWin();
+            }, 1000); // Kleiner Delay für dramatischen Effekt
         }
     }
 
