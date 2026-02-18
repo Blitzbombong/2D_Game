@@ -51,7 +51,6 @@ function showGameOver() {
 
 function showYouWin() {
     stopGame();
-
     audioManager.stopAllSounds();
     document.getElementById('you-win-screen').classList.remove('d-none');
     audioManager.play('you_win');
@@ -59,7 +58,19 @@ function showYouWin() {
 
 
 function restartGame() {
+    audioManager.allSoundsDisabled = false;
     document.getElementById('game-over-screen').classList.add('d-none');
     document.getElementById('you-win-screen').classList.add('d-none');
     startGame();
+}
+
+
+function backToMenu() {
+    stopGame();
+    audioManager.stopAllSounds();
+    audioManager.allSoundsDisabled = false;
+    document.getElementById('game-over-screen').classList.add('d-none');
+    document.getElementById('you-win-screen').classList.add('d-none');
+    document.getElementById('start-screen').classList.remove('d-none');
+    world = null;
 }

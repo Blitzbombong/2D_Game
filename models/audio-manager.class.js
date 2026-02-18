@@ -28,18 +28,18 @@ class AudioManager {
 
         // Cahractrer-Sounds etwas lauter
         this.character_walk.volume = 0.5;
-        this.character_jump.volume = 0.1;
+        this.character_jump.volume = 0.05;
         this.character_hurt.volume = 0.1;
         this.character_death.volume = 0.1;
 
         // Chicken-Sounds etwas lauter
-        this.chicken_plop.volume = 0.3;
+        this.chicken_plop.volume = 0.1;
         this.endboss_chicken.volume = 0.3;
         this.endboss_death.volume = 0.3;
 
         // Item-Sounds etwas lauter
-        this.collect_coin.volume = 0.1;
-        this.collect_bottle.volume = 0.1;
+        this.collect_coin.volume = 0.05;
+        this.collect_bottle.volume = 0.05;
         this.bottle_flies.volume = 0.1;
         this.glass_splash.volume = 0.1;
 

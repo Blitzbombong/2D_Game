@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="js/utils.js"></script>
     <script src="models/drawable_object.class.js"></script>
@@ -46,12 +47,26 @@
             </div>
             <div id="game-over-screen" class="overlay d-none">
                 <img src="img/You won, you lost/Game over A.png" alt="Game Over">
-                <button onclick="restartGame()" class="restart-button">TRY AGAIN</button>
+                <div class="button-container">
+                    <button onclick="backToMenu()" class="menu-button">
+                        <i class="fa-solid fa-house"></i>
+                    </button>
+                    <button onclick="restartGame()" class="restart-button">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
             </div>
 
             <div id="you-win-screen" class="overlay d-none">
                 <img src="img/You won, you lost/You Win A.png" alt="You Win">
-                <button onclick="restartGame()" class="restart-button">PLAY AGAIN</button>
+                <div class="button-container">
+                     <button onclick="backToMenu()" class="menu-button">
+                        <i class="fa-solid fa-house"></i>
+                    </button>
+                    <button onclick="restartGame()" class="restart-button">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
             </div>
 
             <canvas id="myCanvas" width="720" height="480"></canvas>
