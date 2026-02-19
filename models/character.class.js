@@ -5,6 +5,7 @@ class Character extends MovableObject {
     world;
     speed = 8; 
     hadFirstContact = false;
+    lastActionTime = new Date().getTime();
 
     offset = {
         top: 85,
@@ -112,6 +113,10 @@ class Character extends MovableObject {
     moveCharacter() {
         this.world.audioManager.pause('character_walk');
 
+        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.SPACE) {
+        this.lastActionTime = new Date().getTime();
+        }
+
         if (this.world.keyboard.SPACE && !this.isAboveGround()) {
                 this.jump();
                 this.world.audioManager.play('character_jump');
@@ -139,10 +144,25 @@ class Character extends MovableObject {
             } else if (this.isAboveGround()) {
             // Jump Animation
             this.playAnimation(this.IMAGES_JAMPING);
-            }
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+            } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
             // Walk Animation
             this.playAnimation(this.IMAGES_WALKING);
+            } else {
+            // Idle Animation
+            this.handleIdleState();            
+            }
+        }
+
+
+        handleIdleState() {
+            let timePassed = (new Date().getTime() - this.lastActionTime) / 1000; // Zeit in Sekunden
+
+            if (timePassed > 5 && timePassed <= 10) {
+                // Nach 5 Sekunden Inaktivität: normale Idle-Animation
+                this.playAnimation(this.IMAGES_IDLE);
+            } else if (timePassed > 10) {
+                // Nach 10 Sekunden Inaktivität: lange Idle-Animation
+                this.playAnimation(this.IMAGES_LONG_IDLE);
             }
         }
     

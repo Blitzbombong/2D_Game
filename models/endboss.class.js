@@ -5,6 +5,7 @@ class Endboss extends MovableObject {
     x = 2200
     speed = 0.15;
     hadFirstContact = false; // Flag, um den ersten Kontakt zu verfolgen
+    
 
     offset = {
         top: 60,
@@ -56,6 +57,7 @@ class Endboss extends MovableObject {
 
     constructor() {
         super();
+        this.isBoss = true;
         this.loadImage(this.IMAGES_WALKING[0]);
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ALERT);

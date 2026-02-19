@@ -4,6 +4,7 @@ let level1;
 function initLevel1() {
     level1 = new Level(
     createEnemies(),
+    new Endboss(),
     createClouds(),
     [
         new BackgroundObject('img/5_background/layers/air.png', -720,0),
@@ -45,7 +46,6 @@ function createEnemies() {
     for (let i = 0; i < 5;  i++) {
         enemies.push(new SmallChicken());
     }
-    enemies.push(new Endboss());
     return enemies;
 }
 

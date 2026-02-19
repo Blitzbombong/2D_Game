@@ -26,7 +26,7 @@ class World {
         this.keyboard = keyboard;
         this.level = level1;
         this.audioManager = audioManager;
-        this.endboss = this.level.enemies.find(e => e instanceof Endboss);
+        this.endboss = this.level.enemies.find(e => e.isBoss);
         this.setWorld();
         this.draw();
         this.run();
@@ -35,6 +35,10 @@ class World {
 
     setWorld() {
         this.character.world = this;
+        // Wir müssen dem Boss auch die Welt zuweisen!
+        if (this.level.endboss) {
+            this.level.endboss.world = this;
+        }
         this.level.enemies.forEach((enemy) => {
             enemy.world = this;
         });
@@ -58,12 +62,11 @@ class World {
         this.addObjectsToMap(this.level.coins);
         this.addObjectsToMap(this.level.bottles);
 
-        // 4. Gegner (Hühner ODER Boss)
-        if (!this.bossFightStarted) {
-            this.addObjectsToMap(this.level.enemies.filter(e => !(e instanceof Endboss)));
-        } else {
-            this.addObjectsToMap(this.level.enemies.filter(e => e instanceof Endboss));
-        }
+        // 1. Zeichne nur die normalen Hühner
+        this.addObjectsToMap(this.level.enemies.filter(e => !e.isBoss));
+
+        // 2. Zeichne den Boss separat, wenn er "aktiv" ist
+        this.addToMap(this.level.endboss);
 
         // 5. Pepe (Sollte meistens vor den Gegnern zu sehen sein)
         this.addToMap(this.character);
@@ -137,30 +140,70 @@ class World {
 }
 
     checkEnemyCollisions() {
+        // 1. Hühner (lassen wir so)
         this.level.enemies.forEach((enemy) => {
-            // Wir prüfen zuerst: Ist das Huhn überhaupt noch lebendig?
             if (!enemy.isDead && this.character.isColliding(enemy)) {
-                
-                // Pepe springt drauf
-                if (this.character.isAboveGround() && this.character.speedY < 0) {
-                    enemy.die(); // Setzt enemy.isDead = true
-                    this.audioManager.play('chicken_plop');
-                    this.character.bounce();
-                    
-                    setTimeout(() => {
-                        let index = this.level.enemies.indexOf(enemy);
-                        if (index > -1) this.level.enemies.splice(index, 1);
-                    }, 500);
-                } 
-                // Pepe wird seitlich getroffen
-                else if (!this.character.isHurt()) {
-                    this.character.hit();
-                    this.audioManager.play('character_hurt');
-                    this.healthBar.setPercentage(this.character.energy);
-                }
+                this.handleChickenCollision(enemy);
             }
         });
+
+        // 2. BOSS-CHECK (Radikal vereinfacht zum Testen)
+        let boss = this.level.endboss;
+        if (boss) {
+            // Wir ignorieren isColliding für einen Moment und schauen nur auf den Abstand
+            let distanz = Math.abs(this.character.x - boss.x);
+            
+            // Jedes Mal, wenn Pepe dem Boss näher als 500 Pixel kommt, MUSS das in die Konsole
+            if (distanz < 500) {
+                console.log('ENTFERNUNG ZUM BOSS:', distanz);
+                console.log('Pepe steht bei:', this.character.x);
+                console.log('Boss steht bei:', boss.x);
+            }
+
+            if (this.character.isColliding(boss)) {
+                console.log('KOLLISION ERKANNT! Pepe kriegt jetzt Schaden.');
+                this.handleCharacterHit(); // Nur Pepe verliert Leben!
+            }
+        }
     }
+
+
+    handleCharacterHit() {
+        if (!this.character.isHurt()) {
+            this.character.hit();
+            this.audioManager.play('character_hurt');
+            this.healthBar.setPercentage(this.character.energy);
+            console.log('Pepe Energie jetzt:', this.character.energy);
+        }
+    }
+
+
+    handleChickenCollision(enemy) {
+    // Wenn Pepe in der Luft ist, tötet er das Huhn
+    // Wir nehmen hier erst mal nur isAboveGround(), um sicherzugehen, dass es klappt
+        if (this.character.isAboveGround()) {
+            this.killEnemy(enemy);
+        } else {
+            // Wenn er am Boden ist und gegen das Huhn läuft -> Schaden für Pepe
+            this.handleCharacterHit();
+        }
+    }
+
+
+    killEnemy(enemy) {
+        enemy.die(); 
+        this.audioManager.play('chicken_plop');
+        this.character.bounce(); // Pepe hüpft kurz hoch
+        
+        // Nach einer kurzen Zeit verschwindet das tote Huhn
+        setTimeout(() => {
+            let index = this.level.enemies.indexOf(enemy);
+            if (index > -1) {
+                this.level.enemies.splice(index, 1);
+            }
+        }, 500);
+    }
+
 
     checkItemCollisions() {
         // Logik fuer Pepe vs Coins
@@ -204,30 +247,28 @@ class World {
 
        checkThrowingCollisions() {
         this.throwableObjects.forEach((bottle) => {
+            // A: Check für normale Hühner
             this.level.enemies.forEach((enemy) => {
                 if (this.isHit(bottle, enemy)) {
-                    // 1. Die Flasche zerbricht immer
-                    bottle.break(); 
-
-                    // 2. Logik für normale Hühner
-                    if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
-                        enemy.die(); 
-                        this.audioManager.play('glass_splash');
-                    }
-
-                    // 3. Logik für den Endboss (dein neuer Teil!)
-                    if (enemy instanceof Endboss) {
-                        enemy.hit();
-                        this.audioManager.play('glass_splash');
-                        this.showEndbossBar = true; // Bar einblenden
-                        this.endbossBar.setPercentage(enemy.energy);
-                    }
+                    bottle.break();
+                    enemy.die();
+                    this.audioManager.play('glass_splash');
                 }
             });
+
+            // B: NEU - Check für den Endboss (da er nicht mehr in der Liste ist)
+            let boss = this.level.endboss;
+            if (boss && this.isHit(bottle, boss)) {
+                bottle.break();
+                boss.hit(); // Boss verliert Energie
+                this.audioManager.play('glass_splash');
+                this.showEndbossBar = true;
+                this.endbossBar.setPercentage(boss.energy);
+                console.log('BOSS WURDE GETROFFEN! Energie:', boss.energy);
+            }
         });
 
-            // 4. AUFRÄUMEN (Das gehört ans Ende der Funktion, außerhalb der Schleifen!)
-            this.cleanUpBottles();
+        this.cleanUpBottles();
     }
 
 
@@ -295,37 +336,53 @@ class World {
 
 
     startBossFight() {
-        this.audioManager.pause('game_sound'); // Hintergrundmusik stoppen 
+        this.audioManager.pause('game_sound'); 
+
+        this.level.enemies.forEach(enemy => enemy.energy = 0); // Alle Hühner sterben gleichzeitig
+        setTimeout(() => {
+            this.level.enemies = []; // Und erst nach 500ms verschwinden sie ganz
+        }, 500);
 
         setTimeout(() => {
             if (!this.gameEnded) {
-            this.audioManager.playSingle('endboss_fight'); 
+                this.audioManager.playSingle('endboss_fight'); 
             }
         }, 1000);
 
-        // 1. Wir löschen alle normalen Hühner aus dem Level
-        this.level.enemies = this.level.enemies.filter(e => e instanceof Endboss);
+        // Wir greifen DIREKT auf den VIP-Platz zu
+        let boss = this.level.endboss; 
 
-        // 2. Jetzt den Boss aktivieren
-        let boss = this.level.enemies.find(e => e instanceof Endboss);
         if (boss) {
             boss.hadFirstContact = true;
             this.showEndbossBar = true;
+            console.log("Boss erfolgreich aus der VIP-Box aktiviert!");
         }
     }
 
 
     checkGameState() {
-        if (this.gameEnded) return; // Verhindert mehrfaches Auslösen von Game Over oder You Win
-
+    // Wenn das Spiel schon vorbei ist, machen wir gar nichts mehr
+       // FALL 1: Pepe verliert
         if (this.character.energy <= 0) {
-            this.gameEnded = true;
+        this.gameEnded = true;
+        
+        // Wir geben Pepe 2 Sekunden Zeit für seine "Hurt/Dead"-Animation
+        setTimeout(() => {
             showGameOver();
-        } else if (this.endboss && this.endboss.energy <= 0) {
+        }, 2000); 
+
+        }
+        
+        // 2. Prüfen: Hat der Boss verloren?
+        // Wir greifen direkt auf den VIP-Endboss im Level zu
+        else if (this.level.endboss && this.level.endboss.energy <= 0) {
             this.gameEnded = true;
+            
+            // Wir geben dem Boss 2 Sekunden Zeit, seine Todes-Animation 
+            // (IMAGES_DEAD) in Ruhe zu Ende zu spielen.
             setTimeout(() => {
                 showYouWin();
-            }, 1000); // Kleiner Delay für dramatischen Effekt
+            }, 2000); 
         }
     }
 
