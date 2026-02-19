@@ -3,7 +3,7 @@ class Endboss extends MovableObject {
     width = 400
     y = 95
     x = 2200
-    speed = 0.15;
+    speed = 0.8;
     hadFirstContact = false; // Flag, um den ersten Kontakt zu verfolgen
     
 
@@ -69,6 +69,16 @@ class Endboss extends MovableObject {
     }
 
     animate() {
+        setStoppableInterval(() => {
+                if (this.hadFirstContact && !this.isDead() && !this.isHurt()) {
+                    
+                    // LOGIK: Wenn Energie < 50, dann nimm Speed 1.5, sonst nimm 0.5
+                    let currentSpeed = this.energy < 50 ? 1.5 : 0.5;
+                    
+                    this.x -= currentSpeed; // Wir bewegen ihn direkt mit dem aktuellen Speed
+                }
+            }, 1000 / 60); // 60 mal pro Sekunde
+
             setStoppableInterval(() => {
             if (this.isDead()) {
                 // 1. Höchste Priorität: Tot
