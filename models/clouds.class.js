@@ -17,7 +17,7 @@ class Clouds extends MovableObject {
          setStoppableInterval(() => {
              this.moveLeft();
          }, 1000 / 60);
-        // Ein Intervall lässt den Code immer wieder ausführen
+        // Ein Interval läst den Code immer wider aus füren
         setStoppableInterval(() => {
             // Hier kommt die if Bedinung damit die Wollken immer wieder Rechts neu anfangeg
             if (this.x < -this.width) {

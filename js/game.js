@@ -25,7 +25,7 @@ function toggleFullscreen() {
     let container = document.getElementById('game-container');
     if (!document.fullscreenElement) {
         container.requestFullscreen().catch(err => {
-            alert(`Error: ${err.message}`);
+            console.error(`Fehler beim Aktivieren: ${err.message}`);
         });
     } else {
         document.exitFullscreen();
