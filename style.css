@@ -175,3 +175,49 @@ h1 {
 .d-none {
     display: none !important;
 }
+
+/* Der Container für die Anleitung */
+#desktop-instructions {
+    min-width: 720px;
+    display: flex;
+    margin-top: 15px;
+    padding: 10px 0px 10px 0px;
+}
+
+.instruction-item {
+    display: flex;
+    align-items: center; /* Vertikal zentrieren */
+    justify-content: space-around;
+    gap: 10px; /* Abstand zwischen Taste und Text */
+    width: 100%; /* Damit sie gleichmäßig verteilt sind */
+}
+
+/* DAS DESIGN DER TASTEN */
+.keyboard-key {
+    display: inline-block;
+    padding: 5px 10px;
+    font-family: monospace, sans-serif; /* Sieht technischer aus */
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+    background-color: #f4f4f4; /* Helles Grau für die Oberfläche */
+    border: 2px solid #c0c0c0; /* Dunklerer grauer Rand */
+    border-radius: 6px; /* Abgerundete Ecken */
+    
+    /* DER 3D-EFFEKT (Der wichtigste Teil!) */
+    box-shadow: 0 4px 0 #888888; /* Ein harter Schatten nach unten */
+    
+    /* Damit sie nicht markiert werden können */
+    user-select: none;
+}
+
+.key-walk {
+    background: none;
+    -webkit-tap-highlight-color: transparent; /* Entfernt den blauen Kasten beim Antippen */
+    outline: none;           /* Entfernt den Fokus-Kasten */
+}
+
+/* Spezial-Style für die breitere Leertaste */
+.key-space {
+    padding: 5px 20px; /* Breiter */
+}

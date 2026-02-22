@@ -41,4 +41,47 @@ class Keyboard {
         }
        });
     }
+
+
+    bindToouchEvents() {
+        // LINKS
+        document.getElementById('btn-left').addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Verhindert nerviges Zoomen/Scrollen am Handy
+            this.LEFT = true;
+        });
+        document.getElementById('btn-left').addEventListener('touchend', (e) => {
+            e.preventDefault();
+            this.LEFT = false;
+        });
+
+        // RECHTS
+        document.getElementById('btn-right').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            this.RIGHT = true;
+        });
+        document.getElementById('btn-right').addEventListener('touchend', (e) => {
+            e.preventDefault();
+            this.RIGHT = false;
+        });
+
+        // SPRINGEN
+        document.getElementById('btn-jump').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            this.SPACE = true;
+        });
+        document.getElementById('btn-jump').addEventListener('touchend', (e) => {
+            e.preventDefault();
+            this.SPACE = false;
+        });
+
+        // WERFEN
+        document.getElementById('btn-throw').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            this.S = true; // Oder welche Taste du für Werfen nutzt
+        });
+        document.getElementById('btn-throw').addEventListener('touchend', (e) => {
+            e.preventDefault();
+            this.S = false;
+        });
+    }
 }

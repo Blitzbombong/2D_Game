@@ -6,6 +6,8 @@ let audioManager = new AudioManager();
 
 function init() {
     canvas = document.getElementById("myCanvas");
+
+    keyboard.bindToouchEvents();
     
 }
 
@@ -16,6 +18,7 @@ function startGame() {
     initLevel1();
     canvas = document.getElementById("myCanvas");
     world = new World(canvas, keyboard, audioManager);
+
 
     audioManager.playMusic();
 }
