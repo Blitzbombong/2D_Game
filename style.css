@@ -221,3 +221,52 @@ h1 {
 .key-space {
     padding: 5px 20px; /* Breiter */
 }
+
+
+/* Mobile Design, buttons and instructions */
+
+.mobile-only {
+    display: none !important;
+    position: absolute;
+    bottom: 20px;
+    width: 93%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px 20px 20px;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.mobile-btn {
+    pointer-events: auto;
+    background-color: rgba(255, 230, 0, 0.2);
+    border: 2px solid rgba(255, 230, 0, 0.4);
+    border-radius: 50%; /* Macht die Buttons perfekt rund */
+    width: 50px;
+    height: 50px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.mobile-btn img {
+    width: 40px;
+    height: 40px;
+    filter: brightness(0);
+    opacity: 0.7;
+    transition: opacity 0.2s ease-in-out;
+}
+
+
+@media only screen and (max-width: 1024px) {
+    .desktop-only {
+        display: none !important;
+    }
+    .mobile-only {
+        display: flex !important;
+    }
+
+    h1 {
+        display: none;
+    }
+}
+
