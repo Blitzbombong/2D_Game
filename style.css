@@ -258,6 +258,9 @@ h1 {
 
 
 @media only screen and (max-width: 1024px) {
+    canvas {
+        width: 100%;
+    }
     .desktop-only {
         display: none !important;
     }
@@ -274,6 +277,10 @@ h1 {
     .mobile-btn {
         width: 60px;
         height: 60px;
+    }
+
+    canvas {
+        height: 100vh;
     }
 
 }
