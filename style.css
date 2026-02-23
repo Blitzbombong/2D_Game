@@ -35,9 +35,9 @@ body {
 }
 
 #game-container:fullscreen canvas {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    width: 100vw !important;
+    height: 100vh !important;
+    object-fit: fill;
 }
 
 
