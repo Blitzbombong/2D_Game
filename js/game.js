@@ -13,14 +13,32 @@ function init() {
 
 
 function startGame() {
-    document.getElementById('start-screen').classList.add('d-none');
+    // 1. Fullscreen nur auf Mobilen Geräten automatisch mit "PLAY" triggern
+    if (window.innerWidth <= 1024) {
+        let container = document.getElementById('game-container');
+        enterFullscreen(container); // Wir rufen unsere Fullscreen-Logik auf
+    }
 
+    // 2. Das eigentliche Spiel starten
+    document.getElementById('start-screen').classList.add('d-none');
     initLevel1();
     canvas = document.getElementById("myCanvas");
     world = new World(canvas, keyboard, audioManager);
-
-
     audioManager.playMusic();
+}
+
+// Eine saubere Hilfsfunktion für den Fullscreen inkl. Drehen
+function enterFullscreen(element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen().then(() => {
+            // Handy automatisch ins Querformat drehen (wenn möglich)
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(() => {
+                    console.log("Automatisches Drehen vom Browser blockiert.");
+                });
+            }
+        });
+    }
 }
 
 
