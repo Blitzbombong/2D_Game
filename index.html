@@ -53,6 +53,11 @@
                     <button onclick="toggleFullscreen()" id="fullscreen-button">⛶</button>
                 </div>
             </div>
+            <div id="ingame-ui" class="ingame-ui d-none">
+                <button onclick="backToMenu()" class="ingame-btn">🏠</button>
+                <button onclick="toggleMute()" id="mute-btn-ingame" class="ingame-btn">🔊</button>
+                <button onclick="toggleFullscreen()" class="ingame-btn desktop-only">⛶</button>
+            </div>
             <div id="game-over-screen" class="overlay d-none">
                 <img src="img/You won, you lost/Game over A.png" alt="Game Over">
                 <div class="button-container">
@@ -94,11 +99,16 @@
 
         <div id="desktop-instructions" class="desktop-only">
                 <div class="instruction-item">
-                    <span class="keyboard-key key-walk">⬅️➡️</span>
+                    <span class="keyboard-key key-walk">
+                        <img src="icons/arrow-left-d.svg" alt="arrow-left">
+                        <img src="icons/arrow-right-d.svg" alt="arrow-right">
+                    </span>
                     <span class="instruction-text">Bewegen</span>
                 </div>
                 <div class="instruction-item">
-                    <span class="keyboard-key key-space">SPACE</span>
+                    <span class="keyboard-key key-space">
+                        <img class="space-jump" src="icons/space-jump-d.svg" alt="jump">
+                    </span>
                     <span class="instruction-text">Springen</span>
                 </div>
                 <div class="instruction-item">

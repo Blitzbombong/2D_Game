@@ -176,50 +176,87 @@ h1 {
     display: none !important;
 }
 
+/* Ingame UI */
+.ingame-ui {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 60;
+}
+
+.ingame-btn {
+    background-color: rgba(255, 230, 0, 0.2);
+    border: 2px solid rgba(255, 230, 0, 0.4);
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-size: 20px;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(2px);
+    transition: all 0.2s ease-in-out;
+}
+
+.ingame-btn:hover {
+    background-color: rgba(255, 230, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.ingame-btn i, .ingame-btn span {
+    filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5));
+}
+
 /* Der Container für die Anleitung */
 #desktop-instructions {
     min-width: 720px;
     display: flex;
     margin-top: 15px;
     padding: 10px 0px 10px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 70px;
 }
 
 .instruction-item {
     display: flex;
-    align-items: center; /* Vertikal zentrieren */
-    justify-content: space-around;
-    gap: 10px; /* Abstand zwischen Taste und Text */
-    width: 100%; /* Damit sie gleichmäßig verteilt sind */
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
 }
 
-/* DAS DESIGN DER TASTEN */
-.keyboard-key {
-    display: inline-block;
+.instruction-item .keyboard-key {
+    display: inline-flex; /* Flexbox hilft beim Zentrieren */
+    align-items: center;
+    justify-content: center;
     padding: 5px 10px;
     font-family: monospace, sans-serif; /* Sieht technischer aus */
     font-weight: bold;
-    font-size: 14px;
-    color: #333;
-    background-color: #f4f4f4; /* Helles Grau für die Oberfläche */
-    border: 2px solid #c0c0c0; /* Dunklerer grauer Rand */
-    border-radius: 6px; /* Abgerundete Ecken */
-    
-    /* DER 3D-EFFEKT (Der wichtigste Teil!) */
-    box-shadow: 0 4px 0 #888888; /* Ein harter Schatten nach unten */
-    
-    /* Damit sie nicht markiert werden können */
+    font-size: 18px;
+    background-color: rgba(255, 150, 0, 0.9);
+    border: 2px solid rgba(255, 230, 0, 0.2);
+    border-radius: 8px;
+    box-shadow: 2px 4px 1px rgb(153, 69, 9);
     user-select: none;
+    min-width: 40px; 
+    height: 40px;
 }
 
-.key-walk {
-    background: none;
-    -webkit-tap-highlight-color: transparent; /* Entfernt den blauen Kasten beim Antippen */
-    outline: none;           /* Entfernt den Fokus-Kasten */
+.keyboard-key img {
+    width: auto;
+    height: 30px;
+    font-weight: bold;
+    filter: brightness(0);
+    opacity: 0.8;
 }
 
-/* Spezial-Style für die breitere Leertaste */
-.key-space {
-    padding: 5px 20px; /* Breiter */
+.instruction-text {
+    font-family: 'Arial', sans-serif;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    font-weight: bold;
 }
 
 

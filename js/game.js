@@ -14,6 +14,7 @@ function init() {
 
 function startGame() {
     document.getElementById('start-screen').classList.add('d-none');
+   
 
     // 1. Wir prüfen: Ist der Bildschirm schmal?
     const isSmallScreen = window.innerWidth <= 1024;
@@ -32,6 +33,7 @@ function startGame() {
     canvas = document.getElementById("myCanvas");
     world = new World(canvas, keyboard, audioManager);
     audioManager.playMusic();
+     document.getElementById('ingame-ui').classList.remove('d-none');
 }
 
 // Eine saubere Hilfsfunktion für den Fullscreen inkl. Drehen
@@ -64,7 +66,10 @@ function toggleFullscreen() {
 function toggleMute() {
     audioManager.toggleMute();
     let btn = document.getElementById('mute-button');
-    btn.innerHTML = audioManager.isMuted ? '🔇' : '🔊';
+    let ingameBtn = document.getElementById('mute-btn-ingame');
+    let icon = audioManager.isMuted ? '🔇' : '🔊';
+    btn.innerHTML = icon;
+    ingameBtn.innerHTML = icon;
 }
 
 
@@ -75,6 +80,7 @@ function showGameOver() {
     document.getElementById('game-over-screen').classList.remove('d-none');
     audioManager.play('game_over');
     document.getElementById('mobile-controls').classList.add('d-none');
+    document.getElementById('ingame-ui').classList.add('d-none');
 }
 
 
@@ -84,6 +90,7 @@ function showYouWin() {
     document.getElementById('you-win-screen').classList.remove('d-none');
     audioManager.play('you_win');
     document.getElementById('mobile-controls').classList.add('d-none');
+    document.getElementById('ingame-ui').classList.add('d-none');
 }
 
 
@@ -91,6 +98,7 @@ function restartGame() {
     audioManager.allSoundsDisabled = false;
     document.getElementById('game-over-screen').classList.add('d-none');
     document.getElementById('you-win-screen').classList.add('d-none');
+    
     startGame();
 }
 
@@ -103,5 +111,6 @@ function backToMenu() {
     document.getElementById('you-win-screen').classList.add('d-none');
     document.getElementById('start-screen').classList.remove('d-none');
     document.getElementById('mobile-controls').classList.add('d-none');
+     document.getElementById('ingame-ui').classList.add('d-none');
     world = null;
 }
