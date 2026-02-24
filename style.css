@@ -226,7 +226,6 @@ h1 {
 /* Mobile Design, buttons and instructions */
 
 .mobile-only {
-    display: none !important;
     position: absolute;
     bottom: 20px;
     width: 93%;
@@ -257,17 +256,14 @@ h1 {
 }
 
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 720px) {
     canvas {
         width: 100%;
     }
     .desktop-only {
         display: none !important;
     }
-    .mobile-only {
-        display: flex !important;
-    }
-
+    
     h1 {
         display: none;
     }

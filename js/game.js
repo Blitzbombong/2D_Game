@@ -13,14 +13,21 @@ function init() {
 
 
 function startGame() {
-    // 1. Fullscreen nur auf Mobilen Geräten automatisch mit "PLAY" triggern
-    if (window.innerWidth <= 1024) {
+    document.getElementById('start-screen').classList.add('d-none');
+
+    // 1. Wir prüfen: Ist der Bildschirm schmal?
+    const isSmallScreen = window.innerWidth <= 1024;
+    
+    // 2. Wir prüfen: Ist es WIRKLICH ein Touch-Gerät (keine Maus)?
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+
+    // Nur wenn BEIDES stimmt, gehen wir automatisch in den Fullscreen
+    if (isSmallScreen && isTouch) {
         let container = document.getElementById('game-container');
-        enterFullscreen(container); // Wir rufen unsere Fullscreen-Logik auf
+        document.getElementById('mobile-controls').classList.remove('d-none');
     }
 
-    // 2. Das eigentliche Spiel starten
-    document.getElementById('start-screen').classList.add('d-none');
+    // Rest der Funktion bleibt gleich...
     initLevel1();
     canvas = document.getElementById("myCanvas");
     world = new World(canvas, keyboard, audioManager);
@@ -67,6 +74,7 @@ function showGameOver() {
     audioManager.stopAllSounds();
     document.getElementById('game-over-screen').classList.remove('d-none');
     audioManager.play('game_over');
+    document.getElementById('mobile-controls').classList.add('d-none');
 }
 
 
@@ -75,6 +83,7 @@ function showYouWin() {
     audioManager.stopAllSounds();
     document.getElementById('you-win-screen').classList.remove('d-none');
     audioManager.play('you_win');
+    document.getElementById('mobile-controls').classList.add('d-none');
 }
 
 
@@ -93,5 +102,6 @@ function backToMenu() {
     document.getElementById('game-over-screen').classList.add('d-none');
     document.getElementById('you-win-screen').classList.add('d-none');
     document.getElementById('start-screen').classList.remove('d-none');
+    document.getElementById('mobile-controls').classList.add('d-none');
     world = null;
 }
