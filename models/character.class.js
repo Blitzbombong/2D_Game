@@ -21,7 +21,7 @@ class Character extends MovableObject {
     "img/2_character_pepe/2_walk/W-26.png",
   ];
 
-  IMAGES_JAMPING = [
+  IMAGES_JUMPING = [
     "img/2_character_pepe/3_jump/J-31.png",
     "img/2_character_pepe/3_jump/J-32.png",
     "img/2_character_pepe/3_jump/J-33.png",
@@ -75,144 +75,131 @@ class Character extends MovableObject {
     "img/2_character_pepe/5_dead/D-57.png",
   ];
 
-/**
- * Constructor for Character class.
- * 
- * Loads all necessary images and starts the animation.
- * Applies gravity to the character and sets it to jump.
- * Initializes the character's coins and bottles to 0.
- */
+  /**
+   * Initializes a new Character object.
+   * Sets up animations, gravity, and jump mechanics.
+   * Initializes coin and bottle count to 0.
+   */
   constructor() {
     super();
-    this.loadImage(this.IMAGES_WALKING[0]);
-    this.loadImages(this.IMAGES_WALKING);
-    this.loadImages(this.IMAGES_JAMPING);
-    this.loadImages(this.IMAGES_IDLE);
-    this.loadImages(this.IMAGES_LONG_IDLE);
-    this.loadImages(this.IMAGES_HURT);
-    this.loadImages(this.IMAGES_DEAD);
+    this.loadCharacterImages();
     this.animate();
     this.applyGravity();
-    this.jump();
     this.coins = 0;
     this.bottles = 0;
   }
 
-  
-/**
- * Animates the character.
- * 
- * This function is responsible for animating the character. It 
- * calls moveCharacter() every 16.67 milliseconds to move the character 
- * and playCharacterAnimations() every 50 milliseconds to play the character's animations.
- * 
- * @memberof Character
- */
-  animate() {
-    setStoppableInterval(() => {
-      if (this.world && this.world.keyboard) {
-        this.moveCharacter();
-      }
-    }, 1000 / 60);
-
-    setStoppableInterval(() => {
-      if (this.world) {
-        this.playCharacterAnimations();
-      }
-    }, 50);
+  /**
+   * Helper to load all character-related image sets.
+   */
+  loadCharacterImages() {
+    this.loadImage(this.IMAGES_WALKING[0]);
+    this.loadImages(this.IMAGES_WALKING);
+    this.loadImages(this.IMAGES_JUMPING);
+    this.loadImages(this.IMAGES_IDLE);
+    this.loadImages(this.IMAGES_LONG_IDLE);
+    this.loadImages(this.IMAGES_HURT);
+    this.loadImages(this.IMAGES_DEAD);
   }
 
-/**
- * This function is responsible for moving the character.
- * It checks if the keyboard's right, left, or space key is pressed and
- * moves the character accordingly. It also handles jumping and playing the
- * character's walk and jump sounds. Finally, it updates the camera's x
- * position to follow the character.
- * @memberof Character
- */
-  moveCharacter() {
+  /**
+   * Main animation loop for movement and visual states.
+   */
+  animate() {
+    setStoppableInterval(() => this.handleMovement(), 1000 / 60);
+    setStoppableInterval(() => this.handleAnimations(), 50);
+  }
+
+  /**
+   * Manages the character's movement logic based on keyboard input.
+   */
+  handleMovement() {
+    if (!this.world) return;
     this.world.audioManager.pause("character_walk");
 
-    if (
-      this.world.keyboard.RIGHT ||
-      this.world.keyboard.LEFT ||
-      this.world.keyboard.SPACE
-    ) {
+    this.checkActivity();
+    this.handleJump();
+    this.handleWalking();
+
+    this.world.cameraX = -this.x + 100;
+  }
+
+  /**
+   * Checks if any action key is pressed to reset the idle timer.
+   */
+  checkActivity() {
+    const keys = this.world.keyboard;
+    if (keys.RIGHT || keys.LEFT || keys.SPACE) {
       this.lastActionTime = new Date().getTime();
     }
+  }
 
+  /**
+   * Executes the jump if the space key is pressed and the character is on the ground.
+   */
+  handleJump() {
     if (this.world.keyboard.SPACE && !this.isAboveGround()) {
       this.jump();
       this.world.audioManager.play("character_jump");
     }
-    if (
-      this.world.keyboard.RIGHT &&
-      this.x < this.world.level.Level_end_x - this.width
-    ) {
+  }
+
+  /**
+   * Handles left and right movement and plays walking sounds.
+   */
+  handleWalking() {
+    const keys = this.world.keyboard;
+    const canMoveRight =
+      keys.RIGHT && this.x < this.world.level.Level_end_x - this.width;
+    const canMoveLeft = keys.LEFT && this.x > 0;
+
+    if (canMoveRight) {
       this.moveRight();
       this.otherDirection = false;
       this.world.audioManager.playSingle("character_walk");
-    } else if (this.world.keyboard.LEFT && this.x > 0) {
+    } else if (canMoveLeft) {
       this.moveLeft();
       this.otherDirection = true;
       this.world.audioManager.playSingle("character_walk");
     }
-    this.world.cameraX = -this.x + 100;
   }
 
-  
-/**
- * This function is responsible for playing the character's animations.
- * It checks the character's current state (dead, hurt, jumping, or walking)
- * and plays the corresponding animation. If the character is not in any of
- * these states, it plays the idle animation.
- * @memberof Character
- */
-  playCharacterAnimations() {
+  /**
+   * Orchestrates which animation set to play based on character state.
+   */
+  handleAnimations() {
     if (this.isDead()) {
-      // Dead Animation
       this.playAnimation(this.IMAGES_DEAD);
     } else if (this.isHurt()) {
-      // Hurt Animation
       this.playAnimation(this.IMAGES_HURT);
     } else if (this.isAboveGround()) {
-      // Jump Animation
-      this.playAnimation(this.IMAGES_JAMPING);
+      this.playAnimation(this.IMAGES_JUMPING);
     } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-      // Walk Animation
       this.playAnimation(this.IMAGES_WALKING);
     } else {
-      // Idle Animation
       this.handleIdleState();
     }
   }
 
-  
-/**
- * Handles the character's idle state. If the character hasn't moved in 5-10
- * seconds, it plays the normal idle animation. If the character hasn't moved
- * in more than 10 seconds, it plays the long idle animation.
- */
+  /**
+   * Handles the character's idle state based on inactive time.
+   */
   handleIdleState() {
-    let timePassed = (new Date().getTime() - this.lastActionTime) / 1000; // Zeit in Sekunden
+    let timePassed = (new Date().getTime() - this.lastActionTime) / 1000;
 
-    if (timePassed > 5 && timePassed <= 10) {
-      // Nach 5 Sekunden Inaktivität: normale Idle-Animation
-      this.playAnimation(this.IMAGES_IDLE);
-    } else if (timePassed > 10) {
-      // Nach 10 Sekunden Inaktivität: lange Idle-Animation
+    if (timePassed > 10) {
       this.playAnimation(this.IMAGES_LONG_IDLE);
+    } else {
+      this.playAnimation(this.IMAGES_IDLE);
     }
   }
 
-  
-
-/**
- * Increases the character's coins by 20. If the character's coins are more than 100,
- * sets the character's coins to 100.
- * 
- * @memberof Character
- */
+  /**
+   * Increases the character's coins by 20. If the character's coins are more than 100,
+   * sets the character's coins to 100.
+   *
+   * @memberof Character
+   */
   collectCoin() {
     this.coins += 20;
     if (this.coins > 100) {
@@ -220,12 +207,11 @@ class Character extends MovableObject {
     }
   }
 
-  
-/**
- * Increases the character's bottles by 20. If the character's bottles are more than 100,
- * sets the character's bottles to 100.
- * @memberof Character
- */
+  /**
+   * Increases the character's bottles by 20. If the character's bottles are more than 100,
+   * sets the character's bottles to 100.
+   * @memberof Character
+   */
   collectBottle() {
     this.bottles += 20;
     if (this.bottles > 100) {
@@ -233,11 +219,10 @@ class Character extends MovableObject {
     }
   }
 
-  
-/**
- * Bounces the character by setting its speedY to 5.
- * @memberof Character
- */
+  /**
+   * Bounces the character by setting its speedY to 5.
+   * @memberof Character
+   */
   bounce() {
     this.speedY = 5;
   }
