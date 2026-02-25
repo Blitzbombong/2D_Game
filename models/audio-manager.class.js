@@ -1,114 +1,158 @@
+
 class AudioManager {
+  game_sound = new Audio("audio/game-sound.mp3");
+  character_walk = new Audio("audio/character-walk.mp3");
+  character_jump = new Audio("audio/character-jump.mp3");
+  character_hurt = new Audio("audio/character-hurt.mp3");
+  character_death = new Audio("audio/character-death.mp3");
+  chicken_plop = new Audio("audio/chicken-plop.mp3");
+  endboss_chicken = new Audio("audio/endboss-chicken.mp3");
+  endboss_death = new Audio("audio/endboss-death.mp3");
+  endboss_fight = new Audio("audio/endboss-fight.mp3");
+  collect_coin = new Audio("audio/collect-coin.mp3");
+  collect_bottle = new Audio("audio/collect-bottle.mp3");
+  bottle_flies = new Audio("audio/bottle-flies.mp3");
+  glass_splash = new Audio("audio/glass-splash.mp3");
+  game_over = new Audio("audio/game-over.mp3");
+  you_win = new Audio("audio/you-win.mp3");
 
-    game_sound = new Audio('audio/game-sound.mp3');
-    character_walk = new Audio('audio/character-walk.mp3');
-    character_jump = new Audio('audio/character-jump.mp3');
-    character_hurt = new Audio('audio/character-hurt.mp3');
-    character_death = new Audio('audio/character-death.mp3');
-    chicken_plop = new Audio('audio/chicken-plop.mp3');
-    endboss_chicken = new Audio('audio/endboss-chicken.mp3');
-    endboss_death = new Audio('audio/endboss-death.mp3');
-    endboss_fight = new Audio('audio/endboss-fight.mp3');
-    collect_coin = new Audio('audio/collect-coin.mp3');
-    collect_bottle = new Audio('audio/collect-bottle.mp3');
-    bottle_flies = new Audio('audio/bottle-flies.mp3');
-    glass_splash = new Audio('audio/glass-splash.mp3');
-    game_over = new Audio('audio/game-over.mp3');
-    you_win = new Audio('audio/you-win.mp3');
+  isMuted = false;
+  allSoundsDisabled = false;
 
-    isMuted = false;
-    allSoundsDisabled = false;
+  constructor() {
+    this.setAllVolumes();
+    this.setupLoops();
+  }
 
-    constructor() {
-        // Hintergrundmusik leiser stellen und in Endlosschleife abspielen
-        this.game_sound.volume = 0.3;
-        this.game_sound.loop = true;
-        this.endboss_fight.volume = 0.5;
-        this.endboss_fight.loop = true;
-
-        // Cahractrer-Sounds etwas lauter
-        this.character_walk.volume = 0.5;
-        this.character_jump.volume = 0.05;
-        this.character_hurt.volume = 0.1;
-        this.character_death.volume = 0.1;
-
-        // Chicken-Sounds etwas lauter
-        this.chicken_plop.volume = 0.1;
-        this.endboss_chicken.volume = 0.3;
-        this.endboss_death.volume = 0.3;
-
-        // Item-Sounds etwas lauter
-        this.collect_coin.volume = 0.05;
-        this.collect_bottle.volume = 0.05;
-        this.bottle_flies.volume = 0.1;
-        this.glass_splash.volume = 0.1;
-
-        // win/lose-Sounds etwas lauter
-        this.game_over.volume = 0.3;
-        this.you_win.volume = 0.3;
-    }
+  
+  /**
+   * Sets the volume levels for all game sounds.
+   * @private
+   */
+  setAllVolumes() {
+    this.game_sound.volume = 0.3;
+    this.endboss_fight.volume = 0.5;
+    this.character_walk.volume = 0.5;
+    this.character_jump.volume = 0.05;
+    this.character_hurt.volume = 0.1;
+    this.character_death.volume = 0.1;
+    this.chicken_plop.volume = 0.1;
+    this.endboss_chicken.volume = 0.3;
+    this.endboss_death.volume = 0.3;
+    this.collect_coin.volume = 0.05;
+    this.collect_bottle.volume = 0.05;
+    this.bottle_flies.volume = 0.1;
+    this.glass_splash.volume = 0.1;
+    this.game_over.volume = 0.3;
+    this.you_win.volume = 0.3;
+  }
 
 
-    play(soundKey) {
+  /**
+   * Configures which sounds should play in a loop.
+   * @private
+   */
+  setupLoops() {
+    this.game_sound.loop = true;
+    this.endboss_fight.loop = true;
+  }
+  
+
+/**
+ * Plays a given sound if it is not muted and all sounds are not disabled.
+ * If the sound does not exist, the function does nothing.
+ * @param {string} soundKey the key of the sound to play
+ */
+  play(soundKey) {
     let sound = this[soundKey];
     if (!sound) return;
 
     // HIER fehlte die Prüfung: !this.allSoundsDisabled
     if (!this.isMuted && !this.allSoundsDisabled) {
-        sound.cloneNode(true).play();
+      sound.cloneNode(true).play();
     }
-}
+  }
 
-
-    playSingle(soundKey) {
-        // Nur abspielen, wenn nicht stumm UND Sounds nicht generell deaktiviert sind
-        if (!this.isMuted && !this.allSoundsDisabled && this[soundKey]) {
-            this[soundKey].play();
-        }
+  
+/**
+ * Plays a single sound if it is not muted and all sounds are not disabled.
+ * If the sound does not exist, the function does nothing.
+ * @param {string} soundKey the key of the sound to play
+ */
+  playSingle(soundKey) {
+    // Nur abspielen, wenn nicht stumm UND Sounds nicht generell deaktiviert sind
+    if (!this.isMuted && !this.allSoundsDisabled && this[soundKey]) {
+      this[soundKey].play();
     }
+  }
 
-
-    pause(soundKey) {
+  /**
+   * Pauses a specific sound and resets its playback position to the start.
+   * @param {string} soundKey - The key of the sound to pause.
+   */
+  pause(soundKey) {
     if (this[soundKey]) {
-        this[soundKey].pause();
-        this[soundKey].currentTime = 0; // Setzt den Sound zurück auf den Anfang (0 Sekunden)
+      this[soundKey].pause();
+      this[soundKey].currentTime = 0;
     }
-}
+  }
 
-
-    playMusic() {
+  
+  /**
+   * Plays the game music if it is not muted and all sounds are not disabled.
+   */
+  playMusic() {
     // HIER fehlte sie auch!
     if (!this.isMuted && !this.allSoundsDisabled) {
-        this.game_sound.play();
+      this.game_sound.play();
     }
-}
+  }
 
+  
+/**
+ * Stops the game music from playing.
+ * This function can be called to pause the music without changing the mute state.
+ */
+  stopMusic() {
+    this.game_sound.pause();
+  }
 
-    stopMusic() {
-        this.game_sound.pause();
+  
+/**
+ * Toggles the mute state of the game's audio.
+ * If the audio is currently muted, it will be unmuted, and vice versa.
+ * The mute button in the start screen and the in-game user interface will
+ * be updated with the new mute state.
+ */
+  toggleMute() {
+    this.isMuted = !this.isMuted;
+    if (this.isMuted) {
+      this.stopMusic();
+    } else {
+      this.playMusic();
     }
+  }
 
-
-    toggleMute() {
-        this.isMuted = !this.isMuted;
-        if (this.isMuted) {
-            this.stopMusic();
-        } else {
-            this.playMusic();
-        }
-    }
-
-
-    stopAllSounds() {
-        this.allSoundsDisabled = true;
-    // Wir gehen alle Schlüssel (Eigenschaften) der Klasse durch
-    Object.keys(this).forEach(key => {
-        let sound = this[key];
-        // Wir prüfen: Ist diese Eigenschaft ein Audio-Objekt?
-        if (sound instanceof Audio) {
-            sound.pause();
-            sound.currentTime = 0;
-        }
+  
+/**
+ * Disables all sounds in the game by pausing them and resetting their
+ * currentTime to 0. This function is useful for stopping all sounds
+ * when the game is paused or when the game is over.
+ * @description
+ * This function goes through all properties of the class and checks
+ * if they are an instance of the Audio class. If they are, it
+ * pauses the sound and resets its currentTime to 0.
+ * @example
+ * audioManager.stopAllSounds();
+ */
+  stopAllSounds() {
+    this.allSoundsDisabled = true;
+    Object.keys(this).forEach((key) => {
+      let sound = this[key];
+      if (sound instanceof Audio) {
+        sound.pause();
+        sound.currentTime = 0;
+      }
     });
-}
+  }
 }
