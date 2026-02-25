@@ -43,7 +43,7 @@ class Keyboard {
     }
 
 
-    bindToouchEvents() {
+    bindTouchEvents() {
         // LINKS
         document.getElementById('btn-left').addEventListener('touchstart', (e) => {
             e.preventDefault(); // Verhindert nerviges Zoomen/Scrollen am Handy
