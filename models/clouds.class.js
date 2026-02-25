@@ -1,29 +1,49 @@
 class Clouds extends MovableObject {
-    height = 250;
-    width = 350;
+  height = 250;
+  width = 350;
 
-     
-    
-    constructor(imagePath) {
-        super();
-        this.loadImage(imagePath); // Nutzt den Pfad, den du im Array übergeben hast
-        this.y = 0 + Math.random() * 100;
-        this.x = 100 + Math.random() * 2500;
-        this.speed = 0.01 + Math.random() * 0.5; // Zufallisge Geschwindigkeit 
-        this.animate();
-    }
+  constructor(imagePath) {
+    super();
+    this.loadImage(imagePath);
+    this.y = 0 + Math.random() * 100;
+    this.x = 100 + Math.random() * 2500;
+    this.speed = 0.01 + Math.random() * 0.5;
+    this.animate();
+  }
 
-    animate() {
-         setStoppableInterval(() => {
-             this.moveLeft();
-         }, 1000 / 60);
-        // Ein Interval läst den Code immer wider aus füren
-        setStoppableInterval(() => {
-            // Hier kommt die if Bedinung damit die Wollken immer wieder Rechts neu anfangeg
-            if (this.x < -this.width) {
-                this.x = 2500;
-                this.y = 10 + Math.random() * 100;
-            } 
-        }, 200);
+  /**
+   * Animates the cloud object by calling the handleMovement method every 16.7 milliseconds (60 FPS).
+   * This method is responsible for moving the cloud object to the left and checking if it has moved off the screen.
+   * If the cloud object has moved off the screen, it is respawned at a new random position.
+   */
+  animate() {
+    setStoppableInterval(() => this.handleMovement(), 1000 / 60);
+  }
+
+  /**
+   * Moves the cloud to the left by its speed and checks if it has moved off the screen.
+   * If it has, it respawns the cloud at a new random position.
+   */
+  handleMovement() {
+    this.moveLeft();
+    if (this.isOffScreen()) {
+      this.respawn();
     }
+  }
+
+  /**
+   * Checks if the object has moved completely off the left side of the screen.
+   * @returns {boolean} True if the object is off the screen, false otherwise.
+   */
+  isOffScreen() {
+    return this.x < -this.width;
+  }
+
+  /**
+   * Resets the cloud object to its initial position off the right side of the screen with a random y-coordinate.
+   */
+  respawn() {
+    this.x = 2500;
+    this.y = 10 + Math.random() * 100;
+  }
 }
