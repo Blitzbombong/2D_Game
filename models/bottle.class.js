@@ -31,8 +31,10 @@ class Bottle extends MovableObject {
    * The animation is played every 500ms.
    */
   animate() {
-    setStoppableInterval(() => {
-      this.playAnimation(this.IMAGES_BOTTLE);
-    }, 500);
+    setStoppableInterval(() => this.handleAnimation(), 500);
+  }
+
+  handleAnimation() {
+    this.playAnimation(this.IMAGES_BOTTLE);
   }
 }
