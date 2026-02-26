@@ -105,9 +105,6 @@ class World {
     if (mo.img) {
         mo.draw(this.ctx);
     }
-        if (typeof mo.drawFrame === 'function') {
-            mo.drawFrame(this.ctx);
-        }
 
     if (mo.otherDirection) {
         this.flipImageBack(mo);
