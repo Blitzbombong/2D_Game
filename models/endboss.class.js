@@ -79,6 +79,16 @@ class Endboss extends MovableObject {
   }
 
   /**
+   * Handles the boss movement towards the left when active.
+   */
+  handleMovement() {
+    if (this.hadFirstContact && !this.isDead() && !this.isHurt()) {
+      this.updateSpeedByEnergy();
+      this.moveLeft();
+    }
+  }
+
+  /**
    * Increases movement speed if boss energy is low.
    */
   updateSpeedByEnergy() {
