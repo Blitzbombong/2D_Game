@@ -6,8 +6,9 @@ class World {
   endbossBar = new EndbossBar();
 
   showEndbossBar = false;
-  level;
-  audioManager;
+  level = level1;
+  audioManager = audioManager;
+  collisionManager = new CollisionManager(this);
 
   throwableObjects = [];
   lastThrow = 0;
@@ -23,206 +24,134 @@ class World {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
     this.keyboard = keyboard;
-    this.level = level1;
-    this.audioManager = audioManager;
-    this.endboss = this.level.endboss;
     this.setWorld();
     this.draw();
     this.run();
   }
 
+  /**
+   * Sets the world property of the character, endboss and enemies.
+   * This property is used to access the world's properties and methods
+   * from the character, endboss and enemies.
+   * @memberof World
+   */
   setWorld() {
     this.character.world = this;
-    if (this.level.endboss) {
-      this.level.endboss.world = this;
-    }
-    this.level.enemies.forEach((enemy) => {
-      enemy.world = this;
-    });
+    if (this.level.endboss) this.level.endboss.world = this;
+    this.level.enemies.forEach((enemy) => (enemy.world = this));
   }
 
+  // --- DRAWING METHODS ---
+
   /**
-   * Main drawing loop. Clears the canvas and renders all game elements.
+   * Clears the canvas and redraws the world space and fixed elements.
+   * This method is responsible for the main drawing loop of the game.
+   * It clears the canvas, redraws the world space (background, enemies, character, etc.),
+   * and then redraws the fixed elements (health bar, coin bar, etc.).
+   * After drawing, it requests the next frame using requestAnimationFrame.
    */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
     this.drawWorldSpace();
     this.drawFixedElements();
-
     requestAnimationFrame(() => this.draw());
   }
 
   /**
-   * Draws all objects that move with the camera.
-   * @private
+   * Draws all objects in the world space, which are objects that move with the camera.
+   * This includes background objects, clouds, coins, bottles, enemies, the character, and thrown objects.
+   * The canvas is translated to the camera's position at the start of the method, and then translated back at the end.
+   * This is done to ensure that all objects in the world space are drawn relative to the camera's position.
    */
   drawWorldSpace() {
     this.ctx.translate(this.cameraX, 0);
-
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.bottles);
     this.addObjectsToMap(this.level.enemies);
-
-    if (this.level.endboss) {
-      this.addToMap(this.level.endboss);
-    }
-
+    if (this.level.endboss) this.addToMap(this.level.endboss);
     this.addToMap(this.character);
     this.addObjectsToMap(this.throwableObjects);
-
     this.ctx.translate(-this.cameraX, 0);
   }
 
   /**
-   * Draws all UI elements that stay fixed on the screen.
-   * @private
+   * Draws all objects that are not affected by the camera's movement.
+   * This includes the health bar, coin bar, bottle bar and the endboss bar.
+   * The endboss bar is only drawn if the showEndbossBar property is set to true.
    */
   drawFixedElements() {
     this.addToMap(this.healthBar);
     this.addToMap(this.coinBar);
     this.addToMap(this.bottleBar);
-    if (this.showEndbossBar) {
-      this.addToMap(this.endbossBar);
-    }
+    if (this.showEndbossBar) this.addToMap(this.endbossBar);
   }
 
   /**
-   * Adds all objects in the given array to the map.
-   * @param {Array<MovableObject>} objects - The array of objects to add to the map.
+   * Iterates over an array of objects and calls the addToMap method for each one.
+   * This method is used to easily add multiple objects to the drawing map.
+   * @param {Array<MovableObject>} objects - The array of objects to add to the drawing map.
    */
   addObjectsToMap(objects) {
-    objects.forEach((object) => {
-      this.addToMap(object);
-    });
+    objects.forEach((object) => this.addToMap(object));
   }
 
   /**
-   * Adds a movable object to the map by drawing it on the canvas.
-   * If the movable object has the otherDirection property set to true, it will be flipped horizontally before and after drawing.
-   * @param {MovableObject} mo - The movable object to add to the map.
+   * Adds a MovableObject to the drawing map.
+   * If the object is drawn in reverse, this method first calls flipImage to
+   * reverse the image, then calls draw on the object, and finally calls
+   * flipImageBack to restore the original image.
+   * @param {MovableObject} mo - The MovableObject to add to the drawing map.
    */
   addToMap(mo) {
-    if (mo.otherDirection) {
-      this.flipImage(mo);
-    }
-    if (mo.img) {
-      mo.draw(this.ctx);
-    }
-    if (mo.otherDirection) {
-      this.flipImageBack(mo);
-    }
+    if (mo.otherDirection) this.flipImage(mo);
+    if (mo.img) mo.draw(this.ctx);
+    if (mo.otherDirection) this.flipImageBack(mo);
   }
 
   /**
-   * Flips the given movable object horizontally around its x-axis.
-   * This is used to draw movable objects that need to be flipped
-   * when they are moving to the left.
-   * @param {MovableObject} mo - The movable object to flip.
+   * Reverses the image of the given MovableObject by translating it to its width and scaling it by -1.
+   * This method is used to draw the object in reverse.
+   * @param {MovableObject} mo - The MovableObject to reverse the image of.
    */
   flipImage(mo) {
     this.ctx.save();
     this.ctx.translate(mo.width, 0);
     this.ctx.scale(-1, 1);
-    mo.x = mo.x * -1;
+    mo.x *= -1;
   }
 
   /**
-   * Reverses the effects of calling flipImage on the given movable object.
-   * This method restores the original transformation matrix of the canvas and reverses the horizontal flip of the movable object.
-   * @param {MovableObject} mo - The movable object to reverse the flip on.
+   * Restores the image of the given MovableObject by restoring the canvas state and scaling it by -1.
+   * This method is used to restore the original image after drawing the object in reverse.
+   * @param {MovableObject} mo - The MovableObject to restore the image of.
    */
   flipImageBack(mo) {
-    mo.x = mo.x * -1;
+    mo.x *= -1;
     this.ctx.restore();
   }
 
+  // --- GAME LOGIC ---
+
   /**
-   * Main game loop. Calls several methods to update the game state and check for collisions and level progress.
-   * @private
+   * Main game loop.
+   * This method starts a setStoppableInterval which checks for level progress, collisions between objects, and the game state.
+   * The interval runs every 50 milliseconds.
    */
   run() {
     setStoppableInterval(() => {
       this.checkLevelProgress();
-      this.checkCollisions();
+      this.collisionManager.checkCollisions();
       this.checkGameState();
     }, 50);
   }
 
   /**
-   * Checks for all types of collisions between the character and other objects in the level.
-   * This includes checking for collisions with enemies, collectible items, thrown objects, and the ground.
-   * This method is responsible for calling the other collision checking methods in the right order.
-   */
-  checkCollisions() {
-    this.checkEnemyCollisions();
-    this.checkBossCollision();
-    this.checkItemCollisions();
-    this.checkThrowingCollisions();
-    this.checkThrowObjects();
-    this.checkBottleGroundCollision();
-  }
-
-  /**
-   * Specifically checks collision with the endboss.
-   */
-  checkBossCollision() {
-    const boss = this.level.endboss;
-    if (boss && this.character.isColliding(boss)) {
-      this.handleCharacterHit();
-    }
-  }
-
-  /**
-   * Checks collisions with the regular enemies array.
-   */
-  checkEnemyCollisions() {
-    this.level.enemies.forEach((enemy) => {
-      if (!enemy.isDead && this.character.isColliding(enemy)) {
-        this.handleEnemyCollision(enemy);
-      }
-    });
-  }
-
-  /**
-   * Main handler for enemy collisions (Chickens & Small Chickens).
-   * @param {MovableObject} enemy
-   */
-  handleEnemyCollision(enemy) {
-    if (enemy.isDead) {
-      return;
-    }
-
-    const isStomping = this.isCharacterStomping(enemy);
-    const isFalling = this.character.speedY < 0;
-
-    if (isStomping && isFalling) {
-      this.killEnemy(enemy);
-    } else {
-      this.handleCharacterHit();
-    }
-  }
-
-  /**
-   * Checks if the character's bottom is above the enemy's vertical center.
-   * This prevents taking damage when landing precisely on top.
-   * @param {MovableObject} enemy
-   * @returns {boolean}
-   */
-  isCharacterStomping(enemy) {
-    const characterBottom =
-      this.character.y + this.character.height - this.character.offset.bottom;
-    const enemyTopThreshold = enemy.y + enemy.offset.top + enemy.height * 0.5;
-
-    return characterBottom < enemyTopThreshold;
-  }
-
-  /**
-   * Handles the character getting hit by an enemy.
-   * If the character is not already hurt, this method reduces the character's energy and plays a hurt sound.
-   * It also updates the health bar in the UI to reflect the character's new energy level.
+   * Handles the logic for when the character is hit.
+   * This method checks if the character is not already hurt, then
+   * reduces the character's energy, plays the hurt sound effect, and
+   * updates the health bar to reflect the character's new energy level.
    */
   handleCharacterHit() {
     if (!this.character.isHurt()) {
@@ -233,8 +162,9 @@ class World {
   }
 
   /**
-   * Kills an enemy and plays a plop sound.
-   * @param {MovableObject} enemy
+   * Handles the logic for when an enemy is killed.
+   * This method makes the enemy die, plays the chicken pop sound effect, bounces the character, and removes the enemy from the level with a delay of 500 milliseconds.
+   * @param {MovableObject} enemy - The enemy object to kill.
    */
   killEnemy(enemy) {
     enemy.die();
@@ -244,95 +174,20 @@ class World {
   }
 
   /**
-   * Checks for collisions between the character and collectible items.
-   */
-  checkItemCollisions() {
-    this.checkCoinCollisions();
-    this.checkBottleCollisions();
-  }
-
-  /**
-   * Handles collision logic for coins.
-   */
-  checkCoinCollisions() {
-    this.level.coins.forEach((coin, index) => {
-      if (this.character.isColliding(coin)) {
-        this.audioManager.play("collect_coin");
-        this.character.collectCoin();
-        this.level.coins.splice(index, 1);
-        this.coinBar.setPercentage(this.character.coins);
-      }
-    });
-  }
-
-  /**
-   * Handles collision logic for bottles, including inventory checks.
-   */
-  checkBottleCollisions() {
-    this.level.bottles.forEach((bottle, index) => {
-      if (this.character.isColliding(bottle) && this.character.bottles < 100) {
-        this.character.collectBottle();
-        this.audioManager.play("collect_bottle");
-        this.level.bottles.splice(index, 1);
-        this.bottleBar.setPercentage(this.character.bottles);
-      }
-    });
-  }
-
-  /**
-   * Checks if any thrown bottles collide with enemies or the endboss.
-   */
-  checkThrowingCollisions() {
-    this.throwableObjects.forEach((bottle) => {
-      this.checkBottleEnemyCollisions(bottle);
-      this.checkBottleBossCollision(bottle);
-    });
-    this.cleanUpBottles();
-  }
-
-  /**
-   * Checks collision between one specific bottle and all regular enemies.
-   * @param {ThrowableObject} bottle
-   */
-  checkBottleEnemyCollisions(bottle) {
-    this.level.enemies.forEach((enemy) => {
-      if (this.isHit(bottle, enemy)) {
-        bottle.break();
-        enemy.die();
-        this.audioManager.play("glass_splash");
-        this.removeEnemyWithDelay(enemy);
-      }
-    });
-  }
-
-  /**
-   * Removes an enemy from the level after a short delay.
-   * @param {MovableObject} enemy
+   * Removes an enemy from the level with a delay of 500 milliseconds.
+   * @param {MovableObject} enemy - The enemy object to remove.
    */
   removeEnemyWithDelay(enemy) {
     setTimeout(() => {
       let index = this.level.enemies.indexOf(enemy);
-      if (index > -1) {
-        this.level.enemies.splice(index, 1);
-      }
+      if (index > -1) this.level.enemies.splice(index, 1);
     }, 500);
   }
 
   /**
-   * Checks collision between one specific bottle and the endboss.
-   * @param {ThrowableObject} bottle
-   */
-  checkBottleBossCollision(bottle) {
-    const boss = this.level.endboss;
-    if (boss && this.isHit(bottle, boss)) {
-      this.handleBossHit(bottle, boss);
-    }
-  }
-
-  /**
-   * Logic for when the boss actually gets hit by a bottle.
-   * @param {ThrowableObject} bottle
-   * @param {Endboss} boss
+   * Handles the logic for when the boss is hit by a bottle.
+   * @param {ThrowableObject} bottle - The bottle object that hit the boss.
+   * @param {Endboss} boss - The boss object that was hit.
    */
   handleBossHit(bottle, boss) {
     bottle.break();
@@ -343,8 +198,9 @@ class World {
   }
 
   /**
-   * Removes bottles from the world that are either broken
-   * and have finished their splash animation or are out of bounds.
+   * Removes all broken bottles from the list of thrown bottles.
+   * A bottle is considered broken if its current image index is equal to or greater than the length of the bottle splash animation array.
+   * This method is called after checking for collisions between thrown bottles and enemies or the endboss.
    */
   cleanUpBottles() {
     this.throwableObjects = this.throwableObjects.filter((b) => {
@@ -353,27 +209,9 @@ class World {
   }
 
   /**
-   * Checks if a specific bottle hits an enemy and hasn't already shattered.
-   * @param {ThrowableObject} bottle
-   * @param {MovableObject} enemy
-   * @returns {boolean}
-   */
-  isHit(bottle, enemy) {
-    return bottle.isColliding(enemy) && !bottle.isBroken;
-  }
-
-  /**
-   * Checks if the player wants to throw a bottle and if the requirements are met.
-   */
-  checkThrowObjects() {
-    if (this.canThrow()) {
-      this.executeThrow();
-    }
-  }
-
-  /**
-   * Validates if a bottle can be thrown (Key pressed, bottles available, cooldown finished).
-   * @returns {boolean}
+   * Checks if the player can throw a bottle.
+   * This method checks if the spacebar is pressed, if the character has at least one bottle left, and if at least one second has passed since the last throw.
+   * @returns {boolean} True if the player can throw a bottle, false otherwise.
    */
   canThrow() {
     const timePassed = new Date().getTime() - this.lastThrow;
@@ -381,7 +219,10 @@ class World {
   }
 
   /**
-   * Creates a new bottle, handles inventory reduction and plays the sound.
+   * Executes the throwing of a bottle.
+   * This method creates a new ThrowableObject at the character's position with the correct direction.
+   * It then adds the bottle to the list of thrown bottles, reduces the character's bottles by 20, and sets the last throw time.
+   * Finally, it updates the bottle bar and plays the bottle flying sound effect.
    */
   executeThrow() {
     let bottle = new ThrowableObject(
@@ -392,131 +233,60 @@ class World {
     this.throwableObjects.push(bottle);
     this.character.bottles -= 20;
     this.lastThrow = new Date().getTime();
-
     this.bottleBar.setPercentage(this.character.bottles);
     this.audioManager.play("bottle_flies");
   }
 
   /**
-   * Checks if any thrown bottles hit the ground and triggers the splash effect.
-   */
-  checkBottleGroundCollision() {
-    const groundLevel = 350;
-
-    this.throwableObjects.forEach((bottle) => {
-      if (bottle.y > groundLevel && !bottle.isBroken) {
-        bottle.break();
-        this.audioManager.play("glass_splash");
-      }
-    });
-  }
-
-  /**
-   * Monitors character progress to trigger the boss fight at a specific position.
+   * Checks if the level has been completed and if the endboss fight has already started.
+   * If the character has moved past the level end (x > 1900), the game has not ended, and the endboss fight has not started, it starts the endboss fight.
    */
   checkLevelProgress() {
-    const bossTriggerX = 1900;
-    const isPastTrigger = this.character.x > bossTriggerX;
-
-    if (!this.gameEnded && isPastTrigger && !this.bossFightStarted) {
+    if (!this.gameEnded && this.character.x > 1900 && !this.bossFightStarted) {
       this.bossFightStarted = true;
       this.startBossFight();
     }
   }
 
   /**
-   * Orchestrates the transition to the endboss fight.
+   * Starts the endboss fight by stopping the game sound, clearing the level enemies, and enabling the endboss bar.
+   * After a short delay, the endboss fight sound effect is played.
+   * @private
    */
   startBossFight() {
-    this.prepareArena();
-    this.clearRegularEnemies();
-    this.activateEndboss();
-    this.startBossMusic();
-  }
-
-  /**
-   * Stops regular game music and handles initial arena setup.
-   */
-  prepareArena() {
     this.audioManager.pause("game_sound");
-  }
-
-  /**
-   * Instantly kills remaining enemies and clears them after a short delay.
-   */
-  clearRegularEnemies() {
     this.level.enemies.forEach((enemy) => (enemy.energy = 0));
-    setTimeout(() => {
-      this.level.enemies = [];
-    }, 500);
-  }
+    setTimeout(() => (this.level.enemies = []), 500);
 
-  /**
-   * Triggers the boss behavior and shows the health bar.
-   */
-  activateEndboss() {
     const boss = this.level.endboss;
     if (boss) {
       boss.hadFirstContact = true;
       this.showEndbossBar = true;
     }
-  }
 
-  /**
-   * Starts boss music with a slight delay for dramatic effect.
-   */
-  startBossMusic() {
     setTimeout(() => {
-      if (!this.gameEnded) {
-        this.audioManager.playSingle("endboss_fight");
-      }
+      if (!this.gameEnded) this.audioManager.playSingle("endboss_fight");
     }, 1000);
   }
 
   /**
-   * Continuously checks if the game has reached a win or loss condition.
+   * Checks the game state and ends the game if the character's energy is 0 or the endboss's energy is 0.
+   * If the character's energy is 0, the game over screen is shown.
+   * If the endboss's energy is 0, the you win screen is shown.
+   * @private
    */
   checkGameState() {
-    if (this.gameEnded) return; // Guard Clause: Wenn vorbei, dann Ende.
-
-    if (this.isCharacterDead()) {
-      this.handleLoss();
-    } else if (this.isBossDead()) {
-      this.handleWin();
-    }
+    if (this.gameEnded) return;
+    if (this.character.energy <= 0) this.handleEnd(showGameOver);
+    else if (this.level.endboss?.energy <= 0) this.handleEnd(showYouWin);
   }
 
   /**
-   * @returns {boolean} True if Pepe's energy reaches zero.
+   * Handles the end of the game by setting the game ended flag and calling the provided function after a 2 second delay.
+   * @param {function} showScreenFunc - Function to be called after the delay, typically used to show the game over or you win screens.
    */
-  isCharacterDead() {
-    return this.character.energy <= 0;
-  }
-
-  /**
-   * @returns {boolean} True if the endboss exists and its energy reaches zero.
-   */
-  isBossDead() {
-    return this.level.endboss && this.level.endboss.energy <= 0;
-  }
-
-  /**
-   * Stops the game and triggers the game over sequence.
-   */
-  handleLoss() {
+  handleEnd(showScreenFunc) {
     this.gameEnded = true;
-    setTimeout(() => {
-      showGameOver();
-    }, 2000);
-  }
-
-  /**
-   * Stops the game and triggers the victory sequence.
-   */
-  handleWin() {
-    this.gameEnded = true;
-    setTimeout(() => {
-      showYouWin();
-    }, 2000);
+    setTimeout(() => showScreenFunc(), 2000);
   }
 }
