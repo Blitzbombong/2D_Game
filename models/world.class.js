@@ -25,7 +25,7 @@ class World {
     this.keyboard = keyboard;
     this.level = level1;
     this.audioManager = audioManager;
-    this.endboss = this.level.enemies.find((e) => e.isBoss);
+    this.endboss = this.level.endboss;
     this.setWorld();
     this.draw();
     this.run();
@@ -53,10 +53,6 @@ class World {
     requestAnimationFrame(() => this.draw());
   }
 
-  /**
-   * Draws all objects that move with the camera.
-   * @private
-   */
   /**
    * Draws all objects that move with the camera.
    * @private
@@ -156,8 +152,31 @@ class World {
   }
 
   /**
-   * Checks for collisions between the character and all enemies in the current level.
-   * If a collision is detected, the handleEnemyCollision method is called to decide whether the enemy dies or the character gets hurt.
+   * Checks for all types of collisions between the character and other objects in the level.
+   * This includes checking for collisions with enemies, collectible items, thrown objects, and the ground.
+   * This method is responsible for calling the other collision checking methods in the right order.
+   */
+  checkCollisions() {
+    this.checkEnemyCollisions();
+    this.checkBossCollision();
+    this.checkItemCollisions();
+    this.checkThrowingCollisions();
+    this.checkThrowObjects();
+    this.checkBottleGroundCollision();
+  }
+
+  /**
+   * Specifically checks collision with the endboss.
+   */
+  checkBossCollision() {
+    const boss = this.level.endboss;
+    if (boss && this.character.isColliding(boss)) {
+      this.handleCharacterHit();
+    }
+  }
+
+  /**
+   * Checks collisions with the regular enemies array.
    */
   checkEnemyCollisions() {
     this.level.enemies.forEach((enemy) => {
@@ -265,19 +284,6 @@ class World {
         this.bottleBar.setPercentage(this.character.bottles);
       }
     });
-  }
-
-  /**
-   * Checks for all types of collisions between the character and other objects in the level.
-   * This includes checking for collisions with enemies, collectible items, thrown objects, and the ground.
-   * This method is responsible for calling the other collision checking methods in the right order.
-   */
-  checkCollisions() {
-    this.checkEnemyCollisions();
-    this.checkItemCollisions();
-    this.checkThrowingCollisions();
-    this.checkThrowObjects();
-    this.checkBottleGroundCollision();
   }
 
   /**

@@ -1,120 +1,140 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <script src="js/utils.js"></script>
-    <script src="models/drawable_object.class.js"></script>
-    <script src="models/movable-object.class.js"></script>
-    <script src="models/audio-manager.class.js"></script>
-    <script src="models/status-bar.class.js"></script>
-    <script src="models/coin-bar.class.js"></script>
-    <script src="models/health-bar.class.js"></script>
-    <script src="models/bottle-bar.class.js"></script>
-    <script src="models/throwable-object.class.js"></script>
-    <script src="models/endboss-bar.class.js"></script>
-    <script src="models/background-object.class.js"></script>
-    <script src="models/character.class.js"></script>
-    <script src="models/chicken.class.js"></script>
-    <script src="models/clouds.class.js"></script>
-    <script src="models/keyboard.class.js"></script>
-    <script src="models/endboss.class.js"></script>
-    <script src="models/small_chicken.class.js"></script>
-    <script src="models/bottle.class.js"></script>
-    <script src="models/coins.class.js"></script>
-    <script src="models/level.class.js"></script>
-    <script src="levels/level1.js"></script>
-    <script src="models/world.class.js"></script>
-    <script src="js/game.js"></script>
-    <title>Document</title>
-</head>
-<body onload="init()">
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="img/2_character_pepe/2_walk/W-21.png"
+    />
+    <script src="js/utils.js" defer></script>
+    <script src="models/drawable_object.class.js" defer></script>
+    <script src="models/movable-object.class.js" defer></script>
+    <script src="models/audio-manager.class.js" defer></script>
+    <script src="models/status-bar.class.js" defer></script>
+    <script src="models/coin-bar.class.js" defer></script>
+    <script src="models/health-bar.class.js" defer></script>
+    <script src="models/bottle-bar.class.js" defer></script>
+    <script src="models/throwable-object.class.js" defer></script>
+    <script src="models/endboss-bar.class.js" defer></script>
+    <script src="models/background-object.class.js" defer></script>
+    <script src="models/character.class.js" defer></script>
+    <script src="models/chicken.class.js" defer></script>
+    <script src="models/clouds.class.js" defer></script>
+    <script src="models/keyboard.class.js" defer></script>
+    <script src="models/endboss.class.js" defer></script>
+    <script src="models/small_chicken.class.js" defer></script>
+    <script src="models/bottle.class.js" defer></script>
+    <script src="models/coins.class.js" defer></script>
+    <script src="models/level.class.js" defer></script>
+    <script src="levels/level1.js" defer></script>
+    <script src="models/world.class.js" defer></script>
+    <script src="js/game.js" defer></script>
+    <title>El pollo loko</title>
+  </head>
+  <body onload="init()">
     <div id="rotate-screen" class="rotate-device-overlay">
-        <div class="rotate-content">
-            <p>Bitte drehe dein Handy ins Querformat</p>
-            <div class="rotate-icon">📱🔄</div>
-            </div>
+      <div class="rotate-content">
+        <p>Bitte drehe dein Handy ins Querformat</p>
+        <div class="rotate-icon">📱🔄</div>
+      </div>
     </div>
 
-    <div>
-        <h1>El pollo loko</h1>
-    </div>
+    <header>
+      <h1>El pollo loko</h1>
+    </header>
 
-        <div id="game-container">
-            <div id="start-screen">
-                <img src="img/9_intro_outro_screens/start/startscreen_1.png" class="responsive-img">
-                
-                <div class="menu-buttons">
-                    <button onclick="startGame()" id="play-button">PLAY</button>
-                    <button onclick="toggleMute()" id="mute-button">🔊</button>
-                    <button onclick="toggleFullscreen()" id="fullscreen-button">⛶</button>
-                </div>
-            </div>
-            <div id="ingame-ui" class="ingame-ui d-none">
-                <button onclick="backToMenu()" class="ingame-btn">🏠</button>
-                <button onclick="toggleMute()" id="mute-btn-ingame" class="ingame-btn">🔊</button>
-                <button onclick="toggleFullscreen()" class="ingame-btn desktop-only">⛶</button>
-            </div>
-            <div id="game-over-screen" class="overlay d-none">
-                <img src="img/You won, you lost/Game over A.png" alt="Game Over">
-                <div class="button-container">
-                    <button onclick="backToMenu()" class="menu-button">
-                        <i class="fa-solid fa-house"></i>
-                    </button>
-                    <button onclick="restartGame()" class="restart-button">
-                        <i class="fa-solid fa-rotate-right"></i>
-                    </button>
-                </div>
-            </div>
+    <main id="game-container">
+      <div id="start-screen">
+        <img
+          src="img/9_intro_outro_screens/start/startscreen_1.png"
+          class="responsive-img"
+        />
 
-            <div id="you-win-screen" class="overlay d-none">
-                <img src="img/You won, you lost/You Win A.png" alt="You Win">
-                <div class="button-container">
-                     <button onclick="backToMenu()" class="menu-button">
-                        <i class="fa-solid fa-house"></i>
-                    </button>
-                    <button onclick="restartGame()" class="restart-button">
-                        <i class="fa-solid fa-rotate-right"></i>
-                    </button>
-                </div>
-            </div>
-            <div id="mobile-controls" class="mobile-only d-none">
-                <div class="control-group-left">
-                    <button id="btn-left" class="mobile-btn"><img src="icons/arrow_left_mobil.svg" alt="arrow_left"></button>
-                    <button id="btn-right" class="mobile-btn"><img src="icons/arrow_right_mobil.svg" alt="arrow_right"></button>
-                </div>
-                <div class="control-group-right">
-                    <button id="btn-jump" class="mobile-btn"><img src="icons/jump_mobil.svg" alt="jump"></button>
-                    <button id="btn-throw" class="mobile-btn"><img src="icons/bootle_mobil.svg" alt="throw_bottle"></button>
-                </div>
-            </div>
-
-            
-
-            <canvas id="myCanvas" width="720" height="480"></canvas>
+        <div class="menu-buttons">
+          <button onclick="startGame()" id="play-button">PLAY</button>
+          <button onclick="toggleMute()" id="mute-button">🔊</button>
+          <button onclick="toggleFullscreen()" id="fullscreen-button">⛶</button>
         </div>
+      </div>
+      <div id="ingame-ui" class="ingame-ui d-none">
+        <button onclick="backToMenu()" class="ingame-btn">🏠</button>
+        <button onclick="toggleMute()" id="mute-btn-ingame" class="ingame-btn">
+          🔊
+        </button>
+        <button onclick="toggleFullscreen()" class="ingame-btn desktop-only">
+          ⛶
+        </button>
+      </div>
+      <div id="game-over-screen" class="overlay d-none">
+        <img src="img/You won, you lost/Game over A.png" alt="Game Over" />
+        <div class="button-container">
+          <button onclick="backToMenu()" class="menu-button">
+            <i class="fa-solid fa-house"></i>
+          </button>
+          <button onclick="restartGame()" class="restart-button">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+        </div>
+      </div>
 
-        <div id="desktop-instructions" class="desktop-only">
-                <div class="instruction-item">
-                    <span class="keyboard-key key-walk">
-                        <img src="icons/arrow-left-d.svg" alt="arrow-left">
-                        <img src="icons/arrow-right-d.svg" alt="arrow-right">
-                    </span>
-                    <span class="instruction-text">Bewegen</span>
-                </div>
-                <div class="instruction-item">
-                    <span class="keyboard-key key-space">
-                        <img class="space-jump" src="icons/space-jump-d.svg" alt="jump">
-                    </span>
-                    <span class="instruction-text">Springen</span>
-                </div>
-                <div class="instruction-item">
-                    <span class="keyboard-key">S</span>
-                    <span class="instruction-text">Werfen</span>
-                </div>
-            </div>
-</body>
+      <div id="you-win-screen" class="overlay d-none">
+        <img src="img/You won, you lost/You Win A.png" alt="You Win" />
+        <div class="button-container">
+          <button onclick="backToMenu()" class="menu-button">
+            <i class="fa-solid fa-house"></i>
+          </button>
+          <button onclick="restartGame()" class="restart-button">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+        </div>
+      </div>
+      <div id="mobile-controls" class="mobile-only d-none">
+        <div class="control-group-left">
+          <button id="btn-left" class="mobile-btn">
+            <img src="icons/arrow_left_mobil.svg" alt="arrow_left" />
+          </button>
+          <button id="btn-right" class="mobile-btn">
+            <img src="icons/arrow_right_mobil.svg" alt="arrow_right" />
+          </button>
+        </div>
+        <div class="control-group-right">
+          <button id="btn-jump" class="mobile-btn">
+            <img src="icons/jump_mobil.svg" alt="jump" />
+          </button>
+          <button id="btn-throw" class="mobile-btn">
+            <img src="icons/bootle_mobil.svg" alt="throw_bottle" />
+          </button>
+        </div>
+      </div>
+
+      <canvas id="myCanvas" width="720" height="480"></canvas>
+    </main>
+
+    <div id="desktop-instructions" class="desktop-only">
+      <div class="instruction-item">
+        <span class="keyboard-key key-walk">
+          <img src="icons/arrow-left-d.svg" alt="arrow-left" />
+          <img src="icons/arrow-right-d.svg" alt="arrow-right" />
+        </span>
+        <span class="instruction-text">Bewegen</span>
+      </div>
+      <div class="instruction-item">
+        <span class="keyboard-key key-space">
+          <img class="space-jump" src="icons/space-jump-d.svg" alt="jump" />
+        </span>
+        <span class="instruction-text">Springen</span>
+      </div>
+      <div class="instruction-item">
+        <span class="keyboard-key">S</span>
+        <span class="instruction-text">Werfen</span>
+      </div>
+    </div>
+  </body>
 </html>
