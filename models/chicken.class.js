@@ -81,5 +81,9 @@ class Chicken extends MovableObject {
   die() {
     this.isDead = true;
     this.speed = 0;
+    // Setze direkt das erste Bild aus der Todes-Animation
+    if (this.IMAGES_DEAD && this.IMAGES_DEAD.length > 0) {
+      this.loadImage(this.IMAGES_DEAD[0]);
+    }
   }
 }

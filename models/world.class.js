@@ -187,21 +187,36 @@ class World {
   }
 
   /**
-   * Handles a collision between the character and an enemy.
-   * If the character is above the ground, not hurt, and falling down (i.e. speedY < 0),
-   * the enemy is killed. Otherwise, the character is hurt.
-   * @param {Enemy} enemy - The enemy object that collided with the character
+   * Main handler for enemy collisions (Chickens & Small Chickens).
+   * @param {MovableObject} enemy
    */
   handleEnemyCollision(enemy) {
-    if (
-      this.character.isAboveGround() &&
-      !enemy.isBoss &&
-      this.character.speedY < 0
-    ) {
+    if (enemy.isDead) {
+      return;
+    }
+
+    const isStomping = this.isCharacterStomping(enemy);
+    const isFalling = this.character.speedY < 0;
+
+    if (isStomping && isFalling) {
       this.killEnemy(enemy);
     } else {
       this.handleCharacterHit();
     }
+  }
+
+  /**
+   * Checks if the character's bottom is above the enemy's vertical center.
+   * This prevents taking damage when landing precisely on top.
+   * @param {MovableObject} enemy
+   * @returns {boolean}
+   */
+  isCharacterStomping(enemy) {
+    const characterBottom =
+      this.character.y + this.character.height - this.character.offset.bottom;
+    const enemyTopThreshold = enemy.y + enemy.offset.top + enemy.height * 0.5;
+
+    return characterBottom < enemyTopThreshold;
   }
 
   /**
@@ -218,36 +233,14 @@ class World {
   }
 
   /**
-   * Handles a collision between the character and a chicken enemy.
-   * If the character is above the ground, the chicken is killed.
-   * Otherwise, the character is hurt.
-   * @param {Enemy} enemy - The chicken enemy object that collided with the character
-   */
-  handleChickenCollision(enemy) {
-    if (this.character.isAboveGround()) {
-      this.killEnemy(enemy);
-    } else {
-      this.handleCharacterHit();
-    }
-  }
-
-  /**
-   * Kills the given enemy object.
-   * This method is used to kill the chicken enemies when the character lands on them.
-   * It removes the enemy object from the level's array of enemies and plays a sound effect.
-   * It also calls the bounce method on the character to make it bounce up after killing the enemy.
-   * @param {Enemy} enemy - The enemy object to kill.
+   * Kills an enemy and plays a plop sound.
+   * @param {MovableObject} enemy
    */
   killEnemy(enemy) {
     enemy.die();
     this.audioManager.play("chicken_plop");
     this.character.bounce();
-    setTimeout(() => {
-      let index = this.level.enemies.indexOf(enemy);
-      if (index > -1) {
-        this.level.enemies.splice(index, 1);
-      }
-    }, 500);
+    this.removeEnemyWithDelay(enemy);
   }
 
   /**
@@ -307,8 +300,22 @@ class World {
         bottle.break();
         enemy.die();
         this.audioManager.play("glass_splash");
+        this.removeEnemyWithDelay(enemy);
       }
     });
+  }
+
+  /**
+   * Removes an enemy from the level after a short delay.
+   * @param {MovableObject} enemy
+   */
+  removeEnemyWithDelay(enemy) {
+    setTimeout(() => {
+      let index = this.level.enemies.indexOf(enemy);
+      if (index > -1) {
+        this.level.enemies.splice(index, 1);
+      }
+    }, 500);
   }
 
   /**
