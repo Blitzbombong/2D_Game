@@ -4,7 +4,7 @@
 }
 
 body {
-  font-family: 'Bangers', system-ui;
+  font-family: "Bangers", system-ui;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,10 +19,10 @@ body {
 h1 {
   font-size: 84px;
   letter-spacing: 4px;
-  color: #FFC107;
-  text-shadow: 
-        4px 4px 0px #D32F2F,
-        6px 6px 0px #000000;
+  color: #ffc107;
+  text-shadow:
+    4px 4px 0px #d32f2f,
+    6px 6px 0px #000000;
   transform: rotate(-2deg);
   margin-top: 50px;
   margin-bottom: 30px;
@@ -32,7 +32,7 @@ h1 {
   display: none !important;
 }
 
-/* Der Container für die Anleitung */
+/* Desktop Instructions */
 #desktop-instructions {
   min-width: 720px;
   display: flex;
@@ -52,11 +52,11 @@ h1 {
 }
 
 .instruction-item .keyboard-key {
-  display: inline-flex; /* Flexbox hilft beim Zentrieren */
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 5px 10px;
-  font-family: monospace, sans-serif; /* Sieht technischer aus */
+  font-family: monospace, sans-serif;
   font-weight: bold;
   font-size: 18px;
   background-color: rgba(255, 150, 0, 0.9);
@@ -77,7 +77,7 @@ h1 {
 }
 
 .instruction-text {
-    letter-spacing: 4px;
+  letter-spacing: 4px;
   color: rgb(255, 255, 255);
   font-size: 18px;
   font-weight: bold;

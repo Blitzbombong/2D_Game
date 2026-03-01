@@ -1,5 +1,4 @@
 /* Mobile Design and instructions */
-
 .mobile-only {
   position: absolute;
   bottom: 20px;
@@ -36,7 +35,6 @@
 }
 
 /* Overlay for mobile rotate display animation */
-
 .rotate-device-overlay {
   display: none;
 }
