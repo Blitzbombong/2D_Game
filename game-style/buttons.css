@@ -1,0 +1,125 @@
+.menu-buttons {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 2;
+}
+
+#play-button,
+#mute-button,
+#fullscreen-button {
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  color: yellow;
+  border-radius: 12px;
+  padding: 10px 25px;
+  font-size: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease-in-out;
+}
+
+#play-button:hover,
+#mute-button:hover,
+#fullscreen-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05); /* Wird minimal größer */
+}
+
+#play-button {
+  font-size: 28px;
+  font-weight: bold;
+  padding: 20px 40px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.button-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 2;
+  top: -160px;
+}
+
+.restart-button,
+.menu-button {
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  color: yellow;
+  border-radius: 12px;
+  padding: 20px 40px;
+  font-size: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease-in-out;
+}
+
+.restart-button:hover,
+.menu-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05); /* Wird minimal größer */
+}
+
+/* Ingame UI */
+.ingame-ui {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 60;
+}
+
+.ingame-btn {
+  background-color: rgba(255, 230, 0, 0.2);
+  border: 2px solid rgba(255, 230, 0, 0.4);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 20px;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(2px);
+  transition: all 0.2s ease-in-out;
+}
+
+.ingame-btn:hover {
+  background-color: rgba(255, 230, 0, 0.4);
+  transform: scale(1.1);
+}
+
+.ingame-btn i,
+.ingame-btn span {
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.5));
+}
+
+.mobile-btn {
+  pointer-events: auto;
+  background-color: rgba(255, 230, 0, 0.2);
+  border: 2px solid rgba(255, 230, 0, 0.4);
+  border-radius: 50%; /* Macht die Buttons perfekt rund */
+  width: 50px;
+  height: 50px;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.mobile-btn img {
+  width: 40px;
+  height: 40px;
+  filter: brightness(0);
+  opacity: 0.7;
+  transition: opacity 0.2s ease-in-out;
+}
