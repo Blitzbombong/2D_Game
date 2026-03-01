@@ -1,0 +1,29 @@
+body {
+  background: url("../img/bg_images/bg-image1.png");
+  color: #333;
+  padding: 50px;
+  font-family: "Zilla Slab", serif;
+}
+
+.legal-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: rgb(251, 243, 146);
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.back-link:hover {
+  color: #e57373;
+  transition: all 0.1s ease-in-out;
+}
+
