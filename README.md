@@ -1,32 +1,39 @@
 # 🌵 El Pollo Loco - 2D Platformer Game
 
-Ein actionreiches 2D-Jump-and-Run-Spiel, entwickelt mit modernem JavaScript und der HTML5-Canvas-API. Begleite Pepe auf seinem Abenteuer durch die Wüste, besiege Hühner und stelle dich dem gefürchteten Endboss!
-
-
+A fast-paced 2D action-adventure game built with modern JavaScript and the HTML5 Canvas API. Join Pepe on his journey through the desert, defeat pesky chickens, and face the legendary Endboss!
 
 ## 🚀 Live Demo
-Schau dir das Spiel hier an: [blitzbombong.github.io/2D_Game/](https://blitzbombong.github.io/2D_Game/)
-
-## 🛠️ Technische Highlights
-Dieses Projekt wurde im Rahmen meiner Ausbildung zum Frontend-Entwickler erstellt. Mein Fokus lag dabei auf **sauberem Code** und **objektorientierter Programmierung (OOP)**.
-
-* **OOP-Architektur:** Konsequente Nutzung von Klassen und Vererbung für eine modulare und skalierbare Codebasis.
-* **Physik-Engine:** Implementierung von Schwerkraft, Kollisionsabfragen (inklusive Hitbox-Offsets) und Sprungmechaniken.
-* **Animationen:** Flüssige Charakter-Animationen durch Frame-basierte Logik.
-* **Parallax-Effekt:** Dynamische Hintergrundgestaltung (Wolken/Layer) für optische Tiefe.
-* **Level-Design:** Dynamische Verteilung von Gegnern und Items (Münzen & Flaschen).
-
-## 💻 Tech Stack
-* **Sprache:** JavaScript (ES6+)
-* **Grafik:** HTML5 Canvas
-* **Styling:** CSS3 & HTML5
-* **Deployment:** GitHub Pages
-
-## 📖 Key Learnings
-Während der Entwicklung dieses Spiels habe ich wertvolle Erfahrungen in folgenden Bereichen gesammelt:
-- Wie man komplexe Logik in überschaubare Klassen unterteilt.
-- Die Trennung von Spiel-Logik (Berechnungen) und Rendering (Zeichnen auf dem Canvas).
-- Debugging von Kollisionen und Optimierung der Performance durch gezielte Intervall-Steuerung.
+Experience the game here: [blitzbombong.github.io/2D_Game/](https://blitzbombong.github.io/2D_Game/)
 
 ---
-*Erstellt mit Leidenschaft auf dem Weg zum ersten Job als Frontend-Entwickler.*
+
+## 🏗️ Architecture & Technical Highlights
+This project was developed during my journey to becoming a Frontend Developer. My main focus was on **Clean Code**, **Modular Architecture**, and **Object-Oriented Programming (OOP)**.
+
+* **Advanced OOP Structure:** Systematic use of classes and inheritance to ensure a scalable and maintainable codebase.
+* **Collision Manager (Delegation Pattern):** To keep the logic clean, I extracted the entire collision detection into a dedicated `CollisionManager`. This "Referee" class handles all interactions, reducing the complexity of the main `World` class by over 60%.
+* **Custom Physics Engine:** Implementation of gravity, jump mechanics, and precise collision detection using custom hitbox offsets.
+* **Modular Styling:** CSS is organized into logical modules (e.g., `layout.css`, `buttons.css`, `responsive.css`) to maintain clarity and prevent style conflicts.
+* **Parallax Effect:** Multiple background layers (clouds and desert elements) moving at different speeds to create a sense of depth.
+
+
+
+## 🎮 Controls
+- **Arrow Keys (Left/Right):** Move Pepe
+- **Space / Arrow Up:** Jump
+- **S Key:** Throw a Bottle (requires bottles collected)
+
+## 💻 Tech Stack
+- **Logic:** JavaScript (ES6+)
+- **Rendering:** HTML5 Canvas
+- **Styling:** CSS3 & HTML5
+- **Deployment:** GitHub Pages
+
+## 📖 Key Learnings & Growth
+This project represents a significant milestone in my development. After a one-year coding hiatus, I successfully tackled this complex project by:
+- **Refactoring Monoliths:** Learning how to break down a 500+ line class into smaller, focused modules.
+- **State Management:** Handling game states (Start, Play, Game Over, Win) and synchronized animations.
+- **Problem Solving:** Debugging complex interaction bugs and optimizing performance through controlled intervals.
+
+---
+*Created with passion by a dedicated Frontend Developer aspirant. Ready for the first professional challenge!*
