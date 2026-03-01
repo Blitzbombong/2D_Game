@@ -46,7 +46,7 @@ class CollisionManager {
   checkBossCollision() {
     const boss = this.level.endboss;
     if (boss && this.character.isColliding(boss)) {
-      this.handleCharacterHit();
+      this.world.handleCharacterHit();
     }
   }
 
