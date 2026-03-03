@@ -25,7 +25,6 @@ function startGame() {
   checkAndShowMobileControls();
   initLevel1();
   initWorld();
-  updateMuteIcons();
   audioManager.playMusic();
   document.getElementById("ingame-ui").classList.remove("d-none");
 }
@@ -63,10 +62,8 @@ function initWorld() {
 function enterFullscreen(element) {
   if (element.requestFullscreen) {
     element.requestFullscreen().then(() => {
-      // Handy automatisch ins Querformat drehen (wenn möglich)
       if (screen.orientation && screen.orientation.lock) {
         screen.orientation.lock("landscape").catch(() => {
-          // Fehler wird abgefangen, aber nicht mehr geloggt
         });
       }
     });
@@ -85,7 +82,6 @@ function toggleFullscreen() {
   let container = document.getElementById("game-container");
   if (!document.fullscreenElement) {
     container.requestFullscreen().catch((err) => {
-      // Fehler wird abgefangen, aber nicht mehr geloggt
     });
   } else {
     document.exitFullscreen();
@@ -109,7 +105,11 @@ function updateMuteIcons() {
  * Toggles the mute state of the game's audio and updates the mute
  * icons in the start screen and in-game user interface accordingly.
  */
-function toggleMute() {
+function toggleMute(event) {
+  if (event) {
+    event.stopPropagation();
+    event.target.blur();
+  }
   audioManager.toggleMute();
   if (!audioManager.isMuted && gameStarted) {
     audioManager.playMusic();
@@ -160,6 +160,7 @@ function restartGame() {
  */
 function backToMenu() {
   stopGame();
+  gameStarted = false;
   audioManager.stopAllSounds();
   audioManager.allSoundsDisabled = false;
   document.getElementById("game-over-screen").classList.add("d-none");
@@ -168,4 +169,5 @@ function backToMenu() {
   document.getElementById("mobile-controls").classList.add("d-none");
   document.getElementById("ingame-ui").classList.add("d-none");
   world = null;
+  updateMuteIcons();
 }

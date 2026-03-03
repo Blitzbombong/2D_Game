@@ -65,13 +65,13 @@
 
         <div class="menu-buttons">
           <button onclick="startGame()" id="play-button">PLAY</button>
-          <button onclick="toggleMute()" id="mute-button">🔊</button>
+          <button onclick="toggleMute(event)" id="mute-button">🔊</button>
           <button onclick="toggleFullscreen()" id="fullscreen-button">⛶</button>
         </div>
       </div>
       <div id="ingame-ui" class="ingame-ui d-none">
         <button onclick="backToMenu()" class="ingame-btn">🏠</button>
-        <button onclick="toggleMute()" id="mute-btn-ingame" class="ingame-btn">
+        <button onclick="toggleMute(event)" id="mute-btn-ingame" class="ingame-btn">
           🔊
         </button>
         <button onclick="toggleFullscreen()" class="ingame-btn desktop-only">

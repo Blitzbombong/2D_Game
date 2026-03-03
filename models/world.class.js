@@ -199,6 +199,7 @@ class World {
     bottle.break();
     boss.hit();
     this.audioManager.play("glass_splash");
+    this.audioManager.play("endboss_hit");
     this.showEndbossBar = true;
     this.endbossBar.setPercentage(boss.energy);
 
@@ -262,7 +263,7 @@ class World {
    * If the character has moved past the level end (x > 1900), the game has not ended, and the endboss fight has not started, it starts the endboss fight.
    */
   checkLevelProgress() {
-    if (!this.gameEnded && this.character.x > 1900 && !this.bossFightStarted) {
+    if (!this.gameEnded && this.character.x > 1500 && !this.bossFightStarted) {
       this.bossFightStarted = true;
       this.startBossFight();
     }

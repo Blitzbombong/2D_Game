@@ -3,9 +3,10 @@ class Endboss extends MovableObject {
   width = 400;
   y = 95;
   x = 2200;
-  speed = 0.8;
+  speed = 0.5;
   hadFirstContact = false;
   isDeadSoundPlayed = false;
+  rageFactor = 0;
 
   offset = {
     top: 60,
@@ -58,6 +59,7 @@ class Endboss extends MovableObject {
   constructor() {
     super();
     this.isBoss = true;
+    this.energy = 100;
     this.loadBossImages();
     this.animate();
   }
@@ -83,8 +85,8 @@ class Endboss extends MovableObject {
    * Handles the boss movement towards the left when active.
    */
   handleMovement() {
-    if (this.hadFirstContact && !this.isDead() && !this.isHurt()) {
-      this.updateSpeedByEnergy();
+    if (this.hadFirstContact && !this.isDead()) {
+      this.updateSpeed();
       this.moveLeft();
     }
   }
@@ -92,11 +94,28 @@ class Endboss extends MovableObject {
   /**
    * Increases movement speed if boss energy is low.
    */
-  updateSpeedByEnergy() {
-    if (this.energy < 50) {
-      this.speed = 1.5;
-    } else {
-      this.speed = 0.5;
+  updateSpeed() {
+    let lostEnergy = 100 - this.energy;
+    this.speed = 0.5 + lostEnergy / 15;
+
+    if (this.speed > 2.0) {
+    this.speed = 2.0; 
+  }
+
+    if (this.energy < 25) {
+      this.speed += 1.0;
+    }
+  }
+
+  /**
+   * Handles the logic for when the boss is hit by a bottle.
+   * @param {ThrowableObject} bottle - The bottle object that hit the boss.
+   * @param {Endboss} boss - The boss object that was hit.
+   */
+  hit() {
+    super.hit();
+    if (!this.isAboveGround()) {
+      this.jump();
     }
   }
 
