@@ -4,7 +4,7 @@
   display: flex;
   gap: 20px;
   z-index: 2;
-  top: -160px;
+  top: -170px;
 }
 
 #play-button,
@@ -123,6 +123,7 @@
   height: 50px;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(2px);
+  
 }
 
 .mobile-btn img {

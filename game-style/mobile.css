@@ -10,9 +10,34 @@
   z-index: 100;
 }
 
+@media (max-width: 768px) {
+  #fullscreen-button {
+    display: none;
+  }
+
+  #play-button,
+  #mute-button {
+    margin-top: 40px;
+    font-size: 24px;
+  }
+
+  .button-container {
+    margin-top: 60px;
+  }
+
+  .ingame-ui {
+    top: 20px;
+  }
+
+  .ingame-btn {
+    font-size: 26px;
+  }
+}
+
 @media only screen and (max-width: 720px) {
   canvas {
-    width: 100%;
+    width: 100vw;
+    height: 100vh;
   }
   .desktop-only {
     display: none !important;
@@ -30,7 +55,12 @@
   }
 
   canvas {
+    width: 100vw;
     height: 100vh;
+  }
+
+  #mute-button {
+    display: none;
   }
 }
 
