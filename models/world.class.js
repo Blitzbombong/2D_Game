@@ -154,10 +154,16 @@ class World {
    * updates the health bar to reflect the character's new energy level.
    */
   handleCharacterHit() {
-    if (!this.character.isHurt()) {
+    if (!this.character.isHurt() && !this.character.isDead()) {
       this.character.hit();
-      this.audioManager.play("character_hurt");
       this.healthBar.setPercentage(this.character.energy);
+
+      if (this.character.isDead()) {
+        this.audioManager.play("character_death");
+        this.character.isDeathSoundPlayed = true;
+      } else {
+        this.audioManager.play("character_hurt");
+      }
     }
   }
 
@@ -195,6 +201,20 @@ class World {
     this.audioManager.play("glass_splash");
     this.showEndbossBar = true;
     this.endbossBar.setPercentage(boss.energy);
+
+    if (boss.isDead() && !boss.isDeadSoundPlayed) {
+      this.handleBossDeath(boss);
+    }
+  }
+
+  /**
+   * Handles the logic for when the boss is killed.
+   * @param {Endboss} boss - The boss object that was killed.
+   */
+  handleBossDeath(boss) {
+    boss.isDeadSoundPlayed = true;
+    this.audioManager.pause("endboss_fight");
+    this.audioManager.play("you_win");
   }
 
   /**

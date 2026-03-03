@@ -75,7 +75,8 @@ class CollisionManager {
 
     if (isStomping && isFalling) {
       this.world.killEnemy(enemy);
-    } else {
+      this.character.bounce();
+    } else if (!this.character.isAboveGround()) {
       this.world.handleCharacterHit();
     }
   }

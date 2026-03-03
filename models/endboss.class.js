@@ -5,6 +5,7 @@ class Endboss extends MovableObject {
   x = 2200;
   speed = 0.8;
   hadFirstContact = false;
+  isDeadSoundPlayed = false;
 
   offset = {
     top: 60,

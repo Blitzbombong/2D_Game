@@ -6,6 +6,7 @@ class Character extends MovableObject {
   speed = 8;
   hadFirstContact = false;
   lastActionTime = new Date().getTime();
+  isDeathSoundPlayed = false;
   offset = {
     top: 85,
     left: 20,
@@ -107,7 +108,7 @@ class Character extends MovableObject {
    */
   animate() {
     setStoppableInterval(() => this.handleMovement(), 1000 / 60);
-    setStoppableInterval(() => this.handleAnimations(), 50);
+    setStoppableInterval(() => this.handleAnimations(), 100);
   }
 
   /**
@@ -129,7 +130,7 @@ class Character extends MovableObject {
    */
   checkActivity() {
     const keys = this.world.keyboard;
-    if (keys.RIGHT || keys.LEFT || keys.SPACE) {
+    if (keys.RIGHT || keys.LEFT || keys.SPACE || keys.S) {
       this.lastActionTime = new Date().getTime();
     }
   }
@@ -224,6 +225,6 @@ class Character extends MovableObject {
    * @memberof Character
    */
   bounce() {
-    this.speedY = 5;
+    this.speedY =  15;
   }
 }
