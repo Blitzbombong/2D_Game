@@ -2,6 +2,7 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let audioManager = new AudioManager();
+let gameStarted = false;
 
 /**
  * Initializes the game by getting the canvas element and binding
@@ -10,8 +11,8 @@ let audioManager = new AudioManager();
 function init() {
   canvas = document.getElementById("myCanvas");
   keyboard.bindTouchEvents();
+  updateMuteIcons();
 }
-
 
 /**
  * Starts the game by hiding the start screen, showing mobile controls
@@ -19,14 +20,15 @@ function init() {
  * the background music, and showing the in-game user interface.
  */
 function startGame() {
+  gameStarted = true;
   document.getElementById("start-screen").classList.add("d-none");
   checkAndShowMobileControls();
   initLevel1();
   initWorld();
+  updateMuteIcons();
   audioManager.playMusic();
   document.getElementById("ingame-ui").classList.remove("d-none");
 }
-
 
 /**
  * Checks if the current device is a mobile device and shows the
@@ -34,12 +36,12 @@ function startGame() {
  * start of the game to determine if mobile controls should be
  */
 function checkAndShowMobileControls() {
-  const isMobile = window.innerWidth <= 1024 || window.matchMedia("(pointer: coarse)").matches;
+  const isMobile =
+    window.innerWidth <= 1024 || window.matchMedia("(pointer: coarse)").matches;
   if (isMobile) {
     document.getElementById("mobile-controls").classList.remove("d-none");
   }
 }
-
 
 /**
  * Initializes the game world by creating a new World object
@@ -49,8 +51,8 @@ function checkAndShowMobileControls() {
 function initWorld() {
   canvas = document.getElementById("myCanvas");
   world = new World(canvas, keyboard, audioManager);
+  updateMuteIcons();
 }
-
 
 /**
  * Enters the given HTML element into fullscreen mode, if supported.
@@ -71,7 +73,6 @@ function enterFullscreen(element) {
   }
 }
 
-
 /**
  * Toggles the game container element into and out of fullscreen mode.
  * If the element is not currently in fullscreen mode, it will be
@@ -84,29 +85,37 @@ function toggleFullscreen() {
   let container = document.getElementById("game-container");
   if (!document.fullscreenElement) {
     container.requestFullscreen().catch((err) => {
-        // Fehler wird abgefangen, aber nicht mehr geloggt
+      // Fehler wird abgefangen, aber nicht mehr geloggt
     });
   } else {
     document.exitFullscreen();
   }
 }
 
-
 /**
- * Toggles the mute state of the game's audio.
- * If the audio is currently muted, it will be unmuted, and vice versa.
- * The mute button in the start screen and the in-game user interface will
- * be updated with the new mute state.
+ * Updates the mute icons in the start screen and in-game user interface
+ * based on the current mute state of the game's audio.
  */
-function toggleMute() {
-  audioManager.toggleMute();
+function updateMuteIcons() {
   let btn = document.getElementById("mute-button");
   let ingameBtn = document.getElementById("mute-btn-ingame");
   let icon = audioManager.isMuted ? "🔇" : "🔊";
+
   if (btn) btn.innerHTML = icon;
   if (ingameBtn) ingameBtn.innerHTML = icon;
 }
 
+/**
+ * Toggles the mute state of the game's audio and updates the mute
+ * icons in the start screen and in-game user interface accordingly.
+ */
+function toggleMute() {
+  audioManager.toggleMute();
+  if (!audioManager.isMuted && gameStarted) {
+    audioManager.playMusic();
+  }
+  updateMuteIcons();
+}
 
 /**
  * Shows the game over screen, stops all game logic, stops all
@@ -121,7 +130,6 @@ function showGameOver() {
   document.getElementById("ingame-ui").classList.add("d-none");
 }
 
-
 /**
  * Shows the you win screen, stops all game logic, stops all
  * sounds, and plays the you win sound.
@@ -135,7 +143,6 @@ function showYouWin() {
   document.getElementById("ingame-ui").classList.add("d-none");
 }
 
-
 /**
  * Restarts the game by stopping all game logic, stopping all
  * sounds, and re-calling the startGame function.
@@ -146,7 +153,6 @@ function restartGame() {
   document.getElementById("you-win-screen").classList.add("d-none");
   startGame();
 }
-
 
 /**
  * Stops the game, stops all sounds, resets audio manager state, hides all in-game UI elements, and shows the start screen again.

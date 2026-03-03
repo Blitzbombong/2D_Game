@@ -20,8 +20,13 @@ class AudioManager {
   allSoundsDisabled = false;
 
   constructor() {
+    let savedMuteState = localStorage.getItem('isMuted');
+    this.isMuted = savedMuteState === 'true';
     this.setAllVolumes();
     this.setupLoops();
+    if (this.isMuted) {
+        this.stopMusic();
+    }
   }
 
   
@@ -125,13 +130,13 @@ class AudioManager {
  * be updated with the new mute state.
  */
   toggleMute() {
-    this.isMuted = !this.isMuted;
-    if (this.isMuted) {
-      this.stopMusic();
-    } else {
-      this.playMusic();
-    }
+  this.isMuted = !this.isMuted;
+  localStorage.setItem('isMuted', this.isMuted);
+
+  if (this.isMuted) {
+    this.stopMusic();
   }
+}
 
   
 /**
