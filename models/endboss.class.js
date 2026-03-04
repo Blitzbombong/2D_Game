@@ -99,8 +99,8 @@ class Endboss extends MovableObject {
     this.speed = 0.5 + lostEnergy / 15;
 
     if (this.speed > 2.0) {
-    this.speed = 2.0; 
-  }
+      this.speed = 2.0;
+    }
 
     if (this.energy < 25) {
       this.speed += 1.0;

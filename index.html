@@ -12,7 +12,11 @@
     <link rel="stylesheet" href="game-style/buttons.css" />
     <link rel="stylesheet" href="game-style/screens.css" />
     <link rel="stylesheet" href="game-style/mobile.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="game-style/impressum.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bangers&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="icon"
       type="image/png"
@@ -71,7 +75,11 @@
       </div>
       <div id="ingame-ui" class="ingame-ui d-none">
         <button onclick="backToMenu()" class="ingame-btn">🏠</button>
-        <button onclick="toggleMute(event)" id="mute-btn-ingame" class="ingame-btn">
+        <button
+          onclick="toggleMute(event)"
+          id="mute-btn-ingame"
+          class="ingame-btn"
+        >
           🔊
         </button>
         <button onclick="toggleFullscreen()" class="ingame-btn desktop-only">
@@ -143,10 +151,59 @@
       </div>
     </div>
 
-    <footer class="game-footer">
-      <div class="footer-links">
-        <a href="impressum.html" target="_blank">Impressum & Datenschutz</a>
+    <div
+      id="impressum-dialog"
+      class="dialog-backdrop d-none"
+      onclick="closeImpressum(event)"
+    >
+      <div class="legal-container" onclick="event.stopPropagation()">
+        <span class="close-modal-x" onclick="closeImpressum()">×</span>
+
+        <h1>Impressum</h1>
+        <section>
+          <p>Informationen gemäß § 5 TMG:</p>
+          <p>
+            <strong>Waldemar Giesbrecht</strong><br />
+            Göllenkamp 35<br />
+            44357 Dortmund
+          </p>
+          <h3>Kontakt</h3>
+          <p>E-Mail: waldemarg701@gmail.de</p>
+        </section>
+
+        <h2>Datenschutz</h2>
+        <p>
+          Die Betreiber dieser Seiten nehmen den Schutz deiner persönlichen
+          Daten sehr ernst. Wir behandeln deine personenbezogenen Daten
+          vertraulich.
+        </p>
+
+        <h3>1. Datenerfassung</h3>
+        <p>
+          Die Nutzung dieser Webseite ist in der Regel ohne Angabe
+          personenbezogener Daten möglich.
+        </p>
+
+        <h3>2. Local Storage</h3>
+        <p>
+          Diese Anwendung nutzt den „Local Storage“, um Einstellungen (z. B.
+          Mute-Status) lokal auf deinem Gerät zu speichern.
+        </p>
+
+        <button class="close-dialog-btn" onclick="closeImpressum()">
+          Schließen
+        </button>
       </div>
+    </div>
+    <footer class="game-footer">
+      <a
+        href="#"
+        onclick="
+          openImpressum();
+          return false;
+        "
+        >Impressum & Datenschutz</a
+      >
     </footer>
   </body>
 </html>

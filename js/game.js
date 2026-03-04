@@ -63,8 +63,7 @@ function enterFullscreen(element) {
   if (element.requestFullscreen) {
     element.requestFullscreen().then(() => {
       if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock("landscape").catch(() => {
-        });
+        screen.orientation.lock("landscape").catch(() => {});
       }
     });
   }
@@ -81,8 +80,7 @@ function enterFullscreen(element) {
 function toggleFullscreen() {
   let container = document.getElementById("game-container");
   if (!document.fullscreenElement) {
-    container.requestFullscreen().catch((err) => {
-    });
+    container.requestFullscreen().catch((err) => {});
   } else {
     document.exitFullscreen();
   }
@@ -170,4 +168,25 @@ function backToMenu() {
   document.getElementById("ingame-ui").classList.add("d-none");
   world = null;
   updateMuteIcons();
+}
+
+/**
+ * Opens the imprint and data protection dialog by removing the 'd-none' class.
+ * This makes the overlay visible to the user.
+ */
+function openImpressum() {
+  document.getElementById("impressum-dialog").classList.remove("d-none");
+}
+
+/**
+ * Closes the imprint and data protection dialog.
+ * The dialog is closed if the function is called without an event (e.g., via a button click)
+ * or if the click target is the dialog's backdrop itself.
+ * * @param {MouseEvent} [event] - The click event object. Optional when called from a button.
+ */
+function closeImpressum(event) {
+  // Wenn kein event da ist (Button-Klick) ODER man wirklich den Hintergrund getroffen hat
+  if (!event || event.target.id === "impressum-dialog") {
+    document.getElementById("impressum-dialog").classList.add("d-none");
+  }
 }

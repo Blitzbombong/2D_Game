@@ -35,20 +35,20 @@ class AudioManager {
    */
   setAllVolumes() {
     this.game_sound.volume = 0.3;
-    this.endboss_fight.volume = 0.5;
+    this.endboss_fight.volume = 0.1;
     this.character_walk.volume = 0.5;
-    this.character_jump.volume = 0.01;
-    this.character_hurt.volume = 0.01;
-    this.character_death.volume = 0.01;
-    this.chicken_plop.volume = 0.1;
+    this.character_jump.volume = 0.2;
+    this.character_hurt.volume = 0.2;
+    this.character_death.volume = 0.2;
+    this.chicken_plop.volume = 0.2;
     this.endboss_chicken.volume = 0.3;
     this.endboss_death.volume = 0.3;
-    this.collect_coin.volume = 0.01;
-    this.collect_bottle.volume = 0.01;
+    this.collect_coin.volume = 0.1;
+    this.collect_bottle.volume = 0.05;
     this.bottle_flies.volume = 0.1;
     this.glass_splash.volume = 0.1;
-    this.game_over.volume = 0.05;
-    this.you_win.volume = 0.05;
+    this.game_over.volume = 0.3;
+    this.you_win.volume = 0.3;
     this.endboss_hit.volume = 0.3;
   }
 
