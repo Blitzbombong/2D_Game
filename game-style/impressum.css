@@ -14,8 +14,8 @@
 .legal-container {
   max-width: 800px;
   width: 90%;
-  max-height: 80vh; /* Maximal 80% der Bildschirmhöhe */
-  overflow-y: auto; /* Scrollbar, wenn Text zu lang ist */
+  max-height: 80vh; 
+  overflow-y: auto; 
   background: rgb(251, 243, 146);
   padding: 40px;
   border-radius: 8px;
@@ -59,13 +59,12 @@
 }
 
 .game-footer a {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255);
   text-decoration: none;
-  font-family: "Arial", sans-serif;
-  font-size: 14px;
+  font-family: "Bangers", system-ui;
+  font-size: 24px;
 }
 
 .game-footer a:hover {
   color: #fbf392;
-  text-decoration: underline;
 }

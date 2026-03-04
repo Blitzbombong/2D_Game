@@ -33,7 +33,6 @@ h1 {
   display: none !important;
 }
 
-/* Desktop Instructions */
 #desktop-instructions {
   min-width: 720px;
   display: flex;

@@ -1,51 +1,61 @@
-/* Mobile Design and instructions */
+.control-group-left,
+.control-group-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .mobile-only {
   position: absolute;
-  bottom: 5px;
-  width: 93%;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
-  padding: 0 10px 10px 20px;
+  padding: 0 20px;
   pointer-events: none;
   z-index: 100;
 }
 
-.control-group-left,
-.control-group-right {
-  gap: 20px;
+@media only screen and (max-width: 720px) {
+  canvas {
+    width: 100%;
+  }
+  h1 {
+    display: none;
+  }
+  .desktop-only {
+    display: none;
+  }
 }
 
-@media (max-width: 768px) {
+@media only screen and (max-height: 480px) {
+  #game-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black; 
+  }
+
+  canvas {
+    height: 100vh !important;
+    width: auto !important; 
+  }
+
   #fullscreen-button {
     display: none;
   }
 
-  #play-button,
-  #mute-button {
-    margin-top: 70px;
-    font-size: 24px;
+  .menu-buttons {
+    top: -160px;
   }
 
-  .button-container {
-    margin-top: 60px;
-  }
-
-  .ingame-ui {
-    top: 20px;
-  }
-
-  .ingame-btn {
-    font-size: 26px;
-  }
-}
-
-@media only screen and (max-width: 720px) {
-  canvas {
-    width: 100vw;
-    height: 100vh;
-  }
   .desktop-only {
-    display: none !important;
+    display: none;
   }
 
   h1 {
@@ -53,26 +63,13 @@
   }
 }
 
-@media only screen and (max-width: 480px) {
-  .mobile-btn {
-    width: 60px;
-    height: 60px;
-  }
-
-  canvas {
-    width: 100vw;
-    height: 100vh;
-  }
-
-  #mute-button {
+@media (orientation: landscape) {
+  .rotate-device-overlay {
     display: none;
   }
 }
 
-/* Overlay for mobile rotate display animation */
-.rotate-device-overlay {
-  display: none;
-}
+
 
 @media (orientation: portrait) and (max-width: 1024px) {
   .rotate-device-overlay {
@@ -82,25 +79,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.95);
-    color: white;
-    font-size: 24px;
-    text-align: center;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
-    font-family: sans-serif;
-  }
-
-  .rotate-content {
-    font-size: 24px;
-    font-weight: bold;
-  }
-
-  .rotate-icon {
-    font-size: 50px;
-    margin-top: 20px;
-    animation: rotatePhone 2s infinite ease-in-out;
+    color: white;
   }
 }
 
@@ -114,4 +98,10 @@
   100% {
     transform: rotate(0deg);
   }
+}
+
+.rotate-icon {
+  font-size: 50px;
+  margin-top: 20px;
+  animation: rotatePhone 2s infinite ease-in-out;
 }
