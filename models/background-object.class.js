@@ -1,8 +1,8 @@
 class BackgroundObject extends MovableObject {
   height = 480;
   width = 720;
-  y = 0; // Bodenposition
-  x = 0; // Bodenposition
+  y = 0;
+  x = 0;
 
   /**
    * Creates a new BackgroundObject.

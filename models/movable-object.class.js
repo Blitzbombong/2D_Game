@@ -34,13 +34,8 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Draws a blue debug frame around the collision box.
-   * @param {CanvasRenderingContext2D} ctx - The canvas context.
-   */
-
-  /**
-   * Helper to decide if an object should show its collision box.
-   * @returns {boolean}
+   * Checks if the object should be drawn based on its type.
+   * @returns {boolean} True if the object should be drawn, false otherwise.
    */
   shouldDrawFrame() {
     return (

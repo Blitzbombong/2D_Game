@@ -144,7 +144,7 @@ class World {
       this.checkLevelProgress();
       this.collisionManager.checkCollisions();
       this.checkGameState();
-    }, 50);
+    }, 1000 / 60);
   }
 
   /**

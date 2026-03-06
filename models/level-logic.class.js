@@ -66,20 +66,19 @@ class CollisionManager {
    * @param {MovableObject} enemy
    */
   handleEnemyCollision(enemy) {
-    if (enemy.isDead) {
-      return;
-    }
+  if (enemy.isDead) return;
 
-    const isStomping = this.isCharacterStomping(enemy);
-    const isFalling = this.character.speedY < 0;
+  const isStomping = this.isCharacterStomping(enemy);
+  const isAbove = this.character.isAboveGround();
+  const isFalling = this.character.speedY < 0; 
 
-    if (isStomping && isFalling) {
-      this.world.killEnemy(enemy);
-      this.character.bounce();
-    } else if (!this.character.isAboveGround()) {
-      this.world.handleCharacterHit();
-    }
+  if (isAbove && isFalling && isStomping) {
+    this.world.killEnemy(enemy);
+    this.character.bounce();
+  } else if (!isAbove) {
+    this.world.handleCharacterHit();
   }
+}
 
   /**
    * Checks for collisions between the character and collectible items.

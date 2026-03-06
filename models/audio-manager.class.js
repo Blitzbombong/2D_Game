@@ -105,7 +105,6 @@ class AudioManager {
    * Plays the game music if it is not muted and all sounds are not disabled.
    */
   playMusic() {
-    // HIER fehlte sie auch!
     if (!this.isMuted && !this.allSoundsDisabled) {
       this.game_sound.play();
     }
