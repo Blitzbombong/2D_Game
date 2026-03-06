@@ -44,8 +44,11 @@ class Chicken extends MovableObject {
     if (this.isDead) return;
 
     this.moveLeft();
+
     if (this.isOffScreen()) {
-      this.respawn();
+      if (this.world && !this.world.bossFightStarted) {
+        this.respawn();
+      }
     }
   }
 

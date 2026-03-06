@@ -276,8 +276,6 @@ class World {
    */
   startBossFight() {
     this.audioManager.pause("game_sound");
-    this.level.enemies.forEach((enemy) => (enemy.energy = 0));
-    setTimeout(() => (this.level.enemies = []), 500);
 
     const boss = this.level.endboss;
     if (boss) {
