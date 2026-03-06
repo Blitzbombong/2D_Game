@@ -1,4 +1,3 @@
-
 class Endboss extends MovableObject {
   height = 350;
   width = 400;
@@ -57,24 +56,26 @@ class Endboss extends MovableObject {
     "img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
-/**
- * Constructor for Endboss class.
- * Calls the MovableObject constructor and sets the isBoss and energy properties.
- * Loads the endboss images and starts the animation loop.
- */
+  /**
+   * Constructor for Endboss class.
+   * Calls the MovableObject constructor and sets the isBoss and energy properties.
+   * Loads the endboss images and starts the animation loop.
+   */
   constructor() {
     super();
     this.isBoss = true;
     this.energy = 100;
+    this.acceleration = 2.5;
     this.loadBossImages();
+    this.applyGravity();
     this.animate();
   }
 
-/**
- * Loads all endboss-related image sets.
- * This method is called in the Endboss constructor and is responsible for loading
- * the walking, alert, attack, hurt, and death image sets for the endboss.
- */
+  /**
+   * Loads all endboss-related image sets.
+   * This method is called in the Endboss constructor and is responsible for loading
+   * the walking, alert, attack, hurt, and death image sets for the endboss.
+   */
   loadBossImages() {
     this.loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
@@ -93,9 +94,28 @@ class Endboss extends MovableObject {
   }
 
   /**
+   * Orchestrates which animation to play based on current state.
+   */
+  handleAnimation() {
+    if (this.isDead()) {
+      this.playAnimation(this.IMAGES_DEAD);
+    } else if (this.isHurt()) {
+      this.playAnimation(this.IMAGES_HURT);
+    } else if (this.speedY > 0 || this.speedY < 0) {
+      this.playAnimation(this.IMAGES_ATTACK);
+    } else {
+      this.playAnimation(this.IMAGES_ALERT);
+    }
+  }
+
+  /**
    * Handles the boss movement towards the left when active.
    */
   handleMovement() {
+    if (!this.isAboveGround()) {
+      this.y = 95;
+      this.speedY = 0;
+    }
     if (this.hadFirstContact && !this.isDead()) {
       this.updateSpeed();
       this.moveLeft();
@@ -109,39 +129,57 @@ class Endboss extends MovableObject {
     let lostEnergy = 100 - this.energy;
     this.speed = 0.5 + lostEnergy / 15;
 
-    if (this.speed > 2.0) {
-      this.speed = 2.0;
+    if (this.speed > 3.0) {
+      this.speed = 3.0;
     }
-
     if (this.energy < 25) {
       this.speed += 1.0;
     }
   }
 
   /**
-   * Handles the logic for when the boss is hit by a bottle.
-   * @param {ThrowableObject} bottle - The bottle object that hit the boss.
-   * @param {Endboss} boss - The boss object that was hit.
+   * Handles the logic when the boss gets hit by a bottle.
    */
   hit() {
     super.hit();
-    if (!this.isAboveGround()) {
-      this.jump();
-    }
+    this.attackJump();
   }
 
   /**
-   * Orchestrates which animation to play based on current state.
+   * Makes the boss jump aggressively towards the character.
    */
-  handleAnimation() {
-    if (this.isDead()) {
-      this.playAnimation(this.IMAGES_DEAD);
-    } else if (this.isHurt()) {
-      this.playAnimation(this.IMAGES_HURT);
-    } else if (this.hadFirstContact) {
-      this.playAnimation(this.IMAGES_ATTACK);
-    } else {
-      this.playAnimation(this.IMAGES_ALERT);
-    }
+  attackJump() {
+    this.speedY = 18;
+    let originalSpeed = this.speed;
+    this.speed = 5;
+    this.playAnimation(this.IMAGES_ATTACK);
+
+    setTimeout(() => {
+      this.speed = originalSpeed;
+    }, 1200);
+  }
+
+  /**
+   * Applies gravity to the endboss every 16.7 milliseconds (60 FPS).
+   * If the endboss is above the ground or its vertical speed is greater than 0, it moves down by its vertical speed and reduces its vertical speed by its acceleration.
+   * If the endboss is not above the ground (i.e. it is on the ground), its vertical speed is set to 0.
+   */
+  applyGravity() {
+    setStoppableInterval(() => {
+      if (this.isAboveGround() || this.speedY > 0) {
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration;
+      } else {
+        this.speedY = 0;
+      }
+    }, 1000 / 60);
+  }
+
+  /**
+   * Checks if the boss is in the air.
+   * @returns {boolean}
+   */
+  isAboveGround() {
+    return this.y < 95;
   }
 }
