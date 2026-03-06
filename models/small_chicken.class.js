@@ -1,3 +1,4 @@
+
 class SmallChicken extends Chicken {
 
     height = 50;
@@ -18,6 +19,12 @@ class SmallChicken extends Chicken {
     IMAGES_DEAD = [
         'img/3_enemies_chicken/chicken_small/2_dead/dead.png'
     ]
+
+    /**
+     * Initializes a new SmallChicken object.
+     * Calls the parent constructor, loads the walking and dead images, and sets the speed of the chicken.
+     * The speed is a random number between 0.15 and 0.7.
+     */
     constructor() {
         super();
         this.loadImage(this.IMAGES_WALKING[0]);

@@ -12,7 +12,7 @@ class BackgroundObject extends MovableObject {
    */
   constructor(imagePath, x, y) {
     super();
-    this.loadImage(imagePath); // Nutzt den Pfad, den du im Array übergeben hast
+    this.loadImage(imagePath);
     this.x = x;
     this.y = y;
   }

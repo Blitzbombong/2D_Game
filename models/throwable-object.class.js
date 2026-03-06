@@ -24,6 +24,12 @@ class ThrowableObject extends MovableObject {
     "img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
   ];
 
+  /**
+   * Creates a new ThrowableObject.
+   * @param {number} x - The x position of the object.
+   * @param {number} y - The y position of the object.
+   * @param {string} direction - The direction of the throw, either "left" or "right".
+   */
   constructor(x, y, direction) {
     super();
     this.loadImage(this.IMAGES_BOTTLE_ROTATED[0]);
@@ -93,6 +99,6 @@ class ThrowableObject extends MovableObject {
     this.isBroken = true;
     this.speedY = 0;
     this.speed = 0;
-    this.currentImage = 0; // Zurücksetzen auf den Anfang der Splash-Animation
+    this.currentImage = 0;
   }
 }

@@ -1,3 +1,4 @@
+
 class Endboss extends MovableObject {
   height = 350;
   width = 400;
@@ -56,6 +57,11 @@ class Endboss extends MovableObject {
     "img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
+/**
+ * Constructor for Endboss class.
+ * Calls the MovableObject constructor and sets the isBoss and energy properties.
+ * Loads the endboss images and starts the animation loop.
+ */
   constructor() {
     super();
     this.isBoss = true;
@@ -64,6 +70,11 @@ class Endboss extends MovableObject {
     this.animate();
   }
 
+/**
+ * Loads all endboss-related image sets.
+ * This method is called in the Endboss constructor and is responsible for loading
+ * the walking, alert, attack, hurt, and death image sets for the endboss.
+ */
   loadBossImages() {
     this.loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);

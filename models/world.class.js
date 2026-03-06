@@ -20,6 +20,14 @@ class World {
   keyboard;
   cameraX = 0;
 
+  /**
+   * Initializes the World object by setting the canvas, context, and keyboard properties.
+   * Sets the initial world state by calling the setWorld method.
+   * Draws the world by calling the draw method.
+   * Starts the game loop by calling the run method.
+   * @param {HTMLCanvasElement} canvas - The canvas element to draw on.
+   * @param {Keyboard} keyboard - The keyboard object to handle input events.
+   */
   constructor(canvas, keyboard) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
@@ -40,8 +48,6 @@ class World {
     if (this.level.endboss) this.level.endboss.world = this;
     this.level.enemies.forEach((enemy) => (enemy.world = this));
   }
-
-  // --- DRAWING METHODS ---
 
   /**
    * Clears the canvas and redraws the world space and fixed elements.
@@ -131,8 +137,6 @@ class World {
     mo.x *= -1;
     this.ctx.restore();
   }
-
-  // --- GAME LOGIC ---
 
   /**
    * Main game loop.

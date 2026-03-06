@@ -1,3 +1,4 @@
+
 class Chicken extends MovableObject {
   height = 70;
   width = 60;
@@ -20,9 +21,13 @@ class Chicken extends MovableObject {
 
   IMAGES_DEAD = ["img/3_enemies_chicken/chicken_normal/2_dead/dead.png"];
 
+  /**
+   * Creates a new Chicken object.
+   * @constructor
+   */
   constructor() {
     super();
-    this.x = 400 + Math.random() * 1800; // Startposition zufällig
+    this.x = 400 + Math.random() * 1800;
     this.loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_DEAD);

@@ -8,6 +8,14 @@ class HealthBar extends StatusBar {
         'img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png'
     ];
 
+
+    /**
+     * Initializes a new HealthBar object.
+     * This function calls the superclass constructor and sets the
+     * x, y, width, height and percentage of the object.
+     * The images for the object are also loaded into the imageCache.
+     * @see StatusBar
+     */
     constructor() {
         super();
         this.loadImages(this.IMAGES);

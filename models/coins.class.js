@@ -11,6 +11,10 @@ class Coins extends MovableObject {
 
   IMAGES_COINS = ["img/8_coin/coin_1.png", "img/8_coin/coin_2.png"];
 
+  /**
+   * Creates a new Coins object.
+   * @param {number} x - the x position of the coin
+   */
   constructor(x) {
     super();
     this.loadImage(this.IMAGES_COINS[0]);

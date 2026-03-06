@@ -1,3 +1,4 @@
+
 class AudioManager {
   game_sound = new Audio("audio/game-sound.mp3");
   character_walk = new Audio("audio/character-walk.mp3");
@@ -19,6 +20,11 @@ class AudioManager {
   isMuted = false;
   allSoundsDisabled = false;
 
+/**
+ * Initializes the audio manager by loading saved mute state from local storage,
+ * setting the volume of all sounds, setting up loops for sounds that need to be looped,
+ * and stopping the music if the game is muted.
+ */
   constructor() {
     let savedMuteState = localStorage.getItem("isMuted");
     this.isMuted = savedMuteState === "true";

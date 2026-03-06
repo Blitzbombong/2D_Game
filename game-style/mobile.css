@@ -1,3 +1,4 @@
+
 .control-group-left,
 .control-group-right {
   display: flex;
@@ -51,7 +52,7 @@
   }
 
   .menu-buttons {
-    top: -160px;
+    top:  -130px;
   }
 
   .desktop-only {

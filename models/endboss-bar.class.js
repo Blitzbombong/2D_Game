@@ -1,3 +1,4 @@
+
 class EndbossBar extends StatusBar {
 
     IMAGES = [
@@ -9,6 +10,10 @@ class EndbossBar extends StatusBar {
         'img/7_statusbars/2_statusbar_endboss/green/green100.png'
     ];  
 
+    /**
+     * Constructor for EndbossBar.
+     * Calls the superclass constructor and initializes the position, size, and percentage of the endboss bar.
+     */
     constructor() {
         super();
         this.loadImages(this.IMAGES);

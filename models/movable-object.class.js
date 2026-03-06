@@ -1,3 +1,4 @@
+
 class MovableObject extends DrawableObject {
   otherDirection = false;
   speedY = 0;
@@ -66,12 +67,24 @@ class MovableObject extends DrawableObject {
 
   /** Movement and State Methods */
 
+  /**
+   * Moves the object to the left by its speed.
+   */
   moveLeft() {
     this.x -= this.speed;
   }
+
+  /**
+   * Moves the object to the right by its speed.
+   */
   moveRight() {
     this.x += this.speed;
   }
+  
+  /**
+   * Sets the vertical speed of the object to 25, which causes the object to jump.
+   * This method is typically called when the space key is pressed and the object is on the ground.
+   */
   jump() {
     this.speedY = 25;
   }
@@ -88,6 +101,10 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * Checks if the object has run out of energy.
+   * @returns {boolean} True if the object is dead, false otherwise.
+   */
   isDead() {
     return this.energy == 0;
   }

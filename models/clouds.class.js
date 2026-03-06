@@ -1,7 +1,15 @@
+
 class Clouds extends MovableObject {
   height = 250;
   width = 350;
 
+  /**
+   * Creates a new Clouds object.
+   * @param {string} imagePath - The path to the image of the cloud.
+   * The cloud object is given a random y position between 0 and 100,
+   * a random x position between 100 and 2500, and a random speed between 0.01 and 0.5.
+   * The cloud object is also started animating immediately.
+   */
   constructor(imagePath) {
     super();
     this.loadImage(imagePath);

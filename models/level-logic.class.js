@@ -1,4 +1,10 @@
+
 class CollisionManager {
+  
+  /**
+   * Creates a new CollisionManager object.
+   * @param {World} world - The world object associated with the game.
+   */
   constructor(world) {
     this.world = world;
   }
@@ -10,18 +16,49 @@ class CollisionManager {
   get character() {
     return this.world.character;
   }
+
+  /**
+   * Returns the level object associated with the world.
+   * The level object contains all of the level's data, such as the enemies,
+   * endboss, clouds, background objects, bottles and coins.
+   * @return {Level} The level object.
+   */
   get level() {
     return this.world.level;
   }
+
+  /**
+   * Returns the audio manager associated with the world.
+   * The audio manager is responsible for handling all game sounds.
+   * @return {AudioManager} The audio manager object.
+   */
   get audioManager() {
     return this.world.audioManager;
   }
+
+  /**
+   * Returns the array of ThrowableObject instances associated with the world.
+   * This array contains all of the bottles that the character has thrown.
+   * @return {ThrowableObject[]} The array of ThrowableObject instances.
+   */
   get throwableObjects() {
     return this.world.throwableObjects;
   }
+
+  /**
+   * Returns the coin bar object associated with the world.
+   * The coin bar displays the player's current coin count.
+   * @return {CoinBar} The coin bar object.
+   */
   get coinBar() {
     return this.world.coinBar;
   }
+  
+  /**
+   * Returns the bottle bar object associated with the world.
+   * The bottle bar displays the number of bottles the player has left to throw.
+   * @return {BottleBar} The bottle bar object.
+   */
   get bottleBar() {
     return this.world.bottleBar;
   }

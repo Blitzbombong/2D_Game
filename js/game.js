@@ -1,3 +1,4 @@
+
 let canvas;
 let world;
 let keyboard = new Keyboard();
@@ -185,7 +186,6 @@ function openImpressum() {
  * * @param {MouseEvent} [event] - The click event object. Optional when called from a button.
  */
 function closeImpressum(event) {
-  // Wenn kein event da ist (Button-Klick) ODER man wirklich den Hintergrund getroffen hat
   if (!event || event.target.id === "impressum-dialog") {
     document.getElementById("impressum-dialog").classList.add("d-none");
   }

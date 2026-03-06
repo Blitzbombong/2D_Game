@@ -1,8 +1,13 @@
+
 class Keyboard {
   LEFT = false;
   RIGHT = false;
   SPACE = false;
   S = false;
+
+  /**
+   * Constructor for the Keyboard class. Calls the keyPressEvent method to add event listeners for keyboard events.
+   */
   constructor() {
     this.keyPressEvent();
   }
@@ -48,7 +53,7 @@ class Keyboard {
    */
   bindTouchEvents() {
     document.getElementById("btn-left").addEventListener("touchstart", (e) => {
-      e.preventDefault(); // Verhindert nerviges Zoomen/Scrollen am Handy
+      e.preventDefault();
       this.LEFT = true;
     });
     document.getElementById("btn-left").addEventListener("touchend", (e) => {
@@ -76,7 +81,7 @@ class Keyboard {
 
     document.getElementById("btn-throw").addEventListener("touchstart", (e) => {
       e.preventDefault();
-      this.S = true; // Oder welche Taste du für Werfen nutzt
+      this.S = true;
     });
     document.getElementById("btn-throw").addEventListener("touchend", (e) => {
       e.preventDefault();

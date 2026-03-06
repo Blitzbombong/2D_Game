@@ -1,3 +1,4 @@
+
 class Bottle extends MovableObject {
   height = 60;
   width = 50;
