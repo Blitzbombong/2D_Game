@@ -21,7 +21,6 @@
   z-index: 1;
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 
 .overlay {
@@ -40,8 +39,8 @@
 .overlay img {
   position: absolute;
   z-index: 1;
-  width: 90%;
-  height: 90%;
+  width: 60%;
+  height: 100%;
   object-fit: contain;
 }
 
