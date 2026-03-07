@@ -104,11 +104,9 @@ class CollisionManager {
    */
   handleEnemyCollision(enemy) {
   if (enemy.isDead) return;
-
   const isStomping = this.isCharacterStomping(enemy);
   const isAbove = this.character.isAboveGround();
   const isFalling = this.character.speedY < 0; 
-
   if (isAbove && isFalling && isStomping) {
     this.world.killEnemy(enemy);
     this.character.bounce();

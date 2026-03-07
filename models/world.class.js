@@ -161,7 +161,6 @@ class World {
     if (!this.character.isHurt() && !this.character.isDead()) {
       this.character.hit();
       this.healthBar.setPercentage(this.character.energy);
-
       if (this.character.isDead()) {
         this.audioManager.play("character_death");
         this.character.isDeathSoundPlayed = true;
@@ -206,7 +205,6 @@ class World {
     this.audioManager.play("endboss_hit");
     this.showEndbossBar = true;
     this.endbossBar.setPercentage(boss.energy);
-
     if (boss.isDead() && !boss.isDeadSoundPlayed) {
       this.handleBossDeath(boss);
     }
@@ -280,13 +278,11 @@ class World {
    */
   startBossFight() {
     this.audioManager.pause("game_sound");
-
     const boss = this.level.endboss;
     if (boss) {
       boss.hadFirstContact = true;
       this.showEndbossBar = true;
     }
-
     setTimeout(() => {
       if (!this.gameEnded) this.audioManager.playSingle("endboss_fight");
     }, 1000);
@@ -300,16 +296,25 @@ class World {
    */
   checkGameState() {
     if (this.gameEnded) return;
-    if (this.character.energy <= 0) this.handleEnd(showGameOver);
-    else if (this.level.endboss?.energy <= 0) this.handleEnd(showYouWin);
+    if (this.level.endboss?.energy <= 0) {
+      this.handleEnd(showYouWin);
+    } else if (this.character.energy <= 0) {
+      this.handleEnd(showGameOver);
+    }
   }
 
   /**
-   * Handles the end of the game by setting the game ended flag and calling the provided function after a 2 second delay.
-   * @param {function} showScreenFunc - Function to be called after the delay, typically used to show the game over or you win screens.
+   * Handles the end of the game by pausing the game sound and endboss fight, and showing the game over or you win screen after a short delay.
+   * @param {Function} showScreenFunc - The function to call to show the game over or you win screen.
+   * @private
    */
   handleEnd(showScreenFunc) {
     this.gameEnded = true;
-    setTimeout(() => showScreenFunc(), 2000);
+    this.audioManager.pause("game_sound");
+    this.audioManager.pause("endboss_fight");
+    setTimeout(() => {
+      stopGame();
+      showScreenFunc();
+    }, 2000);
   }
 }

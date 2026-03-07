@@ -58,10 +58,8 @@ class MovableObject extends DrawableObject {
    */
   playAnimation(images) {
     if (!images || images.length === 0) return;
-
     let i = this.currentImage % images.length;
     let path = images[i];
-
     if (this.imageCache[path]) {
       this.img = this.imageCache[path];
     }

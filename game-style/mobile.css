@@ -66,8 +66,6 @@
   }
 }
 
-
-
 @media (orientation: portrait) and (max-width: 1024px) {
   .rotate-device-overlay {
     display: flex !important;
