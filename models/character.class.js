@@ -1,4 +1,3 @@
-
 class Character extends MovableObject {
   height = 230;
   width = 120;
@@ -14,7 +13,7 @@ class Character extends MovableObject {
     right: 20,
     bottom: 10,
   };
-  
+
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
     "img/2_character_pepe/2_walk/W-22.png",
@@ -138,14 +137,18 @@ class Character extends MovableObject {
   }
 
   /**
-   * Executes the jump if the space key is pressed and the character is on the ground.
+   * Handles the character's jump logic.
    */
   handleJump() {
-    if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-      this.jump();
-      this.world.audioManager.play("character_jump");
-    }
+  if (this.world.keyboard.SPACE && !this.isAboveGround() && !this.jumpProcessed) {
+    this.jump();
+    this.world.audioManager.play("character_jump");
+    this.jumpProcessed = true;
   }
+  if (!this.world.keyboard.SPACE) {
+    this.jumpProcessed = false;
+  }
+}
 
   /**
    * Handles left and right movement and plays walking sounds.
@@ -227,6 +230,6 @@ class Character extends MovableObject {
    * @memberof Character
    */
   bounce() {
-    this.speedY =  15;
+    this.speedY = 15;
   }
 }

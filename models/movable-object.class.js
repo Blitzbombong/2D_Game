@@ -18,16 +18,16 @@ class MovableObject extends DrawableObject {
    * Applies constant gravity to the object.
    */
   applyGravity() {
-    setStoppableInterval(() => {
-      if (this.isAboveGround() || this.speedY > 0) {
-        this.y -= this.speedY;
-        this.speedY -= this.acceleration;
-      } else {
-        this.y = 195;
-        this.speedY = 0;
-      }
-    }, 1000 / 25);
-  }
+  setStoppableInterval(() => {
+    if (this.isAboveGround() || this.speedY > 0) {
+      this.y = Math.min(this.y - this.speedY, 195); 
+      this.speedY -= this.acceleration;
+    } else {
+      this.y = 195;
+      this.speedY = 0;
+    }
+  }, 1000 / 60);
+}
 
   /**
    * Checks if the object is above the ground (i.e. y-coordinate less than 195).
